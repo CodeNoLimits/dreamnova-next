@@ -89,8 +89,8 @@ addEventListener("pointermove", e => { flo.style.left = e.clientX + "px"; flo.st
 $("[data-index]").innerHTML = works.map(w => {
   const u = url(w);
   return `<${u ? "a" : "div"} class="pj ${u ? "" : "pj--private"}" data-c="${w.c}" ${u ? `href="${u}" target="_blank" rel="noopener"` : ""}>
-    <img class="pj__img" src="${gal(w)}" alt="${esc(w.t[L])}" loading="lazy" decoding="async">${w.demo && w.demo !== L ? `<span class="pj__lang">${w.demo.toUpperCase()}</span>` : ""}
-    <div class="pj__b"><div><div class="pj__s">${esc(w.s[L])}</div><div class="pj__t">${esc(w.t[L])}</div></div><span class="pj__a">${esc(u ? T["work.visit"].replace("↗", ARROW) : T["work.private"])}</span></div></${u ? "a" : "div"}>`;
+    <img class="pj__img" src="${gal(w)}" alt="${esc(w.t[L])}" loading="lazy" decoding="async">
+    <div class="pj__b"><div><div class="pj__s">${esc(w.s[L])}${w.demo && w.demo !== L ? ` <span class="pj__lang">${w.demo.toUpperCase()}</span>` : ""}</div><div class="pj__t">${esc(w.t[L])}</div></div><span class="pj__a">${esc(u ? T["work.visit"].replace("↗", ARROW) : T["work.private"])}</span></div></${u ? "a" : "div"}>`;
 }).join("");
 $("[data-index]").addEventListener("pointerover", e => { const p = e.target.closest(".pj"); if (!p) return flo.classList.remove("is-on"); flo.querySelector("img").src = p.querySelector(".pj__img").src; flo.classList.toggle("is-fr", !!p.querySelector(".pj__lang")); flo.classList.add("is-on"); });
 $("[data-index]").addEventListener("pointerleave", () => flo.classList.remove("is-on"));
@@ -108,7 +108,7 @@ fb.addEventListener("click", e => {
 
 /* ---------- reels ---------- */
 { const RI = D.REELS_I[L]; $$("[data-r2]").forEach(e => e.textContent = RI[e.dataset.r2]);
-  const list = (D.REELS || []).slice().sort((a, b) => (b.lang === L) - (a.lang === L));
+  const mine = (D.REELS || []).filter(r => r.lang === L), list = (mine.length ? mine : (D.REELS || [])).slice();
   const box = $("[data-reels]"); if (box) { if (!list.length) $("#reels").hidden = true;
     box.innerHTML = list.map(r => `<figure class="reel"><div class="reel__frame"><video data-src="${BASE}assets/reels/${r.id}.mp4" poster="${BASE}assets/reels/${r.id}.webp" muted loop playsinline preload="none"></video><button type="button" class="reel__snd" aria-label="${esc(RI.tap)}">🔊</button></div><figcaption>${esc(r.t[L])}</figcaption></figure>`).join("");
     box.addEventListener("click", e => { const b = e.target.closest(".reel__snd"); if (!b) return; const v = b.previousElementSibling; v.muted = !v.muted; b.classList.toggle("is-on", !v.muted); if (!v.muted) { v.currentTime = 0; v.play().catch(() => {}); $$(".reel video", box).forEach(o => { if (o !== v) o.muted = true; }); $$(".reel__snd", box).forEach(o => o !== b && o.classList.remove("is-on")); } }); } }

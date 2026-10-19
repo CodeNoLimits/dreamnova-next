@@ -56,6 +56,6 @@
     if (window.Lenis && innerWidth > 767) { const l = new Lenis({ lerp: .09 }); l.on("scroll", ScrollTrigger.update); gsap.ticker.add(t => l.raf(t * 1000)); gsap.ticker.lagSmoothing(0); }
     gsap.from(".svc-hero__in > *", { y: 60, opacity: 0, duration: 1.4, stagger: .1, ease: "expo.out", delay: .1 });
     gsap.from(".svc-hero__num", { yPercent: 30, opacity: 0, duration: 2, ease: "expo.out" });
-    gsap.utils.toArray(".r").forEach(e => gsap.from(e, { y: 50, opacity: 0, duration: 1.1, ease: "expo.out", scrollTrigger: { trigger: e, start: "top 96%" } }));
+    gsap.utils.toArray(".r:not(.pj)").forEach(e => gsap.from(e, { y: 50, opacity: 0, duration: 1.1, ease: "expo.out", scrollTrigger: { trigger: e, start: "top 96%" } }));
   }
 })();
