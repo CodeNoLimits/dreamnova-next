@@ -22,7 +22,7 @@ for l in ("he", "en", "fr"):
     # texte pré-rendu dans chaque élément data-i vide
     h = re.sub(r'(<([a-z0-9]+)[^>]*\bdata-i="([^"]+)"[^>]*>)(</\2>)', lambda m: m.group(1) + html.escape(T.get(m.group(3), "")) + m.group(4), h)
     for a, b in (('href="style.css"', 'href="../style.css"'), ('src="content.js"', 'src="../content.js"'), ('src="app.js"', 'src="../app.js"'),
-                 ('src="rooms.js"', 'src="../rooms.js"'), ('src="drive.js"', 'src="../drive.js"'), ('src="quote.js"', 'src="../quote.js"'), ('src="chapters.js"', 'src="../chapters.js"'), ('src="audio.js"', 'src="../audio.js"'), ('src="gear.js"', 'src="../gear.js"'),
+                 ('src="rooms.js"', 'src="../rooms.js"'), ('src="drive.js"', 'src="../drive.js"'), ('src="quote.js"', 'src="../quote.js"'), ('src="audit.js"', 'src="../audit.js"'), ('src="chapters.js"', 'src="../chapters.js"'), ('src="audio.js"', 'src="../audio.js"'), ('src="gear.js"', 'src="../gear.js"'),
                  ('src="assets/', 'src="../assets/')):
         h = h.replace(a, b)
     (root / l / "index.html").write_text(h)

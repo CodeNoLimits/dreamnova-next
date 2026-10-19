@@ -101,8 +101,8 @@
 
   const NO_VOICE = new Set(["accel", "rocket"]); // ces voix ne disent pas le texte affiché : musique et effets seulement
   const SECTIONS = [["hero", ".hero"], ["drive", ".drive"], ["accel", ".chap--accel"], ["work", "#work"], ["rooms", ".rooms"], ["services", "#services"], ["refer", "#refer"], ["offers", "#offers"],
-    ["devis", "#devis"], ["rocket", ".chap--space"], ["lab", "#lab"], ["values", ".chap--values"], ["contact", "#contact"]];
-  const MUSIC_OF = { hero: "hero", drive: "drive", accel: "accel", work: "work", rooms: "rooms", services: "work", refer: "work", offers: "work", devis: "work", rocket: "rocket", lab: "rocket", values: "sky", contact: "contact" };
+    ["audit", "#audit"], ["devis", "#devis"], ["rocket", ".chap--space"], ["lab", "#lab"], ["values", ".chap--values"], ["contact", "#contact"]];
+  const MUSIC_OF = { hero: "hero", drive: "drive", accel: "accel", work: "work", rooms: "rooms", services: "work", refer: "work", offers: "work", audit: "work", devis: "work", rocket: "rocket", lab: "rocket", values: "sky", contact: "contact" };
   function watch() {
     if (SVC) { document.querySelectorAll(".btn--gold,.off,.pj,.build-steps li").forEach(b => b.addEventListener("pointerenter", e => sfx("click", (e.clientX / innerWidth - .5) * 2, .3))); return; }
     if (!window.ScrollTrigger) return;

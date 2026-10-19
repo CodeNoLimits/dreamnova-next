@@ -919,3 +919,39 @@ html[lang=he] .gear__lab{letter-spacing:.02em;font-size:12px}
 .rooms__cap.is-swap .rooms__name,.rooms__cap.is-swap .rooms__line{filter:blur(10px)}
 .cp-panel__t,.cp-panel__d{transition:filter .5s var(--ease),opacity .4s}
 .cp-panel:not(.is-open) .cp-panel__t,.cp-panel:not(.is-open) .cp-panel__d{filter:blur(10px);opacity:0}
+/* en-tête téléphone : le bouton « בואו נדבר » reste caché (il réapparaissait à cause de la règle .btn--sm) */
+@media (max-width:767px){.nav__cta{display:none!important}}
+
+/* ===== audit IA du site du visiteur ===== */
+.audit-ia{--acc:#9fe6d2;background:linear-gradient(180deg,var(--bg),#06130f 20%,#05120e 80%,var(--bg))}
+.audit-ia .eyebrow{color:var(--acc);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--acc) 34%,transparent);background:color-mix(in srgb,var(--acc) 8%,transparent)}
+.audit-ia::before{content:"";position:absolute;top:0;inset-inline:var(--pad);height:1px;background:linear-gradient(90deg,transparent,var(--acc),transparent);opacity:.6}
+.audit-ia__shell{max-width:1100px}
+.audit-ia__form{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:end;padding:28px}
+.audit-ia__form label{display:flex;flex-direction:column;gap:8px;font-size:14px;color:var(--mute)}
+.audit-ia__form input{font:inherit;font-size:18px;color:var(--ink);background:rgba(255,255,255,.05);border:0;border-radius:16px;padding:18px 20px;box-shadow:inset 0 0 0 1px var(--line2)}
+.audit-ia__form input:focus{outline:0;box-shadow:inset 0 0 0 1.5px var(--acc)}
+.audit-ia__form .quote__err{grid-column:1/-1}
+.audit-ia__steps{display:flex;justify-content:center;gap:8px;margin-top:14px}
+.audit-ia__steps i{width:10px;height:10px;border-radius:50%;background:var(--acc);opacity:.25;animation:stepblink 1.8s infinite}
+.audit-ia__steps i:nth-child(2){animation-delay:.6s}.audit-ia__steps i:nth-child(3){animation-delay:1.2s}
+@keyframes stepblink{30%{opacity:1;transform:scale(1.25)}}
+.doc__t small{font:500 .5em/1 var(--f-body);color:#7a6b50;letter-spacing:0}
+.doc__one{font:500 19px/1.45 var(--f-accent);color:#5a4a28;margin-top:4px}
+html[lang=he] .doc__one{font-family:var(--f-display)}
+.scores{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin:16px 0 18px}
+.score{display:flex;flex-direction:column;align-items:center;gap:6px;position:relative}
+.score svg{width:64px;height:64px;transform:rotate(-90deg)}
+.score circle{fill:none;stroke:#e6dcc5;stroke-width:6}
+.score .score__v{stroke:#b8902a;stroke-linecap:round}
+.score b{position:absolute;top:19px;font:700 18px/1 var(--f-display);color:#15100a}
+.score span{font:600 11px/1.2 var(--f-body);color:#7a6b50;text-align:center;letter-spacing:.04em}
+.wins{list-style:none;padding:0;display:grid;gap:10px;counter-reset:w}
+.wins li{counter-increment:w;padding:14px 16px 14px 54px;border-radius:14px;background:#f3ecdd;position:relative}
+html[dir=rtl] .wins li{padding:14px 54px 14px 16px}
+.wins li::before{content:counter(w);position:absolute;inset-inline-start:16px;top:14px;width:26px;height:26px;border-radius:50%;background:#b8902a;color:#fff;font:700 13px/26px var(--f-display);text-align:center}
+.wins b{display:block;font:600 16px/1.25 var(--f-display);color:#15100a}
+.wins p{margin-top:4px;font-size:14px}
+.wins .how{color:#8a6a1f;font-weight:600}
+@media (max-width:767px){.audit-ia__form{grid-template-columns:1fr;padding:20px}.audit-ia__go{width:100%;justify-content:space-between}.scores{grid-template-columns:repeat(4,1fr)}.score svg{width:56px;height:56px}.score b{top:16px;font-size:16px}}
+@media print{.score circle{stroke:#ddd}.score .score__v{stroke:#b8902a}.wins li{break-inside:avoid}}

@@ -5,7 +5,7 @@ const D = window.DN, L = document.documentElement.lang, RTL = L === "he";
 const BASE = new URL("./", import.meta.url).href;
 const sec = document.querySelector(".rooms"), pin = sec.querySelector(".rooms__pin");
 const canvas = sec.querySelector(".rooms__gl"), cap = sec.querySelector(".rooms__cap");
-const ROOMS = D.ROOMS, N = ROOMS.length, GAP = 14;
+const ROOMS = D.ROOMS.map(r => L === "he" ? { ...r, he: [r.he[1].replace(/\.$/, ""), r.he[0]] } : r), N = ROOMS.length, GAP = 14; // hébreu : l'intitulé de service en titre, le nom de salle en sous-titre (lecture directe)
 const mobile = innerWidth < 768 || (innerWidth <= 1024 && innerHeight > innerWidth); // même critère que le cockpit (tablette portrait = cartes, pas de three.js)
 const media = r => { const [k, v] = r.m.split(":"); return k === "v" ? { video: `${BASE}assets/reel/${v}.mp4` } : k === "r" ? { video: `${BASE}assets/rooms_v2/${v}.mp4` } : { img: `${BASE}assets/work/${v}.webp` }; };
 

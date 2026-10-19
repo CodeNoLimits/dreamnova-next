@@ -21,6 +21,7 @@ const ARROW = RTL ? "↖" : "↗";
 document.title = { he: "DreamNova — אנחנו בונים את הבלתי אפשרי", en: "DreamNova — We build the impossible", fr: "DreamNova — Nous construisons l'impossible" }[L];
 $$("[data-i]").forEach(el => { const v = T[el.dataset.i]; if (v != null) el.textContent = v; });
 $$("[data-q]").forEach(el => el.textContent = { he: "הצעת מחיר", en: "Quote", fr: "Devis" }[L]);
+$$("[data-a]").forEach(el => el.textContent = { he: "אבחון AI חינם", en: "Free AI audit", fr: "Audit IA gratuit" }[L]);
 $$(".nav__langs a,.menu__langs a").forEach(a => { const l = a.dataset.l || a.getAttribute("href").replace(/\W/g, ""); a.href = BASE + l + "/"; a.classList.toggle("is-on", l === L); });
 $$("[data-wa]").forEach(a => { const k = a.dataset.wa; a.href = wa(k === "audit" ? T["off.a_title"] : "", k === "partner"); a.target = "_blank"; a.rel = "noopener"; });
 
@@ -134,7 +135,7 @@ document.querySelector(".startbtn")?.addEventListener("click", () => window.DNAu
 { let rt = 0; new ResizeObserver(() => { clearTimeout(rt); rt = setTimeout(() => window.ScrollTrigger && ScrollTrigger.refresh(), 250); }).observe(document.querySelector("main")); }
 /* ---------- bouton flottant : masqué là où il gênerait ---------- */
 { const vis = new Set(); const io = new IntersectionObserver(es => { es.forEach(e => e.isIntersecting ? vis.add(e.target) : vis.delete(e.target)); document.body.classList.toggle("no-fab", vis.size > 0); });
-  ["#devis", "#contact", ".foot"].forEach(s => { const e = $(s); if (e) io.observe(e); }); }
+  ["#audit", "#devis", "#contact", ".foot"].forEach(s => { const e = $(s); if (e) io.observe(e); }); }
 /* ---------- menu ---------- */
 const burger = $(".nav__burger");
 burger.addEventListener("click", () => { const o = document.body.classList.toggle("menu-open"); burger.setAttribute("aria-expanded", o); $(".menu").setAttribute("aria-hidden", !o); });
