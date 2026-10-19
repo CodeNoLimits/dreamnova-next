@@ -1,5 +1,5 @@
 .vercel
 .DS_Store
 .env.local
-assets/car2/seq_tmp/
+assets/car2/*_tmp/
 *.png

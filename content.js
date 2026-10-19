@@ -100,14 +100,14 @@ DRIVE_I: {
  fr:{eyebrow:"DreamNova · Édition course",l1:"Prenez",l2:"le volant.",sub:"Entrez dans le cockpit. Chaque bouton, chaque écran, chaque rapport mène à l'un de nos services.",hint:"Faites défiler pour entrer",tap:"Entrer"}
 },
 SVC: [
- {id:"film",hot:"paddle_left",w:["media"],films:["cinema_pipeline_01","animation_pipeline_02","subtitled_pipeline_03","bijoux_pipeline_04","adcreative_pipeline_05"],o:[6,10],v:"rooms/room_02_cinema.mp4",part:{he:"מנוף העברה שמאלי",en:"Left paddle",fr:"Palette gauche"}},
- {id:"web",hot:"screen",w:["lumen","artisans","site3d","joaillerie"],o:[0,1,3],v:"rooms/room_03_web.mp4",part:{he:"מסך מרכזי",en:"Center screen",fr:"Écran central"}},
+ {id:"film",hot:"paddle_left",w:["media"],films:["cinema_pipeline_01","animation_pipeline_02","subtitled_pipeline_03","bijoux_pipeline_04","adcreative_pipeline_05"],o:[6,10],v:"rooms_v2/room_02_cinema.mp4",part:{he:"מנוף העברה שמאלי",en:"Left paddle",fr:"Palette gauche"}},
+ {id:"web",hot:"screen",w:["lumen","artisans","site3d","joaillerie"],o:[0,1,3],v:"rooms_v2/room_03_web.mp4",part:{he:"מסך מרכזי",en:"Center screen",fr:"Écran central"}},
  {id:"crm",hot:"selector",w:["devis","leadmachine","facturation"],o:[13,9],v:"car/cockpit.mp4",part:{he:"ידית ההילוכים",en:"Gear selector",fr:"Levier de vitesse"}},
- {id:"agents",hot:"wheel",w:["voiceava","stockvox","leadmachine","pinkas"],o:[5,7],v:"rooms/room_04_agents.mp4",part:{he:"הגה",en:"Steering wheel",fr:"Volant"}},
- {id:"marketing",hot:"cluster",w:["media","academy"],o:[14,11,12],v:"rooms/room_06_marketing.mp4",part:{he:"לוח המחוונים",en:"Dashboard gauges",fr:"Compteurs"}},
- {id:"private",hot:"ambient",w:["onprem","pilote","pinkas","mehadrin"],o:[4,8],v:"rooms/room_05_vault.mp4",part:{he:"לוח המכשירים",en:"Dashboard",fr:"Planche de bord"}},
- {id:"3d",hot:"paddle_right",w:["site3d","dreamai","rd"],o:[2],v:"rooms/room_07_gallery.mp4",part:{he:"מנוף העברה ימני",en:"Right paddle",fr:"Palette droite"}},
- {id:"consult",hot:"start",w:["auditprivee","auditflash","diagnostic","academy","consult"],o:[16,15],v:"rooms/room_01_hero.mp4",part:{he:"כפתור ההתנעה",en:"Start button",fr:"Bouton start"}}
+ {id:"agents",hot:"wheel",w:["voiceava","stockvox","leadmachine","pinkas"],o:[5,7],v:"rooms_v2/room_04_agents.mp4",part:{he:"הגה",en:"Steering wheel",fr:"Volant"}},
+ {id:"marketing",hot:"cluster",w:["media","academy"],o:[14,11,12],v:"rooms_v2/room_06_marketing.mp4",part:{he:"לוח המחוונים",en:"Dashboard gauges",fr:"Compteurs"}},
+ {id:"private",hot:"ambient",w:["onprem","pilote","pinkas","mehadrin"],o:[4,8],v:"rooms_v2/room_05_vault.mp4",part:{he:"לוח המכשירים",en:"Dashboard",fr:"Planche de bord"}},
+ {id:"3d",hot:"paddle_right",w:["site3d","dreamai","rd"],o:[2],v:"rooms_v2/room_07_gallery.mp4",part:{he:"מנוף העברה ימני",en:"Right paddle",fr:"Palette droite"}},
+ {id:"consult",hot:"start",w:["auditprivee","auditflash","diagnostic","academy","consult"],o:[16,15],v:"rooms_v2/room_01_hero.mp4",part:{he:"כפתור ההתנעה",en:"Start button",fr:"Bouton start"}}
 ],
 SVC_I: {
  he:{back:"חזרה לתא הנהג",works:"עבודות קשורות",offers:"הצעות",next:"ההילוך הבא",cta:"לדבר על הפרויקט",spec:"מפרט"},
@@ -118,9 +118,9 @@ SVC_I: {
 /* chapitres cinématiques (vidéos assets/car2, assets/space, assets/scenes) */
 CHAPTERS: {
  accel: {
-  he:{eyebrow:"שלב 02",t:"ואז — לוחצים על הגז.",d:"מהרעיון למוצר חי, במהירות שעוד לא ראיתם."},
-  en:{eyebrow:"Stage 02",t:"Then — we hit the throttle.",d:"From idea to live product, at a speed you have never seen."},
-  fr:{eyebrow:"Étape 02",t:"Et là — on appuie sur l'accélérateur.",d:"De l'idée au produit en ligne, à une vitesse que vous ne connaissez pas."}
+  he:{eyebrow:"DreamNova",t:"ואז — לוחצים על הגז.",d:"מהרעיון למוצר חי, במהירות שעוד לא ראיתם."},
+  en:{eyebrow:"DreamNova",t:"Then — we hit the throttle.",d:"From idea to live product, at a speed you have never seen."},
+  fr:{eyebrow:"DreamNova",t:"Et là — on appuie sur l'accélérateur.",d:"De l'idée au produit en ligne, à une vitesse que vous ne connaissez pas."}
  },
  space: [
   {v:"space/rocket",he:["אנחנו לא עוצרים בשמיים.","מעבדת המחקר של DreamNova"],en:["We don't stop at the sky.","The DreamNova research lab"],fr:["On ne s'arrête pas au ciel.","Le laboratoire de recherche DreamNova"]},
@@ -146,13 +146,8 @@ REEL: [
  {p:"voiceava"},
  {v:"animation_pipeline_02",tag:{he:"אנימציה",en:"Animation",fr:"Animation"},t:{he:"אנימציית תלת־ממד בסגנון סטודיו",en:"Studio-style 3D animation",fr:"Animation 3D style studio"}},
  {p:"lumen"},
- {v:"subtitled_pipeline_03",tag:{he:"וידאו",en:"Video",fr:"Vidéo"},t:{he:"וידאו עם כתוביות רב־לשוניות",en:"Multilingual subtitled video",fr:"Vidéo sous-titrée multilingue"}},
- {p:"pilote"},
  {v:"bijoux_pipeline_04",w:1,tag:{he:"קמפיין",en:"Campaign",fr:"Campagne"},t:{he:"סרט יופי ותכשיטים",en:"Beauty & jewelry film",fr:"Film beauté & joaillerie"}},
- {p:"stockvox"},
- {v:"adcreative_pipeline_05",tag:{he:"פרסום",en:"Advertising",fr:"Publicité"},t:{he:"קריאייטיב פרסומי אנכי",en:"Vertical ad creative",fr:"Créa publicitaire verticale"}},
- {p:"site3d"},
- {p:"devis"}
+ {p:"site3d"}
 ],
 
 /* u:null = pas de lien public (nom du client dans l'adresse) ; only:"he" = carte hébreu seulement */

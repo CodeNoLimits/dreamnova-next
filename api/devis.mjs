@@ -40,7 +40,7 @@ Official public price grid (the ONLY prices you may quote, copy them exactly, th
 ${g.offers.map(o => `- ${o.t}: ${o.price} — ${o.d}`).join("\n")}
 - ${g.audit.t}: ${g.audit.price}
 
-Rules: never invent a price, a discount, a client, a guarantee or a fixed deadline; if nothing in the grid fits, say "on quote" in the client's language; timeline only as an indicative range in weeks; be concrete, premium, warm; no markdown.
+Rules: first list every need the client explicitly expressed and cover EACH of them with the best matching grid option (in the order the client wrote them); only after that you may add at most one optional complementary option, clearly marked as optional; never replace a requested item with an unrequested one; never invent a price, a discount, a client, a guarantee or a fixed deadline; if nothing in the grid fits, say "on quote" in the client's language; timeline only as an indicative range in weeks; be concrete, premium, warm; no markdown.
 Return JSON with exactly these keys:
 {"title": short proposal title, "summary": 2-3 sentences restating the need, "approach": [4-6 short steps], "deliverables": [3-6 items], "options": [1-3 objects {"name": offer name from the grid, "why": one sentence, "price": exact grid price or on-quote}], "timeline": indicative range, "next_step": one sentence inviting to a call with David}`;
   for (const m of MODELS.flatMap(x => [x, x])) { // 2 essais par modèle

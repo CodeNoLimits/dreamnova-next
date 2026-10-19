@@ -8,6 +8,7 @@ const q = new URLSearchParams(location.search).get("lang");
 const nav = (navigator.language || "en").slice(0, 2);
 const L = LANGS.includes(seg) ? seg : LANGS.includes(q) ? q : (LANGS.includes(nav) ? nav : "en");
 const T = D.I[L], RTL = L === "he";
+if (L === "fr") for (const k in T) T[k] = String(T[k]).replace(/ ([?!:;»])/g, "\u202F$1").replace(/« /g, "«\u202F");
 document.documentElement.lang = L; document.documentElement.dir = RTL ? "rtl" : "ltr";
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const finePointer = matchMedia("(pointer: fine)").matches;
@@ -81,12 +82,16 @@ $("[data-refer]").innerHTML = D.REFER[L].map(([t, s, g], i) =>
 $("[data-psteps]").innerHTML = D.PSTEPS[L].map(s => `<li>${esc(s)}</li>`).join("");
 
 /* ---------- index + filtres ---------- */
+const flo = document.createElement("div"); flo.className = "pj__float"; flo.innerHTML = "<img alt=''>"; document.body.appendChild(flo);
+addEventListener("pointermove", e => { flo.style.left = e.clientX + "px"; flo.style.top = e.clientY + "px"; }, { passive: true });
 $("[data-index]").innerHTML = works.map(w => {
   const u = url(w);
   return `<${u ? "a" : "div"} class="pj reveal ${u ? "" : "pj--private"}" data-c="${w.c}" ${u ? `href="${u}" target="_blank" rel="noopener"` : ""}>
     <img class="pj__img" src="${BASE}assets/work/gal_${w.id}.webp" alt="${esc(w.t[L])}" loading="lazy" decoding="async">
     <div class="pj__b"><div><div class="pj__s">${esc(w.s[L])}</div><div class="pj__t">${esc(w.t[L])}</div></div><span class="pj__a">${esc(u ? T["work.visit"].replace("↗", ARROW) : T["work.private"])}</span></div></${u ? "a" : "div"}>`;
 }).join("");
+$("[data-index]").addEventListener("pointerover", e => { const p = e.target.closest(".pj"); if (!p) return flo.classList.remove("is-on"); flo.querySelector("img").src = p.querySelector(".pj__img").src; flo.classList.add("is-on"); });
+$("[data-index]").addEventListener("pointerleave", () => flo.classList.remove("is-on"));
 const fb = $("[data-filters]");
 fb.innerHTML = D.FILTERS[L].map(([k, v], i) => `<button type="button" data-f="${k}" class="${i ? "" : "is-on"}" aria-pressed="${!i}">${esc(v)}</button>`).join("");
 fb.addEventListener("click", e => {
@@ -116,6 +121,9 @@ const vio = new IntersectionObserver(es => es.forEach(e => {
 }), { rootMargin: "200px" });
 $$("video[data-src]").forEach(v => vio.observe(v));
 
+/* ---------- bouton flottant : masqué là où il gênerait ---------- */
+{ const vis = new Set(); const io = new IntersectionObserver(es => { es.forEach(e => e.isIntersecting ? vis.add(e.target) : vis.delete(e.target)); document.body.classList.toggle("no-fab", vis.size > 0); });
+  ["#devis", "#contact", ".foot"].forEach(s => { const e = $(s); if (e) io.observe(e); }); }
 /* ---------- menu ---------- */
 const burger = $(".nav__burger");
 burger.addEventListener("click", () => { const o = document.body.classList.toggle("menu-open"); burger.setAttribute("aria-expanded", o); $(".menu").setAttribute("aria-hidden", !o); });
@@ -193,7 +201,7 @@ $$(".tile").forEach(t => t.addEventListener("pointermove", e => { const r = t.ge
 let done = false;
 const finish = () => { if (done) return; done = true; document.body.classList.remove("is-loading"); intro(); };
 // le rideau tombe dès que les polices sont prêtes (et le tracé de l'écusson fini)
-Promise.all([document.fonts ? document.fonts.ready : 0, new Promise(r => setTimeout(r, 1100))]).then(finish);
+Promise.all([document.fonts ? document.fonts.ready : 0, new Promise(r => setTimeout(r, mobile() ? 350 : 900))]).then(finish);
 setTimeout(finish, 2400); // filet de sécurité : la page ne reste jamais bloquée
 
 /* ---------- animations ---------- */
@@ -202,13 +210,13 @@ function intro() {
   gsap.registerPlugin(ScrollTrigger);
   let lenis = null;
   if (window.Lenis && !mobile()) {
-    lenis = new Lenis({ lerp: .09, smoothWheel: true });
+    lenis = new Lenis({ lerp: .09, smoothWheel: true }); window.__lenis = lenis; if (document.body.classList.contains("gated")) lenis.stop();
     lenis.on("scroll", ScrollTrigger.update);
     gsap.ticker.add(t => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0);
     $$('a[href^="#"]').forEach(a => a.addEventListener("click", e => { const el = $(a.getAttribute("href")); if (el) { e.preventDefault(); lenis.scrollTo(el, { offset: -20 }); } }));
   }
   const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
-  tl.from(".hero__title .line>*", { yPercent: 110, duration: 1.6, stagger: .12 })
+  tl.from(".hero__title .line>*", { yPercent: 110, duration: mobile() ? .9 : 1.4, stagger: .1 })
     .from(".hero__eyebrow", { y: 20, opacity: 0, duration: 1 }, .2)
     .from(".hero__sub,.hero__ctas", { y: 30, opacity: 0, duration: 1.2, stagger: .1 }, .5)
     .from(".stat", { y: 30, opacity: 0, duration: 1.2, stagger: .08 }, .8)
@@ -231,11 +239,11 @@ function intro() {
     gsap.from([...h.children].filter(c => !c.classList.contains("h2")), { y: 40, opacity: 0, duration: 1.2, stagger: .08, ease: "expo.out", scrollTrigger: { trigger: h, start: "top 85%" } });
   });
   // cartes : entrée en vrille 3D, puis vrille complète au survol
-  const SPIN = ".pj,.who,.step,.lc,.off";
+  const SPIN = ".pj,.who,.step,.lc,.off", TOUCH = matchMedia("(hover: none)").matches;
   gsap.set(SPIN, { transformPerspective: 1100 });
   ScrollTrigger.batch(SPIN, { start: "top 92%", once: true, onEnter: b => gsap.fromTo(b,
-    { rotationY: (RTL ? -1 : 1) * 115, rotationX: 22, z: -320, opacity: 0, transformOrigin: "50% 50% -140px" },
-    { rotationY: 0, rotationX: 0, z: 0, opacity: 1, duration: 1.7, ease: "expo.out", stagger: .07, overwrite: true }) });
+    TOUCH ? { y: 24, opacity: 0 } : { rotationY: (RTL ? -1 : 1) * 115, rotationX: 22, z: -320, opacity: 0, transformOrigin: "50% 50% -140px" },
+    TOUCH ? { y: 0, opacity: 1, duration: .5, ease: "power2.out", stagger: .04, overwrite: true } : { rotationY: 0, rotationX: 0, z: 0, opacity: 1, duration: 1.7, ease: "expo.out", stagger: .07, overwrite: true }) });
   $$(".pj,.who").forEach(el => el.addEventListener("pointerenter", () => {
     if (el._spin || matchMedia("(hover: none)").matches) return; el._spin = 1;
     gsap.fromTo(el, { rotationY: 0 }, { rotationY: (RTL ? -360 : 360), duration: 1.25, ease: "power3.inOut", onComplete: () => { gsap.set(el, { rotationY: 0 }); el._spin = 0; } });

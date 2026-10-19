@@ -30,7 +30,7 @@
   form.addEventListener("submit", async e => {
     e.preventDefault(); err.hidden = true;
     const fd = Object.fromEntries(new FormData(form)); fd.lang = L;
-    if ((fd.need || "").trim().length < 10) { form.need.focus(); return; }
+    if ((fd.need || "").trim().length < 10) { form.need.focus(); form.need.setCustomValidity({ he: "כתבו לפחות משפט אחד על הפרויקט", en: "Please describe your project in at least one sentence", fr: "Décrivez votre projet en une phrase au moins" }[L]); form.need.reportValidity(); form.need.oninput = () => form.need.setCustomValidity(""); return; }
     form.closest(".quote__shell").hidden = true; load.hidden = false;
     try {
       const r = await fetch(`${BASE}api/devis`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(fd) });

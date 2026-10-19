@@ -4,8 +4,10 @@ gen_pages.py
 assets/**/RAPPORT.md
 assets/**/planche.jpg
 assets/**/*.md
+assets/**/visages_avant_apres.jpg
 assets/space/rocket_seq
-assets/car2/seq_tmp
+assets/car2/*_tmp
 assets/car2/accel_seq
 assets/**/*.tmp.mp4
 assets/**/*.png
+assets/rooms/*.mp4

@@ -28,14 +28,14 @@
       <ol class="rooms__dots">${items.map(() => "<li></li>").join("")}</ol></div>`;
     const vids = [...el.querySelectorAll("video")], dots = [...el.querySelectorAll(".rooms__dots li")], sw = el.querySelector(".chap__swap");
     let cur = -1;
-    const show = i => { if (i === cur) return; cur = i; sw.classList.add("is-swap");
-      vids.forEach((v, k) => { const on = k === i; v.classList.toggle("is-on", on); if (on || k === i + 1) { if (!v.src) v.src = v.dataset.src; } if (on) v.play().catch(() => {}); else v.pause(); });
+    const show = (i, boot) => { if (i === cur) return; cur = i; sw.classList.add("is-swap");
+      vids.forEach((v, k) => { const on = k === i; v.classList.toggle("is-on", on); if (!boot && (on || k === i + 1)) { if (!v.src) v.src = v.dataset.src; } if (on && !boot) v.play().catch(() => {}); else if (!on) v.pause(); });
       dots.forEach((d, k) => d.classList.toggle("is-on", k === i));
-      setTimeout(() => { const it = items[i][L]; if (big) { sw.querySelector(".chap__big").textContent = it[0]; sw.querySelector(".chap__t").textContent = ""; sw.querySelector(".chap__d").textContent = it[1]; } else { sw.querySelector(".chap__t").textContent = it[0]; sw.querySelector(".chap__d").textContent = it[1]; } sw.classList.remove("is-swap"); }, 280);
+      setTimeout(() => { const it = items[i][L]; if (big) { sw.querySelector(".chap__big").textContent = it[0]; sw.querySelector(".chap__t").textContent = ""; sw.querySelector(".chap__d").textContent = it[1]; } else { sw.querySelector(".chap__t").textContent = it[0]; sw.querySelector(".chap__d").textContent = it[1]; } sw.classList.remove("is-swap"); }, 480);
       el.dispatchEvent(new CustomEvent("chap", { detail: i }));
     };
     const playCur = () => { const v = vids[cur]; if (!v) return; if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); };
-    show(0);
+    show(0, true);
     ready(() => { const ST = window.ScrollTrigger; if (!ST) return;
       ST.create({ trigger: el, start: "top top", end: () => "+=" + innerHeight * items.length * .75, pin: el.querySelector(".chap__pin"), scrub: true, refreshPriority: prio,
         snap: { snapTo: 1 / (items.length - 1), duration: { min: .3, max: .7 }, ease: "power2.inOut" },

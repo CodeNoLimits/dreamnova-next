@@ -33,5 +33,80 @@
     "he": "בואו ניתן לו צורה. רעיון לבדוק, כלי לשפר או פרויקט להגשים. כתבו לנו כמה שורות.",
     "en": "Let's give it shape. An idea to test, a tool to improve, or a project to bring to life. Write us a few lines.",
     "fr": "Donnons-lui forme. Une idée à tester, un outil à améliorer, un projet à réaliser. Écrivez-nous quelques lignes."
+  },
+  "work": {
+    "he": "רעיונות מקבלים חיים. כל מה שתראו כאן נבנה אצלנו.",
+    "en": "Ideas, brought to life. Everything you see here, we built.",
+    "fr": "Les idées prennent vie. Tout ce que vous voyez ici, nous l'avons construit."
+  },
+  "services": {
+    "he": "כל השירותים, עם איש קשר אחד שמבין את העסק שלכם.",
+    "en": "Every service, with one partner who understands your business.",
+    "fr": "Tous nos services, avec un seul interlocuteur qui comprend votre activité."
+  },
+  "refer": {
+    "he": "מכירים מישהו כזה? שלחו אותו אלינו.",
+    "en": "Know someone like this? Send them our way.",
+    "fr": "Vous connaissez quelqu'un comme ça ? Envoyez-le-nous."
+  },
+  "offers": {
+    "he": "הצעה ברורה. ההיקף והמחיר נקבעים בכתב, מראש.",
+    "en": "A clear offer. Scope and price are set out in writing, up front.",
+    "fr": "Une offre claire. Le périmètre et le prix sont écrits dès le départ."
+  },
+  "devis": {
+    "he": "ספרו לנו מה אתם צריכים, וקבלו הצעה תוך שלושים שניות.",
+    "en": "Tell us what you need, and get a proposal in thirty seconds.",
+    "fr": "Dites-nous ce dont vous avez besoin, et recevez une proposition en trente secondes."
+  },
+  "lab": {
+    "he": "המעבדה שלנו חוקרת תשתית בינה מלאכותית פוסט־קוונטית.",
+    "en": "Our lab researches post-quantum AI infrastructure.",
+    "fr": "Notre laboratoire explore l'infrastructure IA post-quantique."
+  },
+  "values": {
+    "he": "חופש, תעוזה, זרימה, חזון ודיוק. זה מה שמניע אותנו.",
+    "en": "Freedom, audacity, flow, vision and precision. That is what drives us.",
+    "fr": "Liberté, audace, fluidité, vision et précision. Voilà ce qui nous anime."
+  },
+  "cp_start": {
+    "he": "כפתור ההתנעה: ייעוץ, שיעורים פרטיים ורגולציה.",
+    "en": "The start button: consulting, AI lessons and compliance.",
+    "fr": "Le bouton start : conseil, cours et conformité."
+  },
+  "cp_wheel": {
+    "he": "ההגה: סוכני בינה מלאכותית ואוטומציה שעונים לכל לקוח.",
+    "en": "The steering wheel: AI agents and automation that answer every client.",
+    "fr": "Le volant : agents IA et automatisation, qui répondent à chaque client."
+  },
+  "cp_screen": {
+    "he": "המסך המרכזי: אתרים וחנויות שעוצרים את הנשימה.",
+    "en": "The center screen: websites and online stores that take your breath away.",
+    "fr": "L'écran du centre : des sites et des boutiques qui coupent le souffle."
+  },
+  "cp_selector": {
+    "he": "ידית ההילוכים: מערכות ניהול לקוחות ותוכנה לעסק.",
+    "en": "The gear selector: CRM and business software.",
+    "fr": "Le levier de vitesse : CRM et logiciels métier."
+  },
+  "cp_cluster": {
+    "he": "לוח המחוונים: שיווק ורילס שמביאים לקוחות.",
+    "en": "The dashboard gauges: marketing and Reels that bring clients in.",
+    "fr": "Les compteurs : marketing et Reels qui amènent des clients."
+  },
+  "cp_paddle_left": {
+    "he": "המנוף השמאלי: וידאו וסרטי בינה מלאכותית.",
+    "en": "The left paddle: video and AI film.",
+    "fr": "La palette gauche : vidéo et film IA."
+  },
+  "cp_paddle_right": {
+    "he": "המנוף הימני: חוויות תלת־ממד שאי אפשר לשכוח.",
+    "en": "The right paddle: 3D experiences people never forget.",
+    "fr": "La palette droite : des expériences 3D qu'on n'oublie pas."
+  },
+  "cp_ambient": {
+    "he": "לוח המכשירים: בינה מלאכותית פרטית וסגורה.",
+    "en": "The dashboard: private, closed AI. Your data never leaves.",
+    "fr": "La planche de bord : une IA privée et fermée. Vos données ne sortent pas."
   }
 }

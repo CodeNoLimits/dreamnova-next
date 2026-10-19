@@ -1,57 +1,122 @@
-// Son : coupé par défaut ; musique par section (fondus), voix narratrice + sous-titres, effets. Bus séparés, musique baissée sous la voix.
+// Son immersif : écran d'entrée (le 1er geste lance le son, langue de la page), musique en fondus à puissance constante,
+// voix narratrice sous-titrée (musique abaissée), effets spatialisés (HRTF) + réverbération, moteur synthétisé qui suit le régime.
 (() => {
   const D = window.DN, L = document.documentElement.lang, BASE = new URL("./", document.currentScript.src).href, A = BASE + "assets/audio/";
   if (!(D.ON || {}).audio) return;
+  const TX = {
+    he: { on: "הפעלת סאונד", off: "השתקה", go: "התנעת המנוע", mute: "כניסה בלי סאונד", tag: "חוויה סוחפת · מומלץ עם אוזניות" },
+    en: { on: "Sound on", off: "Mute", go: "Start the engine", mute: "Enter without sound", tag: "Immersive experience · headphones recommended" },
+    fr: { on: "Activer le son", off: "Couper le son", go: "Démarrer le moteur", mute: "Entrer sans le son", tag: "Expérience immersive · casque recommandé" }
+  }[L];
+  // bouton du menu
   const btn = document.createElement("button"); btn.className = "snd"; btn.type = "button";
-  const lab = { he: ["הפעלת סאונד", "השתקה"], en: ["Sound on", "Mute"], fr: ["Activer le son", "Couper le son"] }[L];
-  btn.innerHTML = `<span class="snd__bars"><i></i><i></i><i></i><i></i></span><span class="snd__t">${lab[0]}</span>`;
-  btn.setAttribute("aria-pressed", "false"); document.querySelector(".nav").insertBefore(btn, document.querySelector(".nav__burger"));
+  btn.innerHTML = `<span class="snd__bars"><i></i><i></i><i></i><i></i></span><span class="snd__t">${TX.on}</span>`;
+  btn.setAttribute("aria-pressed", "false"); btn.setAttribute("aria-label", TX.on); document.querySelector(".nav").insertBefore(btn, document.querySelector(".nav__burger"));
   const sub = document.createElement("div"); sub.className = "subs"; sub.setAttribute("aria-live", "polite"); document.body.appendChild(sub);
-  let ctx, bus, on = false, man = null, voices = {}, cur = null, played = new Set(), current = null;
-  const SECTIONS = [["hero", ".hero"], ["drive", ".drive"], ["accel", ".chap--accel"], ["work", "#work"], ["rooms", ".rooms"], ["services", "#services"], ["refer", "#refer"], ["offers", "#offers"], ["devis", "#devis"], ["rocket", ".chap--space"], ["sky", ".chap--values"], ["lab", "#lab"], ["contact", "#contact"]];
-  const has = f => man && man.files && man.files.includes(f);
+
+  let queued = null, ctx, bus, rev, on = false, man = { files: [] }, voices = {}, curVoice = null, played = new Set(), music = null, eng = null;
+  const has = f => man.files.includes(f);
+  const pick = (...c) => c.find(has);
+
+  function impulse(sec = 2.4, decay = 3) { const r = ctx.sampleRate, n = r * sec, b = ctx.createBuffer(2, n, r);
+    for (let c = 0; c < 2; c++) { const d = b.getChannelData(c); for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, decay); } return b; }
   async function init() {
-    ctx = new (window.AudioContext || window.webkitAudioContext)();
-    bus = {}; for (const k of ["music", "voice", "sfx"]) { bus[k] = ctx.createGain(); bus[k].connect(ctx.destination); }
-    bus.music.gain.value = .55; bus.voice.gain.value = 1; bus.sfx.gain.value = .7;
-    try { man = await (await fetch(A + "manifest.json")).json(); man.files = (man.files || man.items || man).map?.(x => x.file || x) || []; } catch (_) { man = { files: [] }; }
+    ctx = new (window.AudioContext || window.webkitAudioContext)({ latencyHint: "interactive" });
+    const master = ctx.createDynamicsCompressor(); master.threshold.value = -14; master.ratio.value = 3; master.connect(ctx.destination);
+    rev = ctx.createConvolver(); rev.buffer = impulse(); const revG = ctx.createGain(); revG.gain.value = .22; rev.connect(revG); revG.connect(master);
+    bus = {}; for (const k of ["music", "voice", "sfx", "engine"]) { bus[k] = ctx.createGain(); bus[k].connect(master); }
+    bus.music.gain.value = .5; bus.voice.gain.value = 1; bus.sfx.gain.value = .8; bus.engine.gain.value = .9;
+    bus.mpan = ctx.createStereoPanner(); bus.mpan.connect(bus.music);
+    ctx.listener.positionZ && (ctx.listener.positionZ.value = 0);
+    try { man = await (await fetch(A + "manifest.json")).json(); } catch (_) {}
     try { voices = await (await fetch(A + "voices.json")).json(); } catch (_) {}
+    addEventListener("pointermove", e => { if (bus) bus.mpan.pan.setTargetAtTime(((e.clientX / innerWidth) - .5) * .5, ctx.currentTime, .3); }, { passive: true });
     watch();
   }
-  const el = (f, loop) => { const a = new Audio(A + f); a.loop = !!loop; a.crossOrigin = "anonymous"; a.preload = "auto"; return a; };
-  const node = (a, b) => { const s = ctx.createMediaElementSource(a), g = ctx.createGain(); s.connect(g); g.connect(b); return g; };
-  function music(name) {
-    const f = has(`loop_${name}.mp3`) ? `loop_${name}.mp3` : has("theme.mp3") ? "theme.mp3" : "loop_hero.mp3"; if (current && current.f === f) return;
-    const a = el(f, true), g = node(a, bus.music); g.gain.value = 0; a.play().catch(() => {});
-    g.gain.linearRampToValueAtTime(1, ctx.currentTime + 1.5);
-    if (current) { const o = current; o.g.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.5); setTimeout(() => o.a.pause(), 1700); }
-    current = { f, a, g };
+  const media = (f, loop) => { const a = new Audio(A + f); a.loop = !!loop; a.crossOrigin = "anonymous"; a.preload = "auto"; return a; };
+  // fondu enchaîné à puissance constante
+  const curve = (up, n = 64) => Float32Array.from({ length: n }, (_, i) => up ? Math.sin(i / (n - 1) * Math.PI / 2) : Math.cos(i / (n - 1) * Math.PI / 2));
+  function playMusic(name) {
+    const f = pick(`loop_${name}.mp3`, "theme.mp3", "loop_hero.mp3"); if (!f || (music && music.f === f)) return;
+    const a = media(f, true), s = ctx.createMediaElementSource(a), g = ctx.createGain(); s.connect(g); g.connect(bus.mpan);
+    g.gain.value = 0; a.play().catch(() => {}); const t = ctx.currentTime, dur = 2.4;
+    g.gain.setValueCurveAtTime(curve(true), t, dur);
+    if (music) { const o = music; o.g.gain.cancelScheduledValues(t); o.g.gain.setValueCurveAtTime(curve(false), t, dur); setTimeout(() => o.a.pause(), dur * 1000 + 100); }
+    music = { f, a, g };
   }
-  function voice(name) {
-    const f = `voice_${name}_${L}.mp3`; if (played.has(name) || !has(f)) return; played.add(name);
-    if (cur) cur.pause(); const a = el(f); node(a, bus.voice); cur = a;
-    bus.music.gain.linearRampToValueAtTime(.18, ctx.currentTime + .4);
-    const txt = voices[name] && voices[name][L] && voices[name][L].replace(/[\u0591-\u05C7]/g, ""); if (txt) { sub.textContent = txt; sub.classList.add("is-on"); }
-    a.onended = () => { bus.music.gain.linearRampToValueAtTime(.55, ctx.currentTime + 1); sub.classList.remove("is-on"); };
+  function duck(down) { const t = ctx.currentTime; bus.music.gain.cancelScheduledValues(t); bus.music.gain.setTargetAtTime(down ? .14 : .5, t, down ? .25 : .9); }
+  function voiceKey(key, force) {
+    if (!on) return; const f = `voice_${key}_${L}.mp3`; if (!has(f) || (!force && played.has(key) && !key.startsWith("cp_"))) return;
+    // une voix en cours n'est jamais coupée par la section suivante : on met en file (la plus récente seulement) ; les éléments du cockpit, eux, interrompent
+    if (curVoice && !curVoice.ended && !curVoice.paused && !key.startsWith("cp_")) { queued = key; return; }
+    played.add(key); if (curVoice) curVoice.pause();
+    const a = media(f), s = ctx.createMediaElementSource(a), g = ctx.createGain(), send = ctx.createGain(); send.gain.value = .12;
+    s.connect(g); g.connect(bus.voice); s.connect(send); send.connect(rev); curVoice = a; duck(true);
+    const txt = voices[key] && voices[key][L] && voices[key][L].replace(/[֑-ׇ]/g, ""); if (txt) { sub.textContent = txt; sub.classList.add("is-on"); }
+    a.onended = () => { duck(false); sub.classList.remove("is-on"); if (queued) { const q = queued; queued = null; setTimeout(() => voiceKey(q), 500); } };
     a.play().catch(() => {});
   }
-  const SFX = { engine: "sfx_engine_start.mp3", rev: "sfx_engine_rev.mp3", accel: "sfx_accel_whoosh.mp3", rocket: "sfx_rocket_launch.mp3", wind: "sfx_wind_freefall.mp3", chute: "sfx_parachute_open.mp3", portal: "sfx_portal_whoosh.mp3", click: "sfx_click_gold.mp3" };
-  function sfx(k) { if (!on || !SFX[k] || !has(SFX[k])) return; const a = el(SFX[k]); node(a, bus.sfx); a.play().catch(() => {}); }
+  const SFX = { engine: ["sfx_engine_start.mp3"], rev: ["sfx_engine_rev.mp3"], accel: ["sfx_accel_whoosh.mp3"], rocket: ["sfx_rocket_launch.mp3"], wind: ["sfx_wind_freefall.mp3"],
+    chute: ["sfx_parachute_open.mp3"], portal: ["sfx_portal_whoosh.mp3", "sfx_whoosh_soft.mp3"], click: ["sfx_click_gold.mp3"], gear: ["sfx_gear_shift.mp3", "sfx_engine_rev.mp3"],
+    selector: ["sfx_selector_click.mp3", "sfx_click_gold.mp3"], steer: ["sfx_steer_tires.mp3", "sfx_whoosh_soft.mp3", "sfx_accel_whoosh.mp3"], power: ["sfx_dash_power_on.mp3", "sfx_portal_whoosh.mp3"] };
+  // effet spatialisé : x de -1 (gauche) à 1 (droite), légèrement devant l'auditeur
+  function sfx(k, x = 0, vol = 1) {
+    if (!on || !SFX[k]) return; const f = pick(...SFX[k]); if (!f) return;
+    const a = media(f), s = ctx.createMediaElementSource(a), g = ctx.createGain(), p = ctx.createPanner(), send = ctx.createGain();
+    p.panningModel = "HRTF"; p.distanceModel = "inverse"; p.refDistance = 1;
+    const xx = Math.max(-1, Math.min(1, x)) * 2.2; p.positionX ? (p.positionX.value = xx, p.positionY.value = 0, p.positionZ.value = -1.2) : p.setPosition(xx, 0, -1.2);
+    g.gain.value = vol; send.gain.value = .25; s.connect(g); g.connect(p); p.connect(bus.sfx); g.connect(send); send.connect(rev); a.play().catch(() => {});
+  }
+  // moteur synthétisé : son continu dont la hauteur et le grain suivent le régime
+  function engine(start) {
+    if (!ctx) return;
+    if (start && !eng) {
+      const o1 = ctx.createOscillator(), o2 = ctx.createOscillator(), o3 = ctx.createOscillator(), mix = ctx.createGain(), sh = ctx.createWaveShaper(), lp = ctx.createBiquadFilter(), g = ctx.createGain(), p = ctx.createPanner();
+      o1.type = "sawtooth"; o2.type = "sawtooth"; o3.type = "square"; o2.detune.value = 9;
+      const k = 18, c = new Float32Array(1024); for (let i = 0; i < 1024; i++) { const x = i / 512 - 1; c[i] = (1 + k) * x / (1 + k * Math.abs(x)); } sh.curve = c;
+      lp.type = "lowpass"; lp.Q.value = 3; g.gain.value = 0; p.panningModel = "HRTF"; p.positionZ ? (p.positionZ.value = -2) : p.setPosition(0, 0, -2);
+      [o1, o2, o3].forEach(o => { o.connect(mix); o.start(); }); mix.gain.value = .35; mix.connect(sh); sh.connect(lp); lp.connect(g); g.connect(p); p.connect(bus.engine);
+      g.gain.setTargetAtTime(.16, ctx.currentTime, .4); eng = { o1, o2, o3, lp, g };
+    } else if (!start && eng) { const e = eng; eng = null; e.g.gain.setTargetAtTime(0, ctx.currentTime, .35); setTimeout(() => [e.o1, e.o2, e.o3].forEach(o => o.stop()), 1600); }
+  }
+  function engineRpm(r) { if (!eng) return; const t = ctx.currentTime, f = 32 + r * 24;
+    eng.o1.frequency.setTargetAtTime(f, t, .08); eng.o2.frequency.setTargetAtTime(f * 1.5, t, .08); eng.o3.frequency.setTargetAtTime(f / 2, t, .08);
+    eng.lp.frequency.setTargetAtTime(260 + r * 520, t, .1); eng.g.gain.setTargetAtTime(.12 + r * .022, t, .12); }
+
+  const SECTIONS = [["hero", ".hero"], ["drive", ".drive"], ["accel", ".chap--accel"], ["work", "#work"], ["rooms", ".rooms"], ["services", "#services"], ["refer", "#refer"], ["offers", "#offers"],
+    ["devis", "#devis"], ["rocket", ".chap--space"], ["lab", "#lab"], ["values", ".chap--values"], ["contact", "#contact"]];
+  const MUSIC_OF = { hero: "hero", drive: "drive", accel: "accel", work: "work", rooms: "rooms", services: "work", refer: "work", offers: "work", devis: "work", rocket: "rocket", lab: "rocket", values: "sky", contact: "contact" };
   function watch() {
     if (!window.ScrollTrigger) return;
     SECTIONS.forEach(([n, s]) => { const e = document.querySelector(s); if (!e || e.hidden) return;
-      ScrollTrigger.create({ trigger: e, start: "top 55%", end: "bottom 45%", onToggle: st => { if (st.isActive && on) { music(n); voice(n); } } }); });
-    document.querySelector(".drive")?.addEventListener("transitionstart", () => {});
-    new MutationObserver(() => { if (document.querySelector(".drive")?.classList.contains("is-in")) sfx("engine"); }).observe(document.querySelector(".drive") || document.body, { attributes: true, attributeFilter: ["class"] });
-    document.querySelector(".chap--space")?.addEventListener("chap", e => e.detail === 0 && sfx("rocket"));
-    document.querySelector(".chap--values")?.addEventListener("chap", e => sfx(["wind", "wind", "portal", "wind", "chute"][e.detail] || "portal"));
-    document.querySelectorAll(".hot,.drive__chips a,.btn--gold").forEach(b => b.addEventListener("pointerenter", () => sfx("click")));
+      ScrollTrigger.create({ trigger: e, start: "top 55%", end: "bottom 45%", onToggle: st => { if (st.isActive && on) { playMusic(MUSIC_OF[n] || n); voiceKey(n); } } }); });
+    document.querySelector(".chap--space")?.addEventListener("chap", e => e.detail === 0 ? sfx("rocket", 0) : sfx("portal", e.detail % 2 ? .7 : -.7, .6));
+    document.querySelector(".chap--values")?.addEventListener("chap", e => sfx(["wind", "wind", "portal", "wind", "chute"][e.detail] || "portal", e.detail % 2 ? .6 : -.6));
+    addEventListener("dn:room", e => sfx("portal", e.detail % 2 ? .8 : -.8, .7));
+    document.querySelectorAll(".btn--gold,.off,.tile,.pj").forEach(b => b.addEventListener("pointerenter", e => sfx("click", (e.clientX / innerWidth - .5) * 2, .3)));
   }
-  btn.addEventListener("click", async () => {
-    if (!ctx) await init(); await ctx.resume(); on = !on;
-    btn.classList.toggle("is-on", on); btn.setAttribute("aria-pressed", on); btn.querySelector(".snd__t").textContent = lab[on ? 1 : 0];
-    if (on) { const active = SECTIONS.find(([n, s]) => { const e = document.querySelector(s); if (!e) return; const r = e.getBoundingClientRect(); return r.top < innerHeight * .55 && r.bottom > innerHeight * .45; }); music(active ? active[0] : "hero"); if (active) voice(active[0]); }
-    else { if (current) { current.a.pause(); current = null; } if (cur) cur.pause(); sub.classList.remove("is-on"); }
-  });
-  window.DNAudio = { sfx };
+  function activeSection() { return SECTIONS.find(([n, s]) => { const e = document.querySelector(s); if (!e || e.hidden) return; const r = e.getBoundingClientRect(); return r.top < innerHeight * .55 && r.bottom > innerHeight * .45; }); }
+  async function setOn(v) {
+    if (!ctx) await init(); await ctx.resume(); on = v;
+    btn.classList.toggle("is-on", on); btn.setAttribute("aria-pressed", on); btn.querySelector(".snd__t").textContent = on ? TX.off : TX.on; btn.setAttribute("aria-label", on ? TX.off : TX.on);
+    try { sessionStorage.setItem("dn-sound", on ? "1" : "0"); } catch (_) {}
+    if (on) { const a = activeSection(); playMusic(MUSIC_OF[a ? a[0] : "hero"] || "hero"); if (a) voiceKey(a[0]); }
+    else { if (music) { music.a.pause(); music = null; } if (curVoice) curVoice.pause(); sub.classList.remove("is-on"); engine(false); }
+  }
+  btn.addEventListener("click", () => setOn(!on));
+
+  // écran d'entrée : le premier geste démarre l'expérience sonore
+  const gate = document.createElement("div"); gate.className = "gate"; gate.setAttribute("role", "dialog");
+  gate.innerHTML = `<div class="gate__in"><img src="${BASE}assets/brand/crest.svg" alt="" width="86" height="108"><p class="gate__tag">${TX.tag}</p>
+    <button type="button" class="btn btn--gold btn--xl gate__go"><span>${TX.go}</span><span class="btn__ico">◉</span></button><button type="button" class="gate__mute">${TX.mute}</button></div>`;
+  document.body.appendChild(gate);
+  let gated = true;
+  const close = async withSound => { if (!gated) return; gated = false; gate.classList.add("is-out"); document.body.classList.remove("gated"); window.__lenis?.start?.();
+    if (withSound) { await setOn(true); sfx("engine", 0, .9); } setTimeout(() => gate.remove(), 1200); };
+  gate.querySelector(".gate__go").addEventListener("click", () => close(true));
+  gate.querySelector(".gate__mute").addEventListener("click", () => close(false));
+  const show = () => { document.body.classList.add("gated"); window.__lenis?.stop?.(); gate.classList.add("is-in"); gate.querySelector(".gate__go").focus({ preventScroll: true }); };
+  if (window.__DN) show(); else addEventListener("dn:ready", show, { once: true });
+
+  window.DNAudio = { sfx, voiceKey, engine, engineRpm, get on() { return on; } };
 })();

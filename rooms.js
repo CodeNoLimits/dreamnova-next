@@ -1,9 +1,5 @@
 // Visite du studio : la caméra traverse 7 portails dorés au défilement.
-import * as THREE from "three";
-import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
-import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
+let THREE, EffectComposer, RenderPass, UnrealBloomPass, OutputPass; // chargés à la demande (jamais sur mobile)
 
 const D = window.DN, L = document.documentElement.lang, RTL = L === "he";
 const BASE = new URL("./", import.meta.url).href;
@@ -11,23 +7,25 @@ const sec = document.querySelector(".rooms"), pin = sec.querySelector(".rooms__p
 const canvas = sec.querySelector(".rooms__gl"), cap = sec.querySelector(".rooms__cap");
 const ROOMS = D.ROOMS, N = ROOMS.length, GAP = 14;
 const mobile = innerWidth < 768;
-const media = r => { const [k, v] = r.m.split(":"); return k === "v" ? { video: `${BASE}assets/reel/${v}.mp4` } : k === "r" ? { video: `${BASE}assets/rooms/${v}.mp4` } : { img: `${BASE}assets/work/${v}.webp` }; };
+const media = r => { const [k, v] = r.m.split(":"); return k === "v" ? { video: `${BASE}assets/reel/${v}.mp4` } : k === "r" ? { video: `${BASE}assets/rooms_v2/${v}.mp4` } : { img: `${BASE}assets/work/${v}.webp` }; };
 
 sec.querySelectorAll("[data-r]").forEach(e => e.textContent = D.ROOMS_I[L][e.dataset.r]);
 sec.querySelector(".rooms__dots").innerHTML = ROOMS.map(() => "<li></li>").join("");
 function fallback() { // seulement si la 3D est désactivée (mobile / sans WebGL) : vidéos chargées à l'approche
   sec.querySelector(".rooms__fallback").innerHTML = ROOMS.map(r => {
     const m = media(r), pn = (r.m.match(/room_0(\d)/) || [])[1];
-    return `<article class="room-card">${m.video ? `<video data-src="${m.video}" ${pn ? `poster="${BASE}assets/rooms/poster_room_0${pn}.webp"` : ""} muted loop playsinline preload="none"></video>` : `<img src="${m.img}" alt="" loading="lazy">`}<div><b>${r[L][0]}</b><p>${r[L][1]}</p></div></article>`;
+    return `<article class="room-card">${m.video ? `<video data-src="${m.video}" ${pn ? `poster="${BASE}assets/rooms_v2/poster_room_0${pn}.webp"` : ""} muted loop playsinline preload="none"></video>` : `<img src="${m.img}" alt="" loading="lazy">`}<div><b>${r[L][0]}</b><p>${r[L][1]}</p></div></article>`;
   }).join("");
-  const io = new IntersectionObserver(es => es.forEach(e => { const v = e.target; if (e.isIntersecting) { if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); } else v.pause(); }), { rootMargin: "200px" });
+  const io = new IntersectionObserver(es => es.forEach(e => { const v = e.target; if (e.intersectionRatio >= .6) { if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); } else v.pause(); }), { threshold: [0, .6] });
   sec.querySelectorAll(".room-card video").forEach(v => io.observe(v));
 }
 
 let gl = null;
 try { gl = canvas.getContext("webgl2") || canvas.getContext("webgl"); } catch (e) {}
 if (!gl || mobile) { sec.classList.add("no-gl"); fallback(); }
-else start();
+else Promise.all([import("three"), import("three/addons/postprocessing/EffectComposer.js"), import("three/addons/postprocessing/RenderPass.js"), import("three/addons/postprocessing/UnrealBloomPass.js"), import("three/addons/postprocessing/OutputPass.js")])
+  .then(([t, a, b, c, d]) => { THREE = t; EffectComposer = a.EffectComposer; RenderPass = b.RenderPass; UnrealBloomPass = c.UnrealBloomPass; OutputPass = d.OutputPass; start(); })
+  .catch(() => { sec.classList.add("no-gl"); fallback(); });
 
 function archShape(w, h) {
   const s = new THREE.Shape(), r = w / 2;
@@ -75,7 +73,7 @@ function start() {
       video = document.createElement("video"); Object.assign(video, { muted: true, loop: true, playsInline: true, crossOrigin: "anonymous", preload: "metadata" });
       video.dataset.src = m.video; const vtex = new THREE.VideoTexture(video); vtex.colorSpace = THREE.SRGBColorSpace;
       const pn = (r.m.match(/room_0(\d)/) || [])[1];
-      tex = pn ? loader.load(`${BASE}assets/rooms/poster_room_0${pn}.webp`, t => cover(t, t.image.width / t.image.height, target)) : vtex;
+      tex = pn ? loader.load(`${BASE}assets/rooms_v2/poster_room_0${pn}.webp`, t => cover(t, t.image.width / t.image.height, target)) : vtex;
       video.addEventListener("loadedmetadata", () => cover(vtex, video.videoWidth / video.videoHeight, target));
       video.addEventListener("playing", () => { if (tex !== vtex) { screenRef.material.map = vtex; screenRef.material.needsUpdate = true; } }, { once: true });
     } else {
@@ -120,7 +118,7 @@ function start() {
   const OFF = 11.5, zStart = OFF, zEnd = -(N - 1) * GAP + OFF;
   const nums = sec.querySelector(".rooms__num"), nameEl = sec.querySelector(".rooms__name"), lineEl = sec.querySelector(".rooms__line"), dots = [...sec.querySelectorAll(".rooms__dots li")];
   function setRoom(i) {
-    if (i === active) return; active = i; cap.classList.add("is-swap");
+    if (i === active) return; active = i; cap.classList.add("is-swap"); dispatchEvent(new CustomEvent("dn:room", { detail: i }));
     dots.forEach((d, k) => d.classList.toggle("is-on", k === i));
     setTimeout(() => { nums.textContent = `${String(i + 1).padStart(2, "0")} / ${String(N).padStart(2, "0")}`; nameEl.textContent = ROOMS[i][L][0]; lineEl.textContent = ROOMS[i][L][1]; cap.classList.remove("is-swap"); }, 260);
   }
