@@ -2,7 +2,7 @@
 window.DN = {
 WA: "972584921492",
 CAR: true,
-ON: { accel: false, space: false, values: false, audio: false }, /* activer quand les médias sont livrés */ /* passe à true quand assets/car/ est livré */
+ON: { accel: true, space: true, values: true, audio: true }, /* activer quand les médias sont livrés */ /* passe à true quand assets/car/ est livré */
 I: {
 he: {
  "nav.work":"עבודות","nav.services":"שירותים","nav.refer":"למי זה מתאים","nav.offers":"מחירים","nav.lab":"מעבדה","nav.cta":"בואו נדבר",

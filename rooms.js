@@ -130,7 +130,7 @@ function start() {
     const ST = window.ScrollTrigger;
     if (!ST || window.__DN?.reduced) { sec.classList.add("no-gl"); fallback(); return; }
     const head = sec.querySelector(".rooms__head");
-    ST.create({ trigger: sec, start: "top top", end: () => "+=" + innerHeight * N * 0.55, pin: pin, scrub: 0.6, anticipatePin: 1, invalidateOnRefresh: true,
+    ST.create({ trigger: sec, start: "top top", end: () => "+=" + innerHeight * N * 0.55, pin: pin, scrub: 0.6, anticipatePin: 1, invalidateOnRefresh: true, refreshPriority: 6,
       snap: { snapTo: 1 / (N - 1), duration: { min: 0.3, max: 0.8 }, ease: "power2.inOut", delay: 0.05 },
       onUpdate: s => { prog = s.progress; head.style.opacity = Math.max(0, 1 - s.progress * 6); } });
     ST.sort(); ST.refresh();

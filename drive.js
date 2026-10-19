@@ -52,7 +52,7 @@
       const g = window.gsap, ST = window.ScrollTrigger;
       if (!g || !ST || window.__DN?.reduced) { cockpit.style.opacity = 1; sec.classList.add("is-in"); return; }
       const intro = sec.querySelector(".drive__intro");
-      ST.create({ trigger: sec, start: "top top", end: () => "+=" + innerHeight * 3.2, pin: sec.querySelector(".drive__pin"), scrub: true, anticipatePin: 1, invalidateOnRefresh: true, refreshPriority: 2,
+      ST.create({ trigger: sec, start: "top top", end: () => "+=" + innerHeight * 3.2, pin: sec.querySelector(".drive__pin"), scrub: true, anticipatePin: 1, invalidateOnRefresh: true, refreshPriority: 10,
         onUpdate: st => {
           const p = st.progress, seqEnd = 0.78;
           const f = Math.min(N - 1, Math.floor((p / seqEnd) * (N - 1)));

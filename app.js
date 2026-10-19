@@ -247,7 +247,7 @@ function intro() {
     const track = $(".work__track");
     const dist = () => Math.max(0, track.scrollWidth - innerWidth);
     const st = gsap.to(track, { x: () => (RTL ? 1 : -1) * dist(), ease: "none",
-      scrollTrigger: { trigger: ".work", start: "top top", end: () => "+=" + dist(), pin: ".work__pin", scrub: 1, invalidateOnRefresh: true, anticipatePin: 1 } });
+      scrollTrigger: { trigger: ".work", start: "top top", end: () => "+=" + dist(), pin: ".work__pin", scrub: 1, invalidateOnRefresh: true, anticipatePin: 1, refreshPriority: 8 } });
     gsap.to(".work__progress span", { scaleX: 1, ease: "none", scrollTrigger: { trigger: ".work", start: "top top", end: () => "+=" + dist(), scrub: true } });
     return () => st.scrollTrigger && st.scrollTrigger.kill();
   });

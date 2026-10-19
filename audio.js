@@ -21,7 +21,7 @@
   const el = (f, loop) => { const a = new Audio(A + f); a.loop = !!loop; a.crossOrigin = "anonymous"; a.preload = "auto"; return a; };
   const node = (a, b) => { const s = ctx.createMediaElementSource(a), g = ctx.createGain(); s.connect(g); g.connect(b); return g; };
   function music(name) {
-    const f = has(`loop_${name}.mp3`) ? `loop_${name}.mp3` : "theme.mp3"; if (current && current.f === f) return;
+    const f = has(`loop_${name}.mp3`) ? `loop_${name}.mp3` : has("theme.mp3") ? "theme.mp3" : "loop_hero.mp3"; if (current && current.f === f) return;
     const a = el(f, true), g = node(a, bus.music); g.gain.value = 0; a.play().catch(() => {});
     g.gain.linearRampToValueAtTime(1, ctx.currentTime + 1.5);
     if (current) { const o = current; o.g.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.5); setTimeout(() => o.a.pause(), 1700); }
@@ -31,7 +31,7 @@
     const f = `voice_${name}_${L}.mp3`; if (played.has(name) || !has(f)) return; played.add(name);
     if (cur) cur.pause(); const a = el(f); node(a, bus.voice); cur = a;
     bus.music.gain.linearRampToValueAtTime(.18, ctx.currentTime + .4);
-    const txt = voices[name] && voices[name][L]; if (txt) { sub.textContent = txt; sub.classList.add("is-on"); }
+    const txt = voices[name] && voices[name][L] && voices[name][L].replace(/[\u0591-\u05C7]/g, ""); if (txt) { sub.textContent = txt; sub.classList.add("is-on"); }
     a.onended = () => { bus.music.gain.linearRampToValueAtTime(.55, ctx.currentTime + 1); sub.classList.remove("is-on"); };
     a.play().catch(() => {});
   }

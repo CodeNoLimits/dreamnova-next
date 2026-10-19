@@ -4,3 +4,8 @@ gen_pages.py
 assets/**/RAPPORT.md
 assets/**/planche.jpg
 assets/**/*.md
+assets/space/rocket_seq
+assets/car2/seq_tmp
+assets/car2/accel_seq
+assets/**/*.tmp.mp4
+assets/**/*.png
