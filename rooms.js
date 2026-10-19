@@ -22,7 +22,7 @@ sec.querySelector(".rooms__fallback").innerHTML = ROOMS.map(r => {
 
 let gl = null;
 try { gl = canvas.getContext("webgl2") || canvas.getContext("webgl"); } catch (e) {}
-if (!gl) { sec.classList.add("no-gl"); }
+if (!gl || mobile) { sec.classList.add("no-gl"); }
 else start();
 
 function archShape(w, h) {
@@ -50,16 +50,16 @@ function start() {
   const cam = new THREE.PerspectiveCamera(mobile ? 70 : 55, 1, 0.1, 200);
 
   // sol : grille dorée + reflet doux
-  const grid = new THREE.GridHelper(400, 200, 0x6b531c, 0x2a2010); grid.position.y = -0.01; grid.material.transparent = true; grid.material.opacity = 0.35; scene.add(grid);
-  const floorGlow = new THREE.Mesh(new THREE.PlaneGeometry(14, N * GAP + 40), new THREE.MeshBasicMaterial({ color: 0xd4af37, transparent: true, opacity: 0.05 }));
-  floorGlow.rotation.x = -Math.PI / 2; floorGlow.position.z = -(N * GAP) / 2; scene.add(floorGlow);
+  // sol sombre réfléchissant (bande dorée qui se perd dans le brouillard)
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(60, N * GAP + 60), new THREE.MeshBasicMaterial({ color: 0x070504 }));
+  floor.rotation.x = -Math.PI / 2; floor.position.z = -(N * GAP) / 2; scene.add(floor);
 
   // portails
   const W = 5.2, H = 7.4, T = 0.22, portals = [];
   const inner = archShape(W, H), outer = archShape(W + T * 2, H + T);
   const frameShape = archShape(W + T * 2, H + T); frameShape.holes.push(archShape(W, H));
   const frameGeo = new THREE.ExtrudeGeometry(frameShape, { depth: 0.35, bevelEnabled: true, bevelSize: 0.04, bevelThickness: 0.04, bevelSegments: 2, curveSegments: 48 });
-  const frameMat = new THREE.MeshStandardMaterial({ color: 0x1a1206, metalness: 0.9, roughness: 0.3, emissive: 0xd4af37, emissiveIntensity: 1.6 });
+  const frameMat = new THREE.MeshStandardMaterial({ color: 0x1a1206, metalness: 0.9, roughness: 0.3, emissive: 0xe8b84a, emissiveIntensity: 1.25 });
   const screenGeo = new THREE.ShapeGeometry(inner, 48); fitUV(screenGeo);
   const loader = new THREE.TextureLoader();
   ROOMS.forEach((r, i) => {
@@ -75,7 +75,7 @@ function start() {
       tex = loader.load(m.img, t => cover(t, t.image.width / t.image.height, target));
     }
     tex.colorSpace = THREE.SRGBColorSpace;
-    const screen = new THREE.Mesh(screenGeo, new THREE.MeshBasicMaterial({ map: tex, transparent: true, toneMapped: false, color: 0x8f8678 }));
+    const screen = new THREE.Mesh(screenGeo, new THREE.MeshBasicMaterial({ map: tex, transparent: true, toneMapped: false, color: 0xc4baa8 }));
     g.add(screen);
     // halo derrière le portail
     const halo = new THREE.Mesh(new THREE.PlaneGeometry(W * 2.6, H * 1.7), new THREE.MeshBasicMaterial({ map: glowTex(), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0.55 }));
@@ -99,7 +99,7 @@ function start() {
   // postprod : halo lumineux
   const composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, cam));
-  const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), mobile ? 0.6 : 0.95, 0.65, 0.34);
+  const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), 0.7, 0.55, 0.72);
   composer.addPass(bloom); composer.addPass(new OutputPass());
 
   const resize = () => { const w = pin.clientWidth, h = pin.clientHeight; renderer.setSize(w, h, false); composer.setSize(w, h); cam.aspect = w / h; cam.updateProjectionMatrix(); };
@@ -109,7 +109,7 @@ function start() {
   let prog = 0, smooth = 0, active = -1, visible = false, mx = 0, my = 0;
   addEventListener("pointermove", e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; }, { passive: true });
   new IntersectionObserver(([e]) => visible = e.isIntersecting, { rootMargin: "100px" }).observe(pin);
-  const zStart = 9, zEnd = -(N - 1) * GAP - 2;
+  const OFF = 11.5, zStart = OFF, zEnd = -(N - 1) * GAP + OFF;
   const nums = sec.querySelector(".rooms__num"), nameEl = sec.querySelector(".rooms__name"), lineEl = sec.querySelector(".rooms__line"), dots = [...sec.querySelectorAll(".rooms__dots li")];
   function setRoom(i) {
     if (i === active) return; active = i; cap.classList.add("is-swap");
@@ -121,8 +121,11 @@ function start() {
   const hook = () => {
     const ST = window.ScrollTrigger;
     if (!ST || window.__DN?.reduced) { sec.classList.add("no-gl"); return; }
-    ST.create({ trigger: sec, start: "top top", end: () => "+=" + innerHeight * (N + 0.6), pin: pin, scrub: true, anticipatePin: 1, invalidateOnRefresh: true, onUpdate: s => prog = s.progress });
-    ST.refresh();
+    const head = sec.querySelector(".rooms__head");
+    ST.create({ trigger: sec, start: "top top", end: () => "+=" + innerHeight * N * 0.55, pin: pin, scrub: 0.6, anticipatePin: 1, invalidateOnRefresh: true,
+      snap: { snapTo: 1 / (N - 1), duration: { min: 0.3, max: 0.8 }, ease: "power2.inOut", delay: 0.05 },
+      onUpdate: s => { prog = s.progress; head.style.opacity = Math.max(0, 1 - s.progress * 6); } });
+    ST.sort(); ST.refresh();
   };
   window.__DN ? hook() : addEventListener("dn:ready", hook, { once: true });
 
@@ -134,18 +137,17 @@ function start() {
     smooth += (prog - smooth) * 0.08;
     const z = zStart + (zEnd - zStart) * smooth;
     cam.position.set(Math.sin(smooth * Math.PI * 3) * 0.6 + mx * 0.9, 3.4 + Math.sin(t * .6) * 0.08 - my * 0.5, z);
-    cam.lookAt(mx * 2 * (RTL ? -1 : 1) * 0, 3.6 - my * 0.6, z - 12);
+    cam.lookAt(mx * 1.5 * (RTL ? -1 : 1), 3.6 - my * 0.6, z - 12);
     key.position.set(0, 5, z - 6);
     pm.uniforms.t.value = t;
     let near = 0;
     portals.forEach((p, i) => {
       const d = p.g.position.z - z; // négatif = devant la caméra
       const dist = -d;
-      if (dist > 0 && dist < GAP * 0.62) near = i;
-      if (dist <= 0) near = Math.min(N - 1, i + 1);
+      if (Math.abs(dist - OFF) < GAP / 2) near = i;
       // l'écran s'efface quand on le traverse
-      p.screen.material.opacity = THREE.MathUtils.clamp((dist - 0.6) / 4.5, 0, 1);
-      p.frame.material.emissiveIntensity = 1.3 + Math.sin(t * 1.4 + i) * 0.3;
+      p.screen.material.opacity = THREE.MathUtils.clamp((dist - 3.5) / 4, 0, 1);
+      
       if (p.video) {
         const want = dist > -2 && dist < GAP * 2.2;
         if (want) { if (!p.video.src) p.video.src = p.video.dataset.src; if (p.video.paused) p.video.play().catch(() => {}); }

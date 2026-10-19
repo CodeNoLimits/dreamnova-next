@@ -6,7 +6,9 @@
   <path d="M60 4 112 17v54c0 37-23 62-52 75C31 133 8 108 8 71V17z" fill="url(#f)" stroke="url(#g)" stroke-width="4"/>
   <path d="M60 12 104 23v48c0 32-20 54-44 66-24-12-44-34-44-66V23z" fill="none" stroke="url(#g)" stroke-width=".8" opacity=".55"/>
   <g fill="url(#g)"><rect x="16" y="27" width="88" height="3"/><rect x="16" y="33" width="88" height="1.2" opacity=".7"/></g>
-  <path d="M60 44 64 56 76 52 66 60 76 68 64 64 60 76 56 64 44 68 54 60 44 52 56 56z" fill="url(#g)"/>
-  <text x="60" y="114" text-anchor="middle" font-family="Bricolage Grotesque,Arial Black,sans-serif" font-weight="800" font-size="34" letter-spacing="-1" fill="url(#g)">DN</text>
-  <text x="60" y="130" text-anchor="middle" font-family="Manrope,Arial,sans-serif" font-weight="600" font-size="7.5" letter-spacing="3.2" fill="#d4af37">DREAMNOVA</text>
+  <path d="M60 42 64.5 55.5 78 51 68 60 78 69 64.5 64.5 60 78 55.5 64.5 42 69 52 60 42 51 55.5 55.5z" fill="url(#g)"/>
+  <g transform="translate(-3.5 0)" fill="url(#g)" fill-rule="evenodd">
+    <path d="M33 86h14c12 0 19 7 19 17s-7 17-19 17H33zM41 93v20h6c7 0 11-4 11-10s-4-10-11-10z"/>
+    <path d="M71 120V86h7l9 19V86h7v34h-7l-9-19v19z"/>
+  </g>
 </svg>

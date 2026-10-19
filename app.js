@@ -66,11 +66,11 @@ const ICONS = {
 };
 $("[data-bento]").innerHTML = D.SERVICES.map((s, i) => {
   const [t, p, chips] = s[L];
-  return `<article class="tile reveal"><div class="tile__core">
+  return `<a class="tile reveal" href="${BASE}${L}/s/${D.SVC[i].id}/"><div class="tile__core"><span class="tile__go">${esc(T["work.view"])} ${ARROW}</span>
     ${s.v ? `<video class="tile__video" muted loop playsinline preload="none" data-src="${BASE}assets/reel/${s.v}.mp4"></video>` : ""}
     <span class="tile__ico"><svg viewBox="0 0 24 24">${ICONS[s.ic]}</svg></span><span class="tile__n">${String(i + 1).padStart(2, "0")}</span>
     <h3>${esc(t)}</h3><p>${esc(p)}</p><div class="chips">${chips.map(c => `<span>${esc(c)}</span>`).join("")}</div>
-  </div></article>`;
+  </div></a>`;
 }).join("");
 
 /* ---------- recommandations ---------- */
@@ -96,7 +96,12 @@ fb.addEventListener("click", e => {
 
 /* ---------- offres ---------- */
 $("[data-offers]").innerHTML = D.OFFERS[L].map(([t, d, [lab, p]], i) =>
-  `<a class="off reveal" href="${wa(t)}" target="_blank" rel="noopener"><span class="off__n">${String(i + 1).padStart(2, "0")}</span><span class="off__t">${esc(t)}</span><span class="off__d">${esc(d)}</span><span class="off__p">${lab ? `<small>${esc(lab)}</small>` : ""}${esc(p)}</span><span class="off__c">${ARROW}</span></a>`).join("");
+  `<a class="off reveal${i > 5 ? " is-extra" : ""}" href="${wa(t)}" target="_blank" rel="noopener"><span class="off__n">${String(i + 1).padStart(2, "0")}</span><span class="off__t">${esc(t)}</span><span class="off__d">${esc(d)}</span><span class="off__p">${lab ? `<small>${esc(lab)}</small>` : ""}${esc(p)}</span><span class="off__c">${ARROW}</span></a>`).join("");
+
+{ const ol = $("[data-offers]"), more = document.createElement("button");
+  more.className = "btn btn--glass offers__more"; more.innerHTML = `<span>${esc({ he: "לכל ההצעות", en: "All offers", fr: "Toutes les offres" }[L])} (${D.OFFERS[L].length})</span><span class="btn__ico">+</span>`;
+  more.onclick = () => { ol.classList.add("is-open"); more.remove(); window.ScrollTrigger && ScrollTrigger.refresh(); };
+  ol.after(more); }
 
 /* ---------- process + labo ---------- */
 $("[data-process]").innerHTML = D.PROCESS[L].map(([t, p], i) => `<article class="step reveal"><span class="step__bar"></span><div class="step__n">0${i + 1}</div><h3>${esc(t)}</h3><p>${esc(p)}</p></article>`).join("");
@@ -184,9 +189,9 @@ $$(".tile").forEach(t => t.addEventListener("pointermove", e => { const r = t.ge
 /* ---------- chargement ---------- */
 let done = false;
 const finish = () => { if (done) return; done = true; document.body.classList.remove("is-loading"); intro(); };
-const cnt = $(".loader__count span"); let k = 0;
-const tick = setInterval(() => { k = Math.min(100, k + 7 + Math.random() * 9); cnt.textContent = Math.floor(k); if (k >= 100) { clearInterval(tick); setTimeout(finish, 150); } }, 60);
-setTimeout(finish, 2600); // filet de sécurité : la page ne reste jamais bloquée
+// le rideau tombe dès que les polices sont prêtes (et le tracé de l'écusson fini)
+Promise.all([document.fonts ? document.fonts.ready : 0, new Promise(r => setTimeout(r, 1100))]).then(finish);
+setTimeout(finish, 2400); // filet de sécurité : la page ne reste jamais bloquée
 
 /* ---------- animations ---------- */
 function intro() {
@@ -208,6 +213,7 @@ function intro() {
     .from(".hero__gl", { opacity: 0, scale: 1.08, duration: 2.4, ease: "power2.out" }, 0);
   gsap.to(".hero__inner", { yPercent: -18, opacity: .2, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });
 
+  ScrollTrigger.create({ trigger: ".hero", start: "bottom 60%", onEnter: () => document.body.classList.add("past-hero"), onLeaveBack: () => document.body.classList.remove("past-hero") });
   // cache la nav en descendant
   let last = 0; ScrollTrigger.create({ onUpdate: s => { const y = s.scroll(); $(".nav").classList.toggle("is-hidden", y > 400 && y > last && !document.body.classList.contains("menu-open")); last = y; } });
 
@@ -222,7 +228,7 @@ function intro() {
   });
   // inclinaison selon la vitesse de défilement
   const skewTo = gsap.quickTo(".pj,.who,.step", "skewY", { duration: .6, ease: "power3" });
-  ScrollTrigger.create({ onUpdate: s => skewTo(gsap.utils.clamp(-5, 5, s.getVelocity() / -400)) });
+  ScrollTrigger.create({ onUpdate: s => skewTo(gsap.utils.clamp(-3, 3, s.getVelocity() / -600)) });
 
   // carrousel épinglé (bureau)
   const mm = gsap.matchMedia();

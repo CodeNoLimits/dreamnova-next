@@ -1,7 +1,7 @@
 /* DreamNova — contenu trilingue. Prix = grille publique existante (dreamnova-3d-*), une devise par langue. */
 window.DN = {
 WA: "972584921492",
-CAR: false, /* passe à true quand assets/car/ est livré */
+CAR: true, /* passe à true quand assets/car/ est livré */
 I: {
 he: {
  "nav.work":"עבודות","nav.services":"שירותים","nav.refer":"למי זה מתאים","nav.offers":"מחירים","nav.lab":"מעבדה","nav.cta":"בואו נדבר",
@@ -83,13 +83,13 @@ ROOMS_I: {
 },
 /* m = média du portail (v:vidéo reel, i:image galerie, r:clip avatar assets/rooms) */
 ROOMS: [
- {m:"v:cinema_pipeline_01",he:["חדר הקולנוע","סרטי AI ברמת קולנוע — מהתסריט ועד המסך."],en:["The Cinema","AI films at cinema level — from script to screen."],fr:["La salle de cinéma","Des films IA niveau cinéma — du scénario à l'écran."]},
- {m:"i:gal_lumen",he:["סטודיו האתרים","אתרים וחנויות שעוצרים את הנשימה."],en:["The Web Studio","Websites and stores that take your breath away."],fr:["Le studio web","Des sites et des boutiques qui coupent le souffle."]},
- {m:"i:gal_voiceava",he:["חדר הבקרה","סוכנים קוליים ובוטים שעונים לכל לקוח, 24/7."],en:["The Control Room","Voice agents and bots that answer every client, 24/7."],fr:["La salle de contrôle","Des agents vocaux et des bots qui répondent à chaque client, 24/7."]},
- {m:"i:gal_onprem",he:["הכספת","בינה מלאכותית פרטית — המידע שלכם לא יוצא."],en:["The Vault","Private AI — your data never leaves."],fr:["La chambre forte","Une IA privée — vos données ne sortent pas."]},
- {m:"v:adcreative_pipeline_05",he:["סטודיו הרילס","רילס ושיווק שמביאים לקוחות."],en:["The Reels Studio","Reels and marketing that bring clients in."],fr:["Le studio Reels","Des Reels et du marketing qui amènent des clients."]},
- {m:"i:gal_devis",he:["חדר המערכות","CRM ומערכות שמנהלים את העסק."],en:["The Systems Room","CRM and software that run the business."],fr:["La salle des systèmes","Des CRM et des logiciels qui font tourner l'entreprise."]},
- {m:"i:gal_site3d",he:["הגלריה האינסופית","עולמות תלת־ממד שאי אפשר לשכוח."],en:["The Infinite Gallery","3D worlds people never forget."],fr:["La galerie infinie","Des mondes 3D qu'on n'oublie pas."]}
+ {m:"r:room_02_cinema",he:["חדר הקולנוע","סרטי AI ברמת קולנוע — מהתסריט ועד המסך."],en:["The Cinema","AI films at cinema level — from script to screen."],fr:["La salle de cinéma","Des films IA niveau cinéma — du scénario à l'écran."]},
+ {m:"r:room_03_web",he:["סטודיו האתרים","אתרים וחנויות שעוצרים את הנשימה."],en:["The Web Studio","Websites and stores that take your breath away."],fr:["Le studio web","Des sites et des boutiques qui coupent le souffle."]},
+ {m:"r:room_04_agents",he:["חדר הבקרה","סוכנים קוליים ובוטים שעונים לכל לקוח, 24/7."],en:["The Control Room","Voice agents and bots that answer every client, 24/7."],fr:["La salle de contrôle","Des agents vocaux et des bots qui répondent à chaque client, 24/7."]},
+ {m:"r:room_05_vault",he:["הכספת","בינה מלאכותית פרטית — המידע שלכם לא יוצא."],en:["The Vault","Private AI — your data never leaves."],fr:["La chambre forte","Une IA privée — vos données ne sortent pas."]},
+ {m:"r:room_06_marketing",he:["סטודיו הרילס","רילס ושיווק שמביאים לקוחות."],en:["The Reels Studio","Reels and marketing that bring clients in."],fr:["Le studio Reels","Des Reels et du marketing qui amènent des clients."]},
+ {m:"r:room_01_hero",he:["חדר המערכות","CRM ומערכות שמנהלים את העסק."],en:["The Systems Room","CRM and software that run the business."],fr:["La salle des systèmes","Des CRM et des logiciels qui font tourner l'entreprise."]},
+ {m:"r:room_07_gallery",he:["הגלריה האינסופית","עולמות תלת־ממד שאי אפשר לשכוח."],en:["The Infinite Gallery","3D worlds people never forget."],fr:["La galerie infinie","Des mondes 3D qu'on n'oublie pas."]}
 ],
 
 /* cockpit : chaque élément mène à une page de service (s = index dans SERVICES) */
@@ -99,14 +99,14 @@ DRIVE_I: {
  fr:{eyebrow:"DreamNova · Édition course",l1:"Prenez",l2:"le volant.",sub:"Entrez dans le cockpit. Chaque bouton, chaque écran, chaque rapport mène à l'un de nos services.",hint:"Faites défiler pour entrer",tap:"Entrer"}
 },
 SVC: [
- {id:"film",hot:"paddle_left",w:["media"],o:[6,10],v:"reel/cinema_pipeline_01.mp4",part:{he:"מנוף העברה שמאלי",en:"Left paddle",fr:"Palette gauche"}},
- {id:"web",hot:"screen",w:["lumen","artisans","site3d","joaillerie"],o:[0,1,3],v:"reel/bijoux_pipeline_04.mp4",part:{he:"מסך מרכזי",en:"Center screen",fr:"Écran central"}},
- {id:"crm",hot:"gear",w:["devis","leadmachine","facturation"],o:[13,9],v:"",part:{he:"ידית ההילוכים",en:"Gear selector",fr:"Levier de vitesse"}},
- {id:"agents",hot:"wheel",w:["voiceava","stockvox","leadmachine","pinkas"],o:[5,7],v:"",part:{he:"הגה",en:"Steering wheel",fr:"Volant"}},
- {id:"marketing",hot:"gauge",w:["media","academy"],o:[14,11,12],v:"reel/adcreative_pipeline_05.mp4",part:{he:"לוח המחוונים",en:"Dashboard gauges",fr:"Compteurs"}},
- {id:"private",hot:"console",w:["onprem","pilote","pinkas","mehadrin"],o:[4,8],v:"",part:{he:"קונסולה",en:"Center console",fr:"Console centrale"}},
- {id:"3d",hot:"paddle_right",w:["site3d","dreamai","rd"],o:[2],v:"reel/animation_pipeline_02.mp4",part:{he:"מנוף העברה ימני",en:"Right paddle",fr:"Palette droite"}},
- {id:"consult",hot:"start",w:["auditprivee","auditflash","diagnostic","academy","consult"],o:[16,15],v:"reel/subtitled_pipeline_03.mp4",part:{he:"כפתור ההתנעה",en:"Start button",fr:"Bouton start"}}
+ {id:"film",hot:"paddle_left",w:["media"],o:[6,10],v:"rooms/room_02_cinema.mp4",part:{he:"מנוף העברה שמאלי",en:"Left paddle",fr:"Palette gauche"}},
+ {id:"web",hot:"screen",w:["lumen","artisans","site3d","joaillerie"],o:[0,1,3],v:"rooms/room_03_web.mp4",part:{he:"מסך מרכזי",en:"Center screen",fr:"Écran central"}},
+ {id:"crm",hot:"selector",w:["devis","leadmachine","facturation"],o:[13,9],v:"car/cockpit.mp4",part:{he:"ידית ההילוכים",en:"Gear selector",fr:"Levier de vitesse"}},
+ {id:"agents",hot:"wheel",w:["voiceava","stockvox","leadmachine","pinkas"],o:[5,7],v:"rooms/room_04_agents.mp4",part:{he:"הגה",en:"Steering wheel",fr:"Volant"}},
+ {id:"marketing",hot:"cluster",w:["media","academy"],o:[14,11,12],v:"rooms/room_06_marketing.mp4",part:{he:"לוח המחוונים",en:"Dashboard gauges",fr:"Compteurs"}},
+ {id:"private",hot:"ambient",w:["onprem","pilote","pinkas","mehadrin"],o:[4,8],v:"rooms/room_05_vault.mp4",part:{he:"לוח המכשירים",en:"Dashboard",fr:"Planche de bord"}},
+ {id:"3d",hot:"paddle_right",w:["site3d","dreamai","rd"],o:[2],v:"rooms/room_07_gallery.mp4",part:{he:"מנוף העברה ימני",en:"Right paddle",fr:"Palette droite"}},
+ {id:"consult",hot:"start",w:["auditprivee","auditflash","diagnostic","academy","consult"],o:[16,15],v:"rooms/room_01_hero.mp4",part:{he:"כפתור ההתנעה",en:"Start button",fr:"Bouton start"}}
 ],
 SVC_I: {
  he:{back:"חזרה לתא הנהג",works:"עבודות קשורות",offers:"הצעות",next:"ההילוך הבא",cta:"לדבר על הפרויקט",spec:"מפרט"},

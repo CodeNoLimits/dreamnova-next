@@ -1,0 +1,13 @@
+[
+ {"id":"wheel","x":0.34,"y":0.58,"label":"volant"},
+ {"id":"paddle_left","x":0.222,"y":0.505,"label":"palette gauche"},
+ {"id":"paddle_right","x":0.457,"y":0.507,"label":"palette droite"},
+ {"id":"cluster","x":0.352,"y":0.42,"label":"compteur"},
+ {"id":"screen","x":0.617,"y":0.486,"label":"écran central"},
+ {"id":"start","x":0.605,"y":0.697,"label":"bouton start"},
+ {"id":"selector","x":0.664,"y":0.778,"label":"sélecteur"},
+ {"id":"ambient","x":0.80,"y":0.35,"label":"lumière d'ambiance"},
+ {"id":"door","x":0.04,"y":0.78,"label":"portière"},
+ {"id":"seat","x":0.93,"y":0.96,"label":"siège"},
+ {"id":"windshield","x":0.5,"y":0.15,"label":"pare-brise"}
+]

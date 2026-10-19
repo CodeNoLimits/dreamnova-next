@@ -31,6 +31,7 @@
       const name = D.SERVICES[i][L][0];
       return `<a class="hot ${h.x > 0.62 ? "hot--left" : ""}" role="listitem" href="${BASE}${L}/s/${s.id}/" data-x="${h.x}" data-y="${h.y}" data-cursor="${T.tap}"><span class="hot__dot"></span><span class="hot__card"><span class="hot__part">${s.part[L]}</span><span class="hot__name">${name}</span></span></a>`;
     }).join("");
+    sec.querySelector(".drive__chips").innerHTML = S.map((s, i) => `<a href="${BASE}${L}/s/${s.id}/"><small>${s.part[L]}</small>${D.SERVICES[i][L][0]}</a>`).join("");
     const place = () => {
       const vw = sec.clientWidth, vh = innerHeight, sc = Math.max(vw / 16, vh / 9), w = 16 * sc, hh = 9 * sc, ox = (vw - w) / 2, oy = (vh - hh) / 2;
       hotsEl.querySelectorAll(".hot").forEach(a => { a.style.left = ox + a.dataset.x * w + "px"; a.style.top = oy + a.dataset.y * hh + "px"; });
@@ -49,7 +50,7 @@
       const g = window.gsap, ST = window.ScrollTrigger;
       if (!g || !ST || window.__DN?.reduced) { cockpit.style.opacity = 1; sec.classList.add("is-in"); return; }
       const intro = sec.querySelector(".drive__intro");
-      ST.create({ trigger: sec, start: "top top", end: () => "+=" + innerHeight * 3.2, pin: sec.querySelector(".drive__pin"), scrub: true, anticipatePin: 1, invalidateOnRefresh: true,
+      ST.create({ trigger: sec, start: "top top", end: () => "+=" + innerHeight * 3.2, pin: sec.querySelector(".drive__pin"), scrub: true, anticipatePin: 1, invalidateOnRefresh: true, refreshPriority: 2,
         onUpdate: st => {
           const p = st.progress, seqEnd = 0.78;
           const f = Math.min(N - 1, Math.floor((p / seqEnd) * (N - 1)));
@@ -61,7 +62,7 @@
           intro.style.opacity = Math.max(0, 1 - p * 3.2); intro.style.transform = `translateY(${-p * 120}px)`;
           sec.classList.toggle("is-in", p > seqEnd + 0.05);
         } });
-      ST.refresh();
+      ST.sort(); ST.refresh();
     };
     window.__DN ? hook() : addEventListener("dn:ready", hook, { once: true });
     window.__DNDRIVE = { frames: N, hots: hots.length };
