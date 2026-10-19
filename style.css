@@ -746,3 +746,12 @@ html[dir=rtl] .drive.is-in .hud{transform:translateX(50%) scale(1)}
 }
 @media (max-width:767px){.hud{top:54%!important}}
 @media (min-width:768px){.hud{bottom:150px}}
+
+/* lumières de route dans le pare-brise, vitesse liée au compteur */
+.cp-road{position:absolute;z-index:1;left:0;right:0;top:4%;height:34%;pointer-events:none;opacity:0;transition:opacity .6s;mix-blend-mode:screen;
+  background:repeating-linear-gradient(90deg,transparent 0 46px,rgba(255,214,140,.55) 46px 49px,transparent 49px 120px);
+  -webkit-mask-image:radial-gradient(60% 70% at 50% 100%,#000 20%,transparent 75%);mask-image:radial-gradient(60% 70% at 50% 100%,#000 20%,transparent 75%);
+  transform:perspective(500px) rotateX(58deg);transform-origin:50% 100%;animation:road calc(1.2s - var(--v,0) * .95s) linear infinite}
+@keyframes road{from{background-position:0 0}to{background-position:-120px 0}}
+@media (min-width:768px){.cp-panel{inset-inline:auto;right:var(--pad)}html[dir=rtl] .cp-panel{transform:translateY(-50%) translateX(30px)}html[dir=rtl] .cp-panel.is-open{transform:translateY(-50%)}}
+.founder{padding-block:clamp(80px,9vw,140px)}

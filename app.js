@@ -42,7 +42,7 @@ const reelCards = D.REEL.map(r => {
       <span class="card__num">${String(n).padStart(2, "0")}</span>
       <div class="card__meta"><div><span class="card__tag">${esc(r.tag[L])}</span><h3 class="card__title">${esc(r.t[L])}</h3></div></div></article>`;
   }
-  const w = byId[r.p]; if (!w) return ""; n++;
+  const w = byId[r.p]; if (!w || (L === "he" && r.p === "lumen")) return ""; n++; // visuel en français : pas sur la page hébreu
   const u = url(w);
   return `<a class="card" ${u ? `href="${u}" target="_blank" rel="noopener"` : ""} data-cursor="${esc(T["work.view"])}">
     <img class="card__media" src="${BASE}assets/work/gal_${w.id}.webp" alt="${esc(w.t[L])}" loading="lazy" decoding="async">
@@ -234,8 +234,8 @@ function intro() {
   let last = 0; ScrollTrigger.create({ onUpdate: s => { const y = s.scroll(); $(".nav").classList.toggle("is-hidden", y > 400 && y > last && !document.body.classList.contains("menu-open")); last = y; } });
 
   // apparitions
-  ScrollTrigger.batch(".reveal:not(.pj):not(.who):not(.step):not(.lc):not(.off)", { start: "top 88%", once: true,
-    onEnter: b => gsap.to(b, { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.2, ease: "expo.out", stagger: .07, overwrite: true }) });
+  ScrollTrigger.batch(".reveal:not(.who):not(.step):not(.lc):not(.off)", { start: mobile() ? "top 100%" : "top 88%", once: true,
+    onEnter: b => gsap.to(b, { opacity: 1, y: 0, filter: "blur(0px)", duration: mobile() ? .45 : 1.2, ease: "expo.out", stagger: mobile() ? .03 : .07, overwrite: true, clearProps: "transform" }) });
   // titres : mot par mot derrière un masque
   $$(".sec-head .h2,.rooms__title").forEach(h => { h.innerHTML = h.textContent.split(" ").map(w => `<span class="wm"><span>${esc(w)}</span></span>`).join(" "); });
   gsap.utils.toArray(".sec-head").forEach(h => {
@@ -243,12 +243,12 @@ function intro() {
     gsap.from([...h.children].filter(c => !c.classList.contains("h2")), { y: 40, opacity: 0, duration: 1.2, stagger: .08, ease: "expo.out", scrollTrigger: { trigger: h, start: "top 85%" } });
   });
   // cartes : entrée en vrille 3D, puis vrille complète au survol
-  const SPIN = ".pj,.who,.step,.lc,.off", TOUCH = matchMedia("(hover: none)").matches;
+  const SPIN = ".who,.step,.lc,.off", TOUCH = matchMedia("(hover: none)").matches || mobile();
   gsap.set(SPIN, { transformPerspective: 1100 });
-  ScrollTrigger.batch(SPIN, { start: "top 92%", once: true, onEnter: b => gsap.fromTo(b,
+  ScrollTrigger.batch(SPIN, { start: TOUCH ? "top 100%" : "top 92%", once: true, onEnter: b => gsap.fromTo(b,
     TOUCH ? { y: 24, opacity: 0 } : { rotationY: (RTL ? -1 : 1) * 115, rotationX: 22, z: -320, opacity: 0, transformOrigin: "50% 50% -140px" },
-    TOUCH ? { y: 0, opacity: 1, duration: .5, ease: "power2.out", stagger: .04, overwrite: true } : { rotationY: 0, rotationX: 0, z: 0, opacity: 1, duration: 1.7, ease: "expo.out", stagger: .07, overwrite: true }) });
-  $$(".pj,.who").forEach(el => el.addEventListener("pointerenter", () => {
+    TOUCH ? { y: 0, opacity: 1, duration: .4, ease: "power2.out", stagger: .03, overwrite: true, clearProps: "transform" } : { rotationY: 0, rotationX: 0, z: 0, opacity: 1, duration: 1.7, ease: "expo.out", stagger: .07, overwrite: true, clearProps: "transform" }) });
+  $$(".who").forEach(el => el.addEventListener("pointerenter", () => {
     if (el._spin || matchMedia("(hover: none)").matches) return; el._spin = 1;
     gsap.fromTo(el, { rotationY: 0 }, { rotationY: (RTL ? -360 : 360), duration: 1.25, ease: "power3.inOut", onComplete: () => { gsap.set(el, { rotationY: 0 }); el._spin = 0; } });
   }));

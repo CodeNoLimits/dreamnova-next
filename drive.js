@@ -20,13 +20,13 @@
 
   // calques ajoutés : lueurs du tableau de bord, ambiance, HUD, panneau
   pin.insertAdjacentHTML("beforeend", `
-    <div class="cp-glow" aria-hidden="true"></div><div class="cp-amb" aria-hidden="true"></div>
+    <div class="cp-road" aria-hidden="true"></div><div class="cp-glow" aria-hidden="true"></div><div class="cp-amb" aria-hidden="true"></div>
     <div class="hud" aria-hidden="true"><svg viewBox="0 0 200 120"><path class="hud__track" d="M20 110 A80 80 0 0 1 180 110"/><path class="hud__rpm" d="M20 110 A80 80 0 0 1 180 110"/></svg>
       <div class="hud__num"><b class="hud__speed">0</b><span>km/h</span></div><div class="hud__gear"><small>${esc(TX.gear)}</small><b>P</b></div></div>
     <div class="cp-start-hint"><span></span>${esc(TX.start)}</div>
     <aside class="cp-panel" role="dialog" aria-live="polite" hidden><button class="cp-panel__x" aria-label="${esc(TX.close)}">×</button><p class="cp-panel__part"></p><h3 class="cp-panel__t"></h3><p class="cp-panel__d"></p><div class="cp-panel__x2"></div><a class="btn btn--gold btn--sm cp-panel__go"><span>${esc(TX.enter)}</span><span class="btn__ico">${RTL ? "↖" : "↗"}</span></a></aside>`);
   const hud = pin.querySelector(".hud"), rpmPath = hud.querySelector(".hud__rpm"), speedEl = hud.querySelector(".hud__speed"), gearEl = hud.querySelector(".hud__gear b");
-  const glow = pin.querySelector(".cp-glow"), amb = pin.querySelector(".cp-amb"), startHint = pin.querySelector(".cp-start-hint"), panel = pin.querySelector(".cp-panel");
+  const road = pin.querySelector(".cp-road"), glow = pin.querySelector(".cp-glow"), amb = pin.querySelector(".cp-amb"), startHint = pin.querySelector(".cp-start-hint"), panel = pin.querySelector(".cp-panel");
   const RL = rpmPath.getTotalLength(); rpmPath.style.strokeDasharray = RL;
 
   fetch(BASE + "assets/" + FINAL.hots, { cache: "no-store" }).then(r => r.ok ? r.json() : Promise.reject()).then(init).catch(() => {});
@@ -120,9 +120,10 @@
       speedEl.textContent = Math.round(car.speed); gearEl.textContent = car.gear;
       car.steer += (car.steerT - car.steer) * Math.min(1, dt * 5);
       const shake = car.on ? (Math.sin(now / 23) * .6 + Math.sin(now / 41) * .4) * (.3 + r / 10) : 0;
-      const tr = `translate3d(${car.steer * -14 + shake}px,${shake * .6}px,0) rotate(${car.steer * 2.4}deg) scale(${MOB ? 1.02 : 1.12})`;
+      const tr = `translate3d(${car.steer * -14 + shake}px,${shake * .6}px,0) rotate(${car.steer * .5}deg) scale(${MOB ? 1.02 : 1.08})`;
       canvas.style.transform = cockpit.style.transform = tr;
       glow.style.opacity = car.on ? .55 + r / 16 : 0;
+      road.style.setProperty("--v", Math.min(1, car.speed / 160)); road.style.opacity = car.speed > 3 ? Math.min(.9, car.speed / 80) : 0;
       A()?.engineRpm(r);
     })(last);
 

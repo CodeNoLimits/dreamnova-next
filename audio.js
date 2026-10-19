@@ -60,12 +60,20 @@
     chute: ["sfx_parachute_open.mp3"], portal: ["sfx_portal_whoosh.mp3", "sfx_whoosh_soft.mp3"], click: ["sfx_click_gold.mp3"], gear: ["sfx_gear_shift.mp3", "sfx_engine_rev.mp3"],
     selector: ["sfx_selector_click.mp3", "sfx_click_gold.mp3"], steer: ["sfx_steer_tires.mp3", "sfx_whoosh_soft.mp3", "sfx_accel_whoosh.mp3"], power: ["sfx_dash_power_on.mp3", "sfx_portal_whoosh.mp3"] };
   // effet spatialisé : x de -1 (gauche) à 1 (droite), légèrement devant l'auditeur
+  const pool = {}; // un petit lot de lecteurs réutilisés par fichier, branchés une seule fois
+  function voiceOf(f) {
+    const list = pool[f] || (pool[f] = []); let v = list.find(o => o.a.paused || o.a.ended);
+    if (!v) { if (list.length >= 4) v = list[0]; else {
+      const a = media(f), s = ctx.createMediaElementSource(a), g = ctx.createGain(), p = ctx.createPanner(), send = ctx.createGain();
+      p.panningModel = /click|selector/.test(f) ? "equalpower" : "HRTF"; p.distanceModel = "inverse"; p.refDistance = 1; send.gain.value = .25;
+      s.connect(g); g.connect(p); p.connect(bus.sfx); g.connect(send); send.connect(rev); v = { a, g, p }; list.push(v); } }
+    return v;
+  }
   function sfx(k, x = 0, vol = 1) {
     if (!on || !SFX[k]) return; const f = pick(...SFX[k]); if (!f) return;
-    const a = media(f), s = ctx.createMediaElementSource(a), g = ctx.createGain(), p = ctx.createPanner(), send = ctx.createGain();
-    p.panningModel = "HRTF"; p.distanceModel = "inverse"; p.refDistance = 1;
-    const xx = Math.max(-1, Math.min(1, x)) * 2.2; p.positionX ? (p.positionX.value = xx, p.positionY.value = 0, p.positionZ.value = -1.2) : p.setPosition(xx, 0, -1.2);
-    g.gain.value = vol; send.gain.value = .25; s.connect(g); g.connect(p); p.connect(bus.sfx); g.connect(send); send.connect(rev); a.play().catch(() => {});
+    const v = voiceOf(f), xx = Math.max(-1, Math.min(1, x)) * 2.2;
+    v.p.positionX ? (v.p.positionX.value = xx, v.p.positionY.value = 0, v.p.positionZ.value = -1.2) : v.p.setPosition(xx, 0, -1.2);
+    v.g.gain.value = vol; try { v.a.currentTime = 0; } catch (_) {} v.a.play().catch(() => {});
   }
   // moteur synthétisé : son continu dont la hauteur et le grain suivent le régime
   function engine(start) {
@@ -79,7 +87,9 @@
       g.gain.setTargetAtTime(.16, ctx.currentTime, .4); eng = { o1, o2, o3, lp, g };
     } else if (!start && eng) { const e = eng; eng = null; e.g.gain.setTargetAtTime(0, ctx.currentTime, .35); setTimeout(() => [e.o1, e.o2, e.o3].forEach(o => o.stop()), 1600); }
   }
-  function engineRpm(r) { if (!eng) return; const t = ctx.currentTime, f = 32 + r * 24;
+  let lastR = -1, lastT = 0;
+  function engineRpm(r) { if (!eng) return; const now = performance.now(); if (Math.abs(r - lastR) < .05 || now - lastT < 50) return; lastR = r; lastT = now;
+    const t = ctx.currentTime, f = 32 + r * 24; [eng.o1.frequency, eng.o2.frequency, eng.o3.frequency, eng.lp.frequency, eng.g.gain].forEach(p => p.cancelScheduledValues(t));
     eng.o1.frequency.setTargetAtTime(f, t, .08); eng.o2.frequency.setTargetAtTime(f * 1.5, t, .08); eng.o3.frequency.setTargetAtTime(f / 2, t, .08);
     eng.lp.frequency.setTargetAtTime(260 + r * 520, t, .1); eng.g.gain.setTargetAtTime(.12 + r * .022, t, .12); }
 
