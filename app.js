@@ -214,7 +214,15 @@ function intro() {
   // apparitions
   ScrollTrigger.batch(".reveal", { start: "top 88%", once: true,
     onEnter: b => gsap.to(b, { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.2, ease: "expo.out", stagger: .07, overwrite: true }) });
-  gsap.utils.toArray(".sec-head").forEach(h => gsap.from(h.children, { y: 50, opacity: 0, duration: 1.2, stagger: .08, ease: "expo.out", scrollTrigger: { trigger: h, start: "top 85%" } }));
+  // titres : mot par mot derrière un masque
+  $$(".sec-head .h2,.rooms__title").forEach(h => { h.innerHTML = h.textContent.split(" ").map(w => `<span class="wm"><span>${esc(w)}</span></span>`).join(" "); });
+  gsap.utils.toArray(".sec-head").forEach(h => {
+    gsap.from(h.querySelectorAll(".wm>span"), { yPercent: 110, duration: 1.3, stagger: .06, ease: "expo.out", scrollTrigger: { trigger: h, start: "top 85%" } });
+    gsap.from([...h.children].filter(c => !c.classList.contains("h2")), { y: 40, opacity: 0, duration: 1.2, stagger: .08, ease: "expo.out", scrollTrigger: { trigger: h, start: "top 85%" } });
+  });
+  // inclinaison selon la vitesse de défilement
+  const skewTo = gsap.quickTo(".pj,.who,.step", "skewY", { duration: .6, ease: "power3" });
+  ScrollTrigger.create({ onUpdate: s => skewTo(gsap.utils.clamp(-5, 5, s.getVelocity() / -400)) });
 
   // carrousel épinglé (bureau)
   const mm = gsap.matchMedia();

@@ -1,6 +1,7 @@
 /* DreamNova — contenu trilingue. Prix = grille publique existante (dreamnova-3d-*), une devise par langue. */
 window.DN = {
 WA: "972584921492",
+CAR: false, /* passe à true quand assets/car/ est livré */
 I: {
 he: {
  "nav.work":"עבודות","nav.services":"שירותים","nav.refer":"למי זה מתאים","nav.offers":"מחירים","nav.lab":"מעבדה","nav.cta":"בואו נדבר",

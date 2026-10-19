@@ -438,3 +438,6 @@ html[lang=he] .svc-hero__t{letter-spacing:-.02em;line-height:1}
 .svc-next:hover .svc-next__t{color:var(--gold-lt)}
 .svc-next i{font-style:normal;color:var(--gold)}
 @media (max-width:767px){.svc__back{display:none}}
+
+.wm{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.06em}
+.wm>span{display:inline-block}

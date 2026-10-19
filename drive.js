@@ -8,6 +8,7 @@
   const canvas = sec.querySelector(".drive__seq"), ctx = canvas.getContext("2d"), cockpit = sec.querySelector(".drive__cockpit"), loop = sec.querySelector(".drive__loop");
   const hotsEl = sec.querySelector(".drive__hots");
 
+  if (!D.CAR) return;
   fetch(CAR + "hotspots.json", { cache: "no-store" }).then(r => r.ok ? r.json() : Promise.reject()).then(init).catch(() => {});
 
   function init(hots) {
