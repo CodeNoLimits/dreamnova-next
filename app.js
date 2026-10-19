@@ -22,7 +22,7 @@ $$("[data-i]").forEach(el => { const v = T[el.dataset.i]; if (v != null) el.text
 $$(".nav__langs a,.menu__langs a").forEach(a => { const l = a.dataset.l || a.getAttribute("href").replace(/\W/g, ""); a.href = BASE + l + "/"; a.classList.toggle("is-on", l === L); });
 $$("[data-wa]").forEach(a => { const k = a.dataset.wa; a.href = wa(k === "audit" ? T["off.a_title"] : "", k === "partner"); a.target = "_blank"; a.rel = "noopener"; });
 
-$("[data-stats]").innerHTML = D.STATS[L].map(([b, s]) => `<div class="stat"><b class="gold-text">${b}</b><span>${esc(s)}</span></div>`).join("");
+$("[data-stats]").innerHTML = D.STATS[L].map(([b, s]) => `<div class="stat"><b class="gold-text" dir="ltr">${b}</b><span>${esc(s)}</span></div>`).join("");
 const stack = D.STACK.map(s => `<span>${s}</span>`).join("");
 $("[data-marquee]").innerHTML = stack + stack;
 
@@ -60,13 +60,15 @@ const ICONS = {
   wave: '<path d="M3 12h2M7 8v8M11 5v14M15 9v6M19 11v2"/>',
   lock: '<rect x="5" y="10" width="14" height="10" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',
   cube: '<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/>',
-  compass: '<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>'
+  compass: '<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
+  grid: '<rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><path d="M17 13.5v7M13.5 17h7"/>',
+  spark: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M6 18l2.5-2.5M15.5 8.5L18 6"/>'
 };
 $("[data-bento]").innerHTML = D.SERVICES.map((s, i) => {
   const [t, p, chips] = s[L];
   return `<article class="tile reveal"><div class="tile__core">
     ${s.v ? `<video class="tile__video" muted loop playsinline preload="none" data-src="${BASE}assets/reel/${s.v}.mp4"></video>` : ""}
-    <span class="tile__ico"><svg viewBox="0 0 24 24">${ICONS[s.ic]}</svg></span><span class="tile__n">0${i + 1}</span>
+    <span class="tile__ico"><svg viewBox="0 0 24 24">${ICONS[s.ic]}</svg></span><span class="tile__n">${String(i + 1).padStart(2, "0")}</span>
     <h3>${esc(t)}</h3><p>${esc(p)}</p><div class="chips">${chips.map(c => `<span>${esc(c)}</span>`).join("")}</div>
   </div></article>`;
 }).join("");
