@@ -30,6 +30,15 @@
   </section>
   <section class="svc-spec"><p class="eyebrow">${esc(U.spec)}</p>
     <ol class="spec">${sv[2].map((c, k) => `<li class="r"><span>${String(k + 1).padStart(2, "0")}</span><b>${esc(c)}</b></li>`).join("")}</ol></section>
+  ${(() => { const B = D.BUILD && D.BUILD[id] && D.BUILD[id][L]; if (!B) return "";
+    const H = { he: ["איך אנחנו בונים", "הטכנולוגיה", "מה תקבלו", "שאלות נפוצות"], en: ["How we build it", "The stack", "What you get", "FAQ"], fr: ["Comment on le construit", "Les technologies", "Ce que vous recevez", "Questions fréquentes"] }[L];
+    return `<section class="svc-build"><p class="eyebrow eyebrow--gold">${esc(H[0])}</p><h2 class="h2 svc-build__t">${esc(B.intro)}</h2>
+      <ol class="build-steps">${B.steps.map(([t, d], k) => `<li class="r"><span class="build-steps__n">${String(k + 1).padStart(2, "0")}</span><h3>${esc(t)}</h3><p>${esc(d)}</p></li>`).join("")}</ol>
+      <div class="build-cols"><div class="r"><p class="eyebrow">${esc(H[1])}</p><div class="chips">${B.stack.map(x => `<span>${esc(x)}</span>`).join("")}</div></div>
+      <div class="r"><p class="eyebrow">${esc(H[2])}</p><ul class="build-deliver">${B.deliver.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div></div>
+      <div class="faq"><p class="eyebrow">${esc(H[3])}</p>${B.faq.map(([q, a]) => `<details class="r"><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("")}</div>
+      <a class="btn btn--gold svc-build__cta" href="${BASE}${L}/?s=${id}#devis"><span>${esc({ he: "קבלו הצעה חכמה תוך 30 שניות", en: "Get a smart quote in 30 seconds", fr: "Votre devis intelligent en 30 secondes" }[L])}</span><span class="btn__ico">${ARROW}</span></a></section>`; })()}
+  ${s.films ? `<section class="svc-films"><div class="svc-films__grid">${s.films.map(f => `<video class="r" src="${BASE}assets/reel/${f}.mp4" poster="${BASE}assets/reel/poster_0${f.slice(-1)}.webp" muted loop playsinline autoplay preload="none"></video>`).join("")}</div></section>` : ""}
   ${works.length ? `<section class="svc-works"><p class="eyebrow">${esc(U.works)}</p><div class="index__grid">${works.map(w => {
     const u = w.u && w.u.replace("{l}", L);
     return `<${u ? "a" : "div"} class="pj r" ${u ? `href="${u}" target="_blank" rel="noopener"` : ""}><img class="pj__img" src="${BASE}assets/work/gal_${w.id}.webp" alt="${esc(w.t[L])}" loading="lazy"><div class="pj__b"><div><div class="pj__s">${esc(w.s[L])}</div><div class="pj__t">${esc(w.t[L])}</div></div><span class="pj__a">${esc(u ? T["work.visit"].replace("↗", ARROW) : T["work.private"])}</span></div></${u ? "a" : "div"}>`;

@@ -19,6 +19,7 @@ const ARROW = RTL ? "↖" : "↗";
 /* ---------- texte ---------- */
 document.title = { he: "DreamNova — אנחנו בונים את הבלתי אפשרי", en: "DreamNova — We build the impossible", fr: "DreamNova — Nous construisons l'impossible" }[L];
 $$("[data-i]").forEach(el => { const v = T[el.dataset.i]; if (v != null) el.textContent = v; });
+$$("[data-q]").forEach(el => el.textContent = { he: "הצעת מחיר", en: "Quote", fr: "Devis" }[L]);
 $$(".nav__langs a,.menu__langs a").forEach(a => { const l = a.dataset.l || a.getAttribute("href").replace(/\W/g, ""); a.href = BASE + l + "/"; a.classList.toggle("is-on", l === L); });
 $$("[data-wa]").forEach(a => { const k = a.dataset.wa; a.href = wa(k === "audit" ? T["off.a_title"] : "", k === "partner"); a.target = "_blank"; a.rel = "noopener"; });
 
@@ -218,7 +219,7 @@ function intro() {
   let last = 0; ScrollTrigger.create({ onUpdate: s => { const y = s.scroll(); $(".nav").classList.toggle("is-hidden", y > 400 && y > last && !document.body.classList.contains("menu-open")); last = y; } });
 
   // apparitions
-  ScrollTrigger.batch(".reveal", { start: "top 88%", once: true,
+  ScrollTrigger.batch(".reveal:not(.pj):not(.who):not(.step):not(.lc):not(.off)", { start: "top 88%", once: true,
     onEnter: b => gsap.to(b, { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.2, ease: "expo.out", stagger: .07, overwrite: true }) });
   // titres : mot par mot derrière un masque
   $$(".sec-head .h2,.rooms__title").forEach(h => { h.innerHTML = h.textContent.split(" ").map(w => `<span class="wm"><span>${esc(w)}</span></span>`).join(" "); });
@@ -226,9 +227,16 @@ function intro() {
     gsap.from(h.querySelectorAll(".wm>span"), { yPercent: 110, duration: 1.3, stagger: .06, ease: "expo.out", scrollTrigger: { trigger: h, start: "top 85%" } });
     gsap.from([...h.children].filter(c => !c.classList.contains("h2")), { y: 40, opacity: 0, duration: 1.2, stagger: .08, ease: "expo.out", scrollTrigger: { trigger: h, start: "top 85%" } });
   });
-  // inclinaison selon la vitesse de défilement
-  const skewTo = gsap.quickTo(".pj,.who,.step", "skewY", { duration: .6, ease: "power3" });
-  ScrollTrigger.create({ onUpdate: s => skewTo(gsap.utils.clamp(-3, 3, s.getVelocity() / -600)) });
+  // cartes : entrée en vrille 3D, puis vrille complète au survol
+  const SPIN = ".pj,.who,.step,.lc,.off";
+  gsap.set(SPIN, { transformPerspective: 1100 });
+  ScrollTrigger.batch(SPIN, { start: "top 92%", once: true, onEnter: b => gsap.fromTo(b,
+    { rotationY: (RTL ? -1 : 1) * 115, rotationX: 22, z: -320, opacity: 0, transformOrigin: "50% 50% -140px" },
+    { rotationY: 0, rotationX: 0, z: 0, opacity: 1, duration: 1.7, ease: "expo.out", stagger: .07, overwrite: true }) });
+  $$(".pj,.who").forEach(el => el.addEventListener("pointerenter", () => {
+    if (el._spin || matchMedia("(hover: none)").matches) return; el._spin = 1;
+    gsap.fromTo(el, { rotationY: 0 }, { rotationY: (RTL ? -360 : 360), duration: 1.25, ease: "power3.inOut", onComplete: () => { gsap.set(el, { rotationY: 0 }); el._spin = 0; } });
+  }));
 
   // carrousel épinglé (bureau)
   const mm = gsap.matchMedia();

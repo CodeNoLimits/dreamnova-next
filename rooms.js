@@ -44,7 +44,7 @@ function cover(tex, aspect, target) {
 function start() {
   const renderer = new THREE.WebGLRenderer({ canvas, context: gl, antialias: !mobile, powerPreference: "high-performance" });
   renderer.setPixelRatio(Math.min(devicePixelRatio, mobile ? 1.25 : 1.75));
-  renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.1;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 0.95;
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x030202); scene.fog = new THREE.FogExp2(0x030202, 0.045);
   const cam = new THREE.PerspectiveCamera(mobile ? 70 : 55, 1, 0.1, 200);
@@ -59,7 +59,7 @@ function start() {
   const inner = archShape(W, H), outer = archShape(W + T * 2, H + T);
   const frameShape = archShape(W + T * 2, H + T); frameShape.holes.push(archShape(W, H));
   const frameGeo = new THREE.ExtrudeGeometry(frameShape, { depth: 0.35, bevelEnabled: true, bevelSize: 0.04, bevelThickness: 0.04, bevelSegments: 2, curveSegments: 48 });
-  const frameMat = new THREE.MeshStandardMaterial({ color: 0x1a1206, metalness: 0.9, roughness: 0.3, emissive: 0xe8b84a, emissiveIntensity: 1.25 });
+  const frameMat = new THREE.MeshStandardMaterial({ color: 0x1a1206, metalness: 0.9, roughness: 0.3, emissive: 0xffcf5a, emissiveIntensity: 2.4 });
   const screenGeo = new THREE.ShapeGeometry(inner, 48); fitUV(screenGeo);
   const loader = new THREE.TextureLoader();
   ROOMS.forEach((r, i) => {
@@ -68,19 +68,23 @@ function start() {
     const m = media(r), target = W / H;
     let tex, video = null;
     if (m.video) {
-      video = document.createElement("video"); Object.assign(video, { muted: true, loop: true, playsInline: true, crossOrigin: "anonymous", preload: "none" });
-      video.dataset.src = m.video; tex = new THREE.VideoTexture(video);
-      video.addEventListener("loadedmetadata", () => cover(tex, video.videoWidth / video.videoHeight, target));
+      video = document.createElement("video"); Object.assign(video, { muted: true, loop: true, playsInline: true, crossOrigin: "anonymous", preload: "metadata" });
+      video.dataset.src = m.video; const vtex = new THREE.VideoTexture(video); vtex.colorSpace = THREE.SRGBColorSpace;
+      const pn = (r.m.match(/room_0(\d)/) || [])[1];
+      tex = pn ? loader.load(`${BASE}assets/rooms/poster_room_0${pn}.webp`, t => cover(t, t.image.width / t.image.height, target)) : vtex;
+      video.addEventListener("loadedmetadata", () => cover(vtex, video.videoWidth / video.videoHeight, target));
+      video.addEventListener("playing", () => { if (tex !== vtex) { screenRef.material.map = vtex; screenRef.material.needsUpdate = true; } }, { once: true });
     } else {
       tex = loader.load(m.img, t => cover(t, t.image.width / t.image.height, target));
     }
     tex.colorSpace = THREE.SRGBColorSpace;
-    const screen = new THREE.Mesh(screenGeo, new THREE.MeshBasicMaterial({ map: tex, transparent: true, toneMapped: false, color: 0xc4baa8 }));
+    const screen = new THREE.Mesh(screenGeo, new THREE.MeshBasicMaterial({ map: tex, transparent: true, color: 0xffffff }));
+    var screenRef = screen;
     g.add(screen);
     // halo derrière le portail
     const halo = new THREE.Mesh(new THREE.PlaneGeometry(W * 2.6, H * 1.7), new THREE.MeshBasicMaterial({ map: glowTex(), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0.55 }));
     halo.position.set(0, H / 2, -1.2); g.add(halo);
-    scene.add(g); portals.push({ g, screen, video, frame });
+    scene.add(g); portals.push({ g, screen, video, frame, halo });
   });
 
   // poussière dorée
@@ -99,7 +103,7 @@ function start() {
   // postprod : halo lumineux
   const composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, cam));
-  const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), 0.7, 0.55, 0.72);
+  const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), 0.5, 0.55, 0.86);
   composer.addPass(bloom); composer.addPass(new OutputPass());
 
   const resize = () => { const w = pin.clientWidth, h = pin.clientHeight; renderer.setSize(w, h, false); composer.setSize(w, h); cam.aspect = w / h; cam.updateProjectionMatrix(); };
@@ -147,9 +151,10 @@ function start() {
       if (Math.abs(dist - OFF) < GAP / 2) near = i;
       // l'écran s'efface quand on le traverse
       p.screen.material.opacity = THREE.MathUtils.clamp((dist - 3.5) / 4, 0, 1);
+      p.halo.material.opacity = 0.45 * THREE.MathUtils.smoothstep(dist, 3, 10);
       
       if (p.video) {
-        const want = dist > -2 && dist < GAP * 2.2;
+        const want = dist > -2 && dist < GAP * 2.6;
         if (want) { if (!p.video.src) p.video.src = p.video.dataset.src; if (p.video.paused) p.video.play().catch(() => {}); }
         else if (!p.video.paused) p.video.pause();
       }

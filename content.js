@@ -99,7 +99,7 @@ DRIVE_I: {
  fr:{eyebrow:"DreamNova · Édition course",l1:"Prenez",l2:"le volant.",sub:"Entrez dans le cockpit. Chaque bouton, chaque écran, chaque rapport mène à l'un de nos services.",hint:"Faites défiler pour entrer",tap:"Entrer"}
 },
 SVC: [
- {id:"film",hot:"paddle_left",w:["media"],o:[6,10],v:"rooms/room_02_cinema.mp4",part:{he:"מנוף העברה שמאלי",en:"Left paddle",fr:"Palette gauche"}},
+ {id:"film",hot:"paddle_left",w:["media"],films:["cinema_pipeline_01","animation_pipeline_02","subtitled_pipeline_03","bijoux_pipeline_04","adcreative_pipeline_05"],o:[6,10],v:"rooms/room_02_cinema.mp4",part:{he:"מנוף העברה שמאלי",en:"Left paddle",fr:"Palette gauche"}},
  {id:"web",hot:"screen",w:["lumen","artisans","site3d","joaillerie"],o:[0,1,3],v:"rooms/room_03_web.mp4",part:{he:"מסך מרכזי",en:"Center screen",fr:"Écran central"}},
  {id:"crm",hot:"selector",w:["devis","leadmachine","facturation"],o:[13,9],v:"car/cockpit.mp4",part:{he:"ידית ההילוכים",en:"Gear selector",fr:"Levier de vitesse"}},
  {id:"agents",hot:"wheel",w:["voiceava","stockvox","leadmachine","pinkas"],o:[5,7],v:"rooms/room_04_agents.mp4",part:{he:"הגה",en:"Steering wheel",fr:"Volant"}},
@@ -112,6 +112,29 @@ SVC_I: {
  he:{back:"חזרה לתא הנהג",works:"עבודות קשורות",offers:"הצעות",next:"ההילוך הבא",cta:"לדבר על הפרויקט",spec:"מפרט"},
  en:{back:"Back to the cockpit",works:"Related work",offers:"Offers",next:"Next gear",cta:"Talk about your project",spec:"Specs"},
  fr:{back:"Retour au cockpit",works:"Réalisations liées",offers:"Offres",next:"Rapport suivant",cta:"Parler de votre projet",spec:"Fiche technique"}
+},
+
+/* chapitres cinématiques (vidéos assets/car2, assets/space, assets/scenes) */
+CHAPTERS: {
+ accel: {
+  he:{eyebrow:"שלב 02",t:"ואז — לוחצים על הגז.",d:"מהרעיון למוצר חי, במהירות שעוד לא ראיתם."},
+  en:{eyebrow:"Stage 02",t:"Then — we hit the throttle.",d:"From idea to live product, at a speed you have never seen."},
+  fr:{eyebrow:"Étape 02",t:"Et là — on appuie sur l'accélérateur.",d:"De l'idée au produit en ligne, à une vitesse que vous ne connaissez pas."}
+ },
+ space: [
+  {v:"space/rocket",he:["אנחנו לא עוצרים בשמיים.","מעבדת המחקר של DreamNova"],en:["We don't stop at the sky.","The DreamNova research lab"],fr:["On ne s'arrête pas au ciel.","Le laboratoire de recherche DreamNova"]},
+  {v:"space/moon",he:["נוחתים במקומות שאף אחד עוד לא בנה בהם.","פטנטים בתהליך"],en:["We land where no one has built yet.","Patents pending"],fr:["On se pose là où personne n'a encore construit.","Brevets en cours"]},
+  {v:"space/orbit",he:["תשתית שמקיפה את העתיד.","בינה מלאכותית פוסט־קוונטית"],en:["Infrastructure that orbits the future.","Post-quantum AI"],fr:["Une infrastructure en orbite autour du futur.","IA post-quantique"]},
+  {v:"space/satellite",he:["והכול נשאר מחובר — לעסק שלכם.","מהמעבדה ללקוח"],en:["And everything stays connected — to your business.","From the lab to you"],fr:["Et tout reste connecté — à votre entreprise.","Du labo jusqu'à vous"]}
+ ],
+ values_i: {he:{eyebrow:"הערכים שלנו",t:"מה מניע אותנו."},en:{eyebrow:"Our values",t:"What drives us."},fr:{eyebrow:"Nos valeurs",t:"Ce qui nous anime."}},
+ values: [
+  {v:"scenes/paraglide",he:["חופש","כלים שנותנים לכם לעוף לבד."],en:["Freedom","Tools that let you fly on your own."],fr:["Liberté","Des outils qui vous laissent voler seul."]},
+  {v:"scenes/bungee",he:["תעוזה","קופצים למקום שאחרים מפחדים ממנו."],en:["Audacity","We take the leap others avoid."],fr:["Audace","On saute là où les autres hésitent."]},
+  {v:"scenes/sea",he:["זרימה","טכנולוגיה שמרגישה טבעית."],en:["Flow","Technology that feels natural."],fr:["Fluidité","Une technologie qui paraît naturelle."]},
+  {v:"scenes/mountain",he:["חזון","לראות את העסק מלמעלה."],en:["Vision","See your business from above."],fr:["Vision","Voir votre entreprise d'en haut."]},
+  {v:"scenes/parachute",he:["דיוק","נוחתים בדיוק איפה שתכננו."],en:["Precision","We land exactly where we planned."],fr:["Précision","On se pose exactement là où c'était prévu."]}
+ ]
 },
 
 STACK: ["Claude","Gemini","Veo 3.1","Kling","Grok Imagine","ElevenLabs","Whisper","Three.js","WebGL","Next.js","Shopify","Stripe","Supabase","Vercel","WhatsApp API","GSAP","Python","Rust"],
@@ -301,6 +324,6 @@ LAB: [
  {n:"Antimatrix",k:"VERIFY · FORMAL",he:"אימות פורמלי למערכות AI: להוכיח את ההתנהגות, לא רק לבדוק אותה.",en:"Formal verification for AI systems: prove behavior, don't just test it.",fr:"Vérification formelle des systèmes d'IA : prouver le comportement, pas seulement le tester."},
  {n:"Tzimtzum",k:"PROOF · ZK",he:"הוכחות אפס־ידיעה ב־Rust/Halo2: להוכיח בלי לחשוף.",en:"Zero-knowledge proofs in Rust/Halo2: prove without revealing.",fr:"Preuves à divulgation nulle en Rust/Halo2 : prouver sans révéler."},
  {n:"FHE Gates",k:"CRYPTO · FHE",he:"שערי הצפנה הומומורפית מלאה: חישוב על נתונים שנשארים מוצפנים.",en:"Fully homomorphic encryption gateways: compute on data that stays encrypted.",fr:"Passerelles de chiffrement homomorphe : calculer sur des données qui restent chiffrées."},
- {n:"Esther AI",k:"DETECT · GNN",he:"רשתות נוירונים על גרפים לזיהוי חריגות, ישירות על המכשיר.",en:"Graph neural networks for anomaly detection, running on-device.",fr:"Réseaux de neurones sur graphes pour détecter les anomalies, directement sur l'appareil."}
+ {n:"Leeya AI",k:"CREATE · VOICE",he:"עוזרת יצירה מבוססת AI: אווטאר, קול ווידאו לבעלות עסקים, יוצרות ומותגים.",en:"A creative AI companion: avatar, voice and video for founders, creators and brands.",fr:"Une assistante créative IA : avatar, voix et vidéo pour dirigeantes, créatrices et marques."}
 ]
 };

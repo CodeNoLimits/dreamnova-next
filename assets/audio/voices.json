@@ -1,0 +1,37 @@
+{
+  "hero": {
+    "he": "דְּרִים נוֹבָה. סטודיו לעיצוב ולהנדסת בינה מלאכותית בירושלים. אנחנו בונים את הַבִּלְתִּי אֶפְשָׁרִי.",
+    "en": "DreamNova, an AI design and engineering studio in Jerusalem. We build the impossible.",
+    "fr": "DreamNova, studio de design et d'ingénierie IA à Jérusalem. Nous construisons l'impossible."
+  },
+  "drive": {
+    "he": "קחו את ההגה. כל כפתור, מסך והילוך מוביל לאחד מהשירותים שלנו.",
+    "en": "Take the wheel. Every button, screen and gear leads to one of our services.",
+    "fr": "Prenez le volant. Chaque bouton, chaque écran, chaque rapport mène à l'un de nos services."
+  },
+  "accel": {
+    "he": "סטודיו אחד. כל היכולות. עיצוב, הנדסה ובינה מלאכותית תחת קורת גג אחת.",
+    "en": "One studio. Every capability. Design, engineering and AI, under one roof.",
+    "fr": "Un studio. Toutes les capacités. Design, ingénierie et IA, sous un même toit."
+  },
+  "rocket": {
+    "he": "העיצוב מושך. ההנדסה מפעילה. הבינה המלאכותית פותחת את מה שהיה בִּלְתִּי אֶפְשָׁרִי אתמול.",
+    "en": "Design attracts. Engineering makes it work. AI opens what was impossible yesterday.",
+    "fr": "Le design attire. L'ingénierie fait fonctionner. L'IA ouvre ce qui était impossible hier."
+  },
+  "sky": {
+    "he": "חזון שאפתני. רגליים על הקרקע. אנחנו מוסרים רק מה שבדקנו.",
+    "en": "Ambitious vision. Feet on the ground. We only deliver what we have tested.",
+    "fr": "Une vision ambitieuse. Les pieds sur terre. Nous ne livrons que ce que nous avons testé."
+  },
+  "rooms": {
+    "he": "היכנסו לסטודיו. קולנוע, אתרים, סוכנים קוליים ובינה מלאכותית פרטית. הכול נבנה כאן, הכול אמיתי.",
+    "en": "Step inside the studio. AI cinema, websites, voice agents and private AI. All built here, all real.",
+    "fr": "Entrez dans le studio. Cinéma IA, sites, agents vocaux et IA privée. Tout est construit ici, tout est réel."
+  },
+  "contact": {
+    "he": "בואו ניתן לו צורה. רעיון לבדוק, כלי לשפר או פרויקט להגשים. כתבו לנו כמה שורות.",
+    "en": "Let's give it shape. An idea to test, a tool to improve, or a project to bring to life. Write us a few lines.",
+    "fr": "Donnons-lui forme. Une idée à tester, un outil à améliorer, un projet à réaliser. Écrivez-nous quelques lignes."
+  }
+}

@@ -6,7 +6,7 @@
   const T = D.DRIVE_I[L], S = D.SVC;
   sec.querySelectorAll("[data-d]").forEach(e => e.textContent = T[e.dataset.d]);
   const canvas = sec.querySelector(".drive__seq"), ctx = canvas.getContext("2d"), cockpit = sec.querySelector(".drive__cockpit"), loop = sec.querySelector(".drive__loop");
-  const hotsEl = sec.querySelector(".drive__hots");
+  const hotsEl = sec.querySelector(".drive__hots"), hintEl = sec.querySelector(".drive__hint");
 
   if (!D.CAR) return;
   fetch(CAR + "hotspots.json", { cache: "no-store" }).then(r => r.ok ? r.json() : Promise.reject()).then(init).catch(() => {});
@@ -29,9 +29,11 @@
     hotsEl.innerHTML = S.map((s, i) => {
       const h = byId[s.hot]; if (!h) return "";
       const name = D.SERVICES[i][L][0];
-      return `<a class="hot ${h.x > 0.62 ? "hot--left" : ""}" role="listitem" href="${BASE}${L}/s/${s.id}/" data-x="${h.x}" data-y="${h.y}" data-cursor="${T.tap}"><span class="hot__dot"></span><span class="hot__card"><span class="hot__part">${s.part[L]}</span><span class="hot__name">${name}</span></span></a>`;
+      return `<a class="hot ${h.x > 0.55 ? "hot--left" : ""}" role="listitem" href="${BASE}${L}/s/${s.id}/" data-x="${h.x}" data-y="${h.y}" data-cursor="${T.tap}"><span class="hot__dot"></span><span class="hot__card"><span class="hot__part">${s.part[L]}</span><span class="hot__name">${name}</span></span></a>`;
     }).join("");
     sec.querySelector(".drive__chips").innerHTML = S.map((s, i) => `<a href="${BASE}${L}/s/${s.id}/"><small>${s.part[L]}</small>${D.SERVICES[i][L][0]}</a>`).join("");
+    sec.querySelectorAll(".drive__chips a").forEach((c, i) => { const hot = hotsEl.querySelectorAll(".hot")[i]; if (!hot) return;
+      c.addEventListener("pointerenter", () => hot.classList.add("is-near")); c.addEventListener("pointerleave", () => hot.classList.remove("is-near")); });
     const place = () => {
       const vw = sec.clientWidth, vh = innerHeight, sc = Math.max(vw / 16, vh / 9), w = 16 * sc, hh = 9 * sc, ox = (vw - w) / 2, oy = (vh - hh) / 2;
       hotsEl.querySelectorAll(".hot").forEach(a => { a.style.left = ox + a.dataset.x * w + "px"; a.style.top = oy + a.dataset.y * hh + "px"; });
@@ -60,7 +62,9 @@
           if (k > 0.5 && !loop.src) loop.src = loop.dataset.src;
           k > 0.5 ? loop.play().catch(() => {}) : loop.pause();
           intro.style.opacity = Math.max(0, 1 - p * 3.2); intro.style.transform = `translateY(${-p * 120}px)`;
-          sec.classList.toggle("is-in", p > seqEnd + 0.05);
+          const inside = p > seqEnd + 0.05;
+          if (inside !== sec.classList.contains("is-in")) hintEl.textContent = inside ? ({ he: "בחרו אלמנט בתא הנהג", en: "Pick any part of the cockpit", fr: "Choisissez un élément du cockpit" })[L] : T.hint;
+          sec.classList.toggle("is-in", inside);
         } });
       ST.sort(); ST.refresh();
     };
