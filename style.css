@@ -837,3 +837,56 @@ html[lang=he] .cp-screen small{letter-spacing:.04em}
   .subs{font-size:15px}
   .eyebrow{font-size:12px}html[lang=he] .eyebrow{font-size:13.5px}
 }
+
+/* ===== passe R2 des jurys (web 8,1 / DA 8,4 / mobile 8,4) + couleurs par section (Leeya) ===== */
+/* pages de service : la barre flottante ne mord plus les titres */
+.svc-page::before{content:"";position:fixed;inset:0 0 auto;height:96px;z-index:79;background:linear-gradient(#0a0806 35%,transparent);pointer-events:none}
+.nav--svc{background:rgba(14,11,8,.86)}
+/* cockpit : l'étiquette s'efface quand le panneau est ouvert ; bouton d'entrée 44 px ; bulle START cliquable */
+.hot.is-active .hot__card{opacity:0!important}
+.cp-panel__go{min-height:44px}
+.cp-panel{max-height:calc(100dvh - 24px - env(safe-area-inset-bottom));padding-bottom:calc(22px + env(safe-area-inset-bottom))}
+.cp-start-hint{pointer-events:auto;cursor:pointer;border:0;font-family:var(--f-body)}
+@media (max-width:767px){.cp-start-hint{transform:translate(-50%,34px)}.cp-start-hint::after{bottom:auto;top:-6px}}
+/* respirations plus courtes, final rempli */
+section{padding-block:clamp(72px,9vh,128px)}
+.contact{padding-block:clamp(96px,11vw,170px)}
+.chap__pin{background:radial-gradient(70% 50% at 50% 60%,#1a1206,#050403 75%)}
+/* bouton flottant : s'écarte en descendant, plus petit sur téléphone, ne couvre plus les fins de ligne */
+.fab{transition:transform .6s var(--ease),opacity .5s}
+.fab.is-away{transform:translateY(130%)!important}
+@media (max-width:767px){.fab{width:50px;height:50px;bottom:16px;inset-inline-end:14px}.fab svg{width:22px;height:22px}.who,.off,.lc,.room-card,.pj__b{scroll-margin-bottom:96px}.off__d,.who__give{padding-inline-end:44px}}
+/* cibles 44 px */
+.nav__langs a,.snd,.nav__burger{min-width:44px}
+.svc__back,.btn--sm,.foot__row a{min-height:44px;display:inline-flex;align-items:center}
+/* hero : sous-titre lisible sur la fumée dorée */
+.hero__sub{text-shadow:0 1px 14px rgba(0,0,0,.9),0 0 2px rgba(0,0,0,.6)}
+/* identité de couleur par section : on sait toujours où l'on est */
+.work{--acc:var(--gold-lt)}
+.refer{--acc:#a9e3bd;background:linear-gradient(180deg,var(--bg),#06100a 25%,#071209 75%,var(--bg))}
+.index{--acc:#a6c8ff;background:linear-gradient(180deg,var(--bg),#06091a 20%,#070b1c 80%,var(--bg))}
+.offers{--acc:#f2b8a2;background:linear-gradient(180deg,var(--bg),#160709 20%,#130608 80%,var(--bg))}
+.lab{--acc:#8fe3ff}
+.quote{--acc:#cdb0ff;background:linear-gradient(180deg,var(--bg),#0d0718 20%,#0b0616 80%,var(--bg))}
+.founder{--acc:var(--gold-pale);background:linear-gradient(180deg,var(--bg),#120d06 50%,var(--bg))}
+[style*="--acc"],.refer,.index,.offers,.lab,.quote,.founder{--acc-soft:color-mix(in srgb,var(--acc) 34%,transparent);--acc-bg:color-mix(in srgb,var(--acc) 8%,transparent)}
+.refer .eyebrow,.index .eyebrow,.offers .eyebrow,.lab .eyebrow,.quote .eyebrow,.founder .eyebrow{color:var(--acc);box-shadow:inset 0 0 0 1px var(--acc-soft);background:var(--acc-bg)}
+.refer .who__k,.refer .partner__steps li::before,.index .pj__s,.index .filters button.is-on,.offers .off__n,.offers .off__p small,.lab .lc__k,.quote .quote__form label span{color:var(--acc)}
+.index .filters button.is-on{background:var(--acc);color:#07101c}
+.refer .who:hover,.refer .who:active{box-shadow:inset 0 0 0 1px var(--acc-soft);background:var(--acc-bg)}
+.offers .off:hover{background:linear-gradient(90deg,var(--acc-bg),transparent 70%)}
+.lab .lc{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--acc) 22%,transparent)}
+.lab__grid-bg{background-image:linear-gradient(color-mix(in srgb,var(--acc) 9%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--acc) 9%,transparent) 1px,transparent 1px)}
+.quote .quote__form :is(input,select,textarea):focus{box-shadow:inset 0 0 0 1.5px var(--acc)}
+.refer::before,.index::before,.offers::before,.lab::before,.quote::before,.founder::before{content:"";position:absolute;top:0;inset-inline:var(--pad);height:1px;background:linear-gradient(90deg,transparent,var(--acc),transparent);opacity:.6}
+/* retours Leeya (hébreu, téléphone) : 2 polices seulement, Open Sans en texte, plus de contraste, sous-titres discrets */
+html[lang=he]{--f-display:"Rubik",system-ui,sans-serif;--f-accent:"Rubik",system-ui,sans-serif;--f-body:"Open Sans","Rubik",system-ui,sans-serif}
+html[lang=he] em,html[lang=he] .hero__title em,html[lang=he] .manifesto__text .w.g,html[lang=he] .who__sig,html[lang=he] .founder__quote,html[lang=he] .card--intro p{font-family:"Rubik",system-ui,sans-serif;font-style:normal}
+html[lang=he] .hero__title em{font-weight:600}
+html[lang=he] body,html[lang=he] p,html[lang=he] li{line-height:1.7}
+@media (max-width:767px){
+  :root{--mute:#c8c0b2;--dim:#a39b8e}
+  html[lang=he] body{font-size:18px}
+  html[lang=he] .lead,html[lang=he] .hero__sub,html[lang=he] .drive__sub{font-size:19px}
+  .subs{display:none} /* téléphone : pas de boîte de sous-titres ; la voix suffit */
+}

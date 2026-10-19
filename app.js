@@ -33,6 +33,7 @@ const HE_FIRST = ["consult", "pinkas", "mehadrin", "editions", "diagnostic", "vo
 const works = D.WORKS.filter(w => !w.only || w.only === L).sort((a, b) => L !== "he" ? 0 : (HE_FIRST.indexOf(b.id) > -1) - (HE_FIRST.indexOf(a.id) > -1));
 const byId = Object.fromEntries(works.map(w => [w.id, w]));
 const url = w => w.u && w.u.replace("{l}", L);
+const gal = w => `${BASE}assets/work/gal_${w.id}${w.id === "site3d" ? "_" + L : ""}.webp`; // vignette dans la langue de la page
 let n = 0;
 const reelCards = D.REEL.map(r => {
   if (r.v) {
@@ -45,7 +46,7 @@ const reelCards = D.REEL.map(r => {
   const w = byId[r.p]; if (!w || (L === "he" && r.p === "lumen")) return ""; n++; // visuel en français : pas sur la page hébreu
   const u = url(w);
   return `<a class="card" ${u ? `href="${u}" target="_blank" rel="noopener"` : ""} data-cursor="${esc(T["work.view"])}">
-    <img class="card__media" src="${BASE}assets/work/gal_${w.id}.webp" alt="${esc(w.t[L])}" loading="lazy" decoding="async">
+    <img class="card__media" src="${gal(w)}" alt="${esc(w.t[L])}" loading="lazy" decoding="async">
     <span class="card__num">${String(n).padStart(2, "0")}</span>
     <div class="card__meta"><div><span class="card__tag">${esc(w.s[L])}</span><h3 class="card__title">${esc(w.t[L])}</h3></div><span class="card__go">${ARROW}</span></div></a>`;
 }).join("");
@@ -87,7 +88,7 @@ addEventListener("pointermove", e => { flo.style.left = e.clientX + "px"; flo.st
 $("[data-index]").innerHTML = works.map(w => {
   const u = url(w);
   return `<${u ? "a" : "div"} class="pj ${u ? "" : "pj--private"}" data-c="${w.c}" ${u ? `href="${u}" target="_blank" rel="noopener"` : ""}>
-    <img class="pj__img" src="${BASE}assets/work/gal_${w.id}.webp" alt="${esc(w.t[L])}" loading="lazy" decoding="async">
+    <img class="pj__img" src="${gal(w)}" alt="${esc(w.t[L])}" loading="lazy" decoding="async">
     <div class="pj__b"><div><div class="pj__s">${esc(w.s[L])}</div><div class="pj__t">${esc(w.t[L])}</div></div><span class="pj__a">${esc(u ? T["work.visit"].replace("↗", ARROW) : T["work.private"])}</span></div></${u ? "a" : "div"}>`;
 }).join("");
 $("[data-index]").addEventListener("pointerover", e => { const p = e.target.closest(".pj"); if (!p) return flo.classList.remove("is-on"); flo.querySelector("img").src = p.querySelector(".pj__img").src; flo.classList.add("is-on"); });
@@ -128,6 +129,9 @@ $$("video[data-src]").filter(v => !v.closest(".room-card")).forEach(v => vio.obs
     dash.style.backgroundImage = `url(${BASE}assets/${mobile() ? "car2/cockpit_m.webp" : "car/cockpit.webp"})`; io.disconnect(); }, { rootMargin: "1500px 0px" }); io.observe(dash); } }
 
 document.querySelector(".startbtn")?.addEventListener("click", () => window.DNAudio?.sfx("engine", 0, 1));
+{ const s = $(".startbtn small"); if (s) s.textContent = { he: "מנוע", en: "ENGINE", fr: "MOTEUR" }[L]; }
+/* la page change de hauteur (listes dépliées, médias) : les déclencheurs se recalent */
+{ let rt = 0; new ResizeObserver(() => { clearTimeout(rt); rt = setTimeout(() => window.ScrollTrigger && ScrollTrigger.refresh(), 250); }).observe(document.querySelector("main")); }
 /* ---------- bouton flottant : masqué là où il gênerait ---------- */
 { const vis = new Set(); const io = new IntersectionObserver(es => { es.forEach(e => e.isIntersecting ? vis.add(e.target) : vis.delete(e.target)); document.body.classList.toggle("no-fab", vis.size > 0); });
   ["#devis", "#contact", ".foot"].forEach(s => { const e = $(s); if (e) io.observe(e); }); }
@@ -226,7 +230,7 @@ function intro() {
   tl.from(".hero__title .line>*", { yPercent: 110, duration: mobile() ? .9 : 1.4, stagger: .1 })
     .from(".hero__eyebrow", { y: 20, opacity: 0, duration: 1 }, .2)
     .from(".hero__sub,.hero__ctas", { y: 30, opacity: 0, duration: 1.2, stagger: .1 }, .5)
-    .from(".stat", { y: 30, opacity: 0, duration: 1.2, stagger: .08 }, .8)
+    .from(".stat", { y: 30, opacity: 0, duration: mobile() ? .5 : 1.2, stagger: mobile() ? .03 : .08 }, mobile() ? .25 : .8)
     .from(".nav", { opacity: 0, duration: 1.2, clearProps: "opacity" }, .3)
     .from(".hero__gl", { opacity: 0, scale: 1.08, duration: 2.4, ease: "power2.out" }, 0);
   gsap.to(".hero__inner", { yPercent: -18, opacity: .2, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });
@@ -234,7 +238,7 @@ function intro() {
   ScrollTrigger.create({ trigger: ".hero", start: "bottom 60%", onEnter: () => document.body.classList.add("past-hero"), onLeaveBack: () => document.body.classList.remove("past-hero") });
   ScrollTrigger.create({ trigger: ".manifesto", start: "top 60px", end: "bottom 60px", toggleClass: { targets: ".nav", className: "on-light" } });
   // cache la nav en descendant
-  let last = 0; ScrollTrigger.create({ onUpdate: s => { const y = s.scroll(); $(".nav").classList.toggle("is-hidden", y > 400 && y > last && !document.body.classList.contains("menu-open")); last = y; } });
+  let last = 0; ScrollTrigger.create({ onUpdate: s => { const y = s.scroll(); const down = y > 400 && y > last && !document.body.classList.contains("menu-open"); $(".nav").classList.toggle("is-hidden", down); $(".fab").classList.toggle("is-away", down); last = y; } });
 
   // apparitions
   ScrollTrigger.batch(".reveal:not(.who):not(.step):not(.lc):not(.off)", { start: mobile() ? "top 100%" : "top 88%", once: true,

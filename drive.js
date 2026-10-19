@@ -24,7 +24,7 @@
     <div class="cp-road" aria-hidden="true"></div><div class="cp-glow" aria-hidden="true"></div><div class="cp-amb" aria-hidden="true"></div>
     <div class="hud" aria-hidden="true"><svg viewBox="0 0 200 120"><path class="hud__track" d="M20 110 A80 80 0 0 1 180 110"/><path class="hud__rpm" d="M20 110 A80 80 0 0 1 180 110"/></svg>
       <div class="hud__num"><b class="hud__speed">0</b><span>km/h</span></div><div class="hud__gear"><small>${esc(TX.gear)}</small><b>P</b></div></div>
-    <div class="cp-start-hint"><span></span>${esc(TX.start)}</div>
+    <button type="button" class="cp-start-hint"><span></span>${esc(TX.start)}</button>
     <aside class="cp-panel" role="dialog" aria-live="polite" hidden><button class="cp-panel__x" aria-label="${esc(TX.close)}">×</button><p class="cp-panel__part"></p><h3 class="cp-panel__t"></h3><p class="cp-panel__d"></p><div class="cp-panel__x2"></div><a class="btn btn--gold btn--sm cp-panel__go"><span>${esc(TX.enter)}</span><span class="btn__ico">${RTL ? "↖" : "↗"}</span></a></aside>`);
   const hud = pin.querySelector(".hud"), rpmPath = hud.querySelector(".hud__rpm"), speedEl = hud.querySelector(".hud__speed"), gearEl = hud.querySelector(".hud__gear b");
   const road = pin.querySelector(".cp-road"), glow = pin.querySelector(".cp-glow"), amb = pin.querySelector(".cp-amb"), startHint = pin.querySelector(".cp-start-hint"), panel = pin.querySelector(".cp-panel");
@@ -116,6 +116,7 @@
     }
     const act = i => { const id = S[i].hot; (EFFECT[id] || (() => {}))(); openPanel(i); };
     hotBtns.forEach(b => b.addEventListener("click", () => act(+b.dataset.i)));
+    startHint.addEventListener("click", () => { const k = S.findIndex(s => s.hot === "start"); if (k > -1) act(k); }); // la bulle elle-même démarre le moteur
     sec.querySelectorAll(".drive__chips button").forEach(b => b.addEventListener("click", () => act(+b.dataset.i)));
     sec.querySelectorAll(".drive__chips button").forEach((c, i) => { const hot = hotBtns.find(h => +h.dataset.i === i); if (!hot) return;
       c.addEventListener("pointerenter", () => hot.classList.add("is-near")); c.addEventListener("pointerleave", () => hot.classList.remove("is-near")); });

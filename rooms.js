@@ -134,9 +134,9 @@ function start() {
     const ST = window.ScrollTrigger;
     if (!ST || window.__DN?.reduced) { sec.classList.add("no-gl"); fallback(); return; }
     const head = sec.querySelector(".rooms__head");
-    ST.create({ trigger: sec, start: "top top", end: () => "+=" + innerHeight * N * 0.55, pin: pin, scrub: 0.6, anticipatePin: 1, invalidateOnRefresh: true, refreshPriority: 6,
-      snap: { snapTo: 1 / (N - 1), duration: { min: 0.3, max: 0.8 }, ease: "power2.inOut", delay: 0.05 },
-      onUpdate: s => { prog = s.progress; head.style.opacity = Math.max(0, 1 - s.progress * 6); } });
+    ST.create({ trigger: sec, start: "top top", end: () => "+=" + innerHeight * N * 0.75, pin: pin, scrub: 0.6, anticipatePin: 1, invalidateOnRefresh: true, refreshPriority: 6,
+      snap: { snapTo: 1 / (N - 1), duration: { min: 0.3, max: 0.8 }, ease: "power2.inOut", delay: 0.05, directional: true },
+      onUpdate: s => { prog = s.progress; head.style.opacity = Math.max(0, 1 - s.progress * 6); setRoom(Math.round(prog * (N - 1))); } }); // la légende suit la position réelle, pas l'image lissée
     ST.sort(); ST.refresh();
   };
   window.__DN ? hook() : addEventListener("dn:ready", hook, { once: true });
@@ -145,18 +145,16 @@ function start() {
   (function loop() {
     requestAnimationFrame(loop);
     if (!visible) return;
-    const t = clock.getElapsedTime();
-    smooth += (prog - smooth) * 0.08;
+    const t = clock.getElapsedTime(), dt = Math.min(.1, clock.getDelta());
+    smooth += (prog - smooth) * (1 - Math.exp(-dt * 8)); // lissage lié au temps : même ressenti à 30 ou 120 images/s
     const z = zStart + (zEnd - zStart) * smooth;
     cam.position.set(Math.sin(smooth * Math.PI * 3) * 0.6 + mx * 0.9, 3.4 + Math.sin(t * .6) * 0.08 - my * 0.5, z);
     cam.lookAt(mx * 1.5 * (RTL ? -1 : 1), 3.6 - my * 0.6, z - 12);
     key.position.set(0, 5, z - 6);
     pm.uniforms.t.value = t;
-    let near = 0;
     portals.forEach((p, i) => {
       const d = p.g.position.z - z; // négatif = devant la caméra
       const dist = -d;
-      if (Math.abs(dist - OFF) < GAP / 2) near = i;
       // l'écran s'efface quand on le traverse
       p.screen.material.opacity = THREE.MathUtils.clamp((dist - 3.5) / 4, 0, 1);
       p.halo.material.opacity = 0.45 * THREE.MathUtils.smoothstep(dist, 3, 10);
@@ -167,7 +165,6 @@ function start() {
         else if (!p.video.paused) p.video.pause();
       }
     });
-    setRoom(near);
     composer.render();
   })();
   window.__DNROOMS = true;

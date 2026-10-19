@@ -5,7 +5,7 @@ root = pathlib.Path(__file__).parent
 I = json.loads(subprocess.check_output(["node", "-e", "global.window={};require('./content.js');process.stdout.write(JSON.stringify(window.DN.I))"], cwd=root))
 src = (root / "index.html").read_text()
 FONTS = {
-  "he": "family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Rubik:wght@400..800&family=Frank+Ruhl+Libre:wght@400;500&family=Heebo:wght@300..700",
+  "he": "family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Rubik:wght@400..800&family=Open+Sans:wght@400;600;700",
   "en": "family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Instrument+Serif:ital@0;1&family=Manrope:wght@300..700",
 }
 FONTS["fr"] = FONTS["en"]
