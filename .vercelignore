@@ -1,3 +1,6 @@
 .git
 .gitignore
 gen_pages.py
+assets/**/RAPPORT.md
+assets/**/planche.jpg
+assets/**/*.md

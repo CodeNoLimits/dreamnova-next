@@ -17,11 +17,11 @@
     const N = hots.frames || 80; // nombre d'images de la séquence
     const frames = new Array(N);
     let loaded = 0;
-    for (let i = 0; i < N; i++) {
-      const im = new Image(); im.decoding = "async";
-      im.onload = () => { loaded++; if (i === 0) draw(0); };
-      im.src = `${CAR}seq/f_${String(i).padStart(3, "0")}.webp`; frames[i] = im;
-    }
+    // chargement progressif : image 0 tout de suite, le reste quand le cockpit approche (1 image sur 8 d'abord)
+    const load = i => { if (frames[i]) return; const im = new Image(); im.decoding = "async"; im.onload = () => { loaded++; if (i === 0 || i === cur) draw(i); }; im.src = `${CAR}seq/f_${String(i).padStart(3, "0")}.webp`; frames[i] = im; };
+    load(0);
+    new IntersectionObserver(([e], o) => { if (!e.isIntersecting) return; o.disconnect();
+      for (let i = 0; i < N; i += 8) load(i); setTimeout(() => { for (let i = 0; i < N; i++) load(i); }, 400); }, { rootMargin: "120% 0px" }).observe(sec);
     cockpit.style.backgroundImage = `url(${CAR}cockpit.webp)`;
     loop.dataset.src = CAR + "cockpit.mp4";
 
@@ -41,7 +41,7 @@
     };
     let cur = 0;
     function draw(i) {
-      const im = frames[i]; if (!im || !im.complete || !im.naturalWidth) return;
+      let im = frames[i]; if (!im || !im.complete || !im.naturalWidth) { for (let k = i; k >= 0; k--) if (frames[k] && frames[k].complete && frames[k].naturalWidth) { im = frames[k]; break; } if (!im || !im.naturalWidth) return; }
       const cw = canvas.width, ch = canvas.height, sc = Math.max(cw / im.naturalWidth, ch / im.naturalHeight);
       const w = im.naturalWidth * sc, h = im.naturalHeight * sc;
       ctx.drawImage(im, (cw - w) / 2, (ch - h) / 2, w, h);

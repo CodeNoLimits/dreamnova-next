@@ -15,14 +15,18 @@ const media = r => { const [k, v] = r.m.split(":"); return k === "v" ? { video: 
 
 sec.querySelectorAll("[data-r]").forEach(e => e.textContent = D.ROOMS_I[L][e.dataset.r]);
 sec.querySelector(".rooms__dots").innerHTML = ROOMS.map(() => "<li></li>").join("");
-sec.querySelector(".rooms__fallback").innerHTML = ROOMS.map(r => {
-  const m = media(r);
-  return `<article class="room-card">${m.video ? `<video src="${m.video}" muted loop playsinline autoplay></video>` : `<img src="${m.img}" alt="" loading="lazy">`}<div><b>${r[L][0]}</b><p>${r[L][1]}</p></div></article>`;
-}).join("");
+function fallback() { // seulement si la 3D est désactivée (mobile / sans WebGL) : vidéos chargées à l'approche
+  sec.querySelector(".rooms__fallback").innerHTML = ROOMS.map(r => {
+    const m = media(r), pn = (r.m.match(/room_0(\d)/) || [])[1];
+    return `<article class="room-card">${m.video ? `<video data-src="${m.video}" ${pn ? `poster="${BASE}assets/rooms/poster_room_0${pn}.webp"` : ""} muted loop playsinline preload="none"></video>` : `<img src="${m.img}" alt="" loading="lazy">`}<div><b>${r[L][0]}</b><p>${r[L][1]}</p></div></article>`;
+  }).join("");
+  const io = new IntersectionObserver(es => es.forEach(e => { const v = e.target; if (e.isIntersecting) { if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); } else v.pause(); }), { rootMargin: "200px" });
+  sec.querySelectorAll(".room-card video").forEach(v => io.observe(v));
+}
 
 let gl = null;
 try { gl = canvas.getContext("webgl2") || canvas.getContext("webgl"); } catch (e) {}
-if (!gl || mobile) { sec.classList.add("no-gl"); }
+if (!gl || mobile) { sec.classList.add("no-gl"); fallback(); }
 else start();
 
 function archShape(w, h) {
@@ -124,7 +128,7 @@ function start() {
 
   const hook = () => {
     const ST = window.ScrollTrigger;
-    if (!ST || window.__DN?.reduced) { sec.classList.add("no-gl"); return; }
+    if (!ST || window.__DN?.reduced) { sec.classList.add("no-gl"); fallback(); return; }
     const head = sec.querySelector(".rooms__head");
     ST.create({ trigger: sec, start: "top top", end: () => "+=" + innerHeight * N * 0.55, pin: pin, scrub: 0.6, anticipatePin: 1, invalidateOnRefresh: true,
       snap: { snapTo: 1 / (N - 1), duration: { min: 0.3, max: 0.8 }, ease: "power2.inOut", delay: 0.05 },

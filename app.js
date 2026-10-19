@@ -88,10 +88,10 @@ $("[data-index]").innerHTML = works.map(w => {
     <div class="pj__b"><div><div class="pj__s">${esc(w.s[L])}</div><div class="pj__t">${esc(w.t[L])}</div></div><span class="pj__a">${esc(u ? T["work.visit"].replace("↗", ARROW) : T["work.private"])}</span></div></${u ? "a" : "div"}>`;
 }).join("");
 const fb = $("[data-filters]");
-fb.innerHTML = D.FILTERS[L].map(([k, v], i) => `<button role="tab" data-f="${k}" class="${i ? "" : "is-on"}" aria-selected="${!i}">${esc(v)}</button>`).join("");
+fb.innerHTML = D.FILTERS[L].map(([k, v], i) => `<button type="button" data-f="${k}" class="${i ? "" : "is-on"}" aria-pressed="${!i}">${esc(v)}</button>`).join("");
 fb.addEventListener("click", e => {
   const b = e.target.closest("button"); if (!b) return;
-  $$("button", fb).forEach(x => { x.classList.toggle("is-on", x === b); x.setAttribute("aria-selected", x === b); });
+  $$("button", fb).forEach(x => { x.classList.toggle("is-on", x === b); x.setAttribute("aria-pressed", x === b); });
   $$(".pj").forEach(p => p.classList.toggle("is-out", b.dataset.f !== "all" && p.dataset.c !== b.dataset.f));
   window.ScrollTrigger && ScrollTrigger.refresh();
 });
@@ -119,7 +119,7 @@ $$("video[data-src]").forEach(v => vio.observe(v));
 /* ---------- menu ---------- */
 const burger = $(".nav__burger");
 burger.addEventListener("click", () => { const o = document.body.classList.toggle("menu-open"); burger.setAttribute("aria-expanded", o); $(".menu").setAttribute("aria-hidden", !o); });
-$$(".menu a").forEach(a => a.addEventListener("click", () => { document.body.classList.remove("menu-open"); burger.setAttribute("aria-expanded", false); }));
+$$(".menu a").forEach(a => a.addEventListener("click", () => { document.body.classList.remove("menu-open"); burger.setAttribute("aria-expanded", false); $(".menu").setAttribute("aria-hidden", true); }));
 
 /* ---------- hero WebGL : or liquide ---------- */
 const mouse = { x: .5, y: .5, tx: .5, ty: .5 };
@@ -161,7 +161,8 @@ addEventListener("pointermove", e => { mouse.tx = e.clientX / innerWidth; mouse.
   const loop = now => {
     requestAnimationFrame(loop); if (!vis) return;
     mouse.x += (mouse.tx - mouse.x) * .04; mouse.y += (mouse.ty - mouse.y) * .04;
-    g.uniform2f(uR, c.width, c.height); g.uniform1f(uT, reduced ? 20 : (now - t0) / 1000); g.uniform2f(uM, mouse.x, mouse.y);
+    g.uniform2f(uR, c.width, c.height); g.uniform1f(uT, reduced ? 20 : (now - t0) / 1000);
+    if (reduced) { g.drawArrays(g.TRIANGLES, 0, 3); vis = false; return; } g.uniform2f(uM, mouse.x, mouse.y);
     g.drawArrays(g.TRIANGLES, 0, 3);
   };
   requestAnimationFrame(loop);
@@ -216,6 +217,7 @@ function intro() {
   gsap.to(".hero__inner", { yPercent: -18, opacity: .2, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });
 
   ScrollTrigger.create({ trigger: ".hero", start: "bottom 60%", onEnter: () => document.body.classList.add("past-hero"), onLeaveBack: () => document.body.classList.remove("past-hero") });
+  ScrollTrigger.create({ trigger: ".manifesto", start: "top 60px", end: "bottom 60px", toggleClass: { targets: ".nav", className: "on-light" } });
   // cache la nav en descendant
   let last = 0; ScrollTrigger.create({ onUpdate: s => { const y = s.scroll(); $(".nav").classList.toggle("is-hidden", y > 400 && y > last && !document.body.classList.contains("menu-open")); last = y; } });
 
