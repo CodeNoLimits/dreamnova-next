@@ -145,7 +145,7 @@ function start() {
   (function loop() {
     requestAnimationFrame(loop);
     if (!visible) return;
-    const t = clock.getElapsedTime(), dt = Math.min(.1, clock.getDelta());
+    const dt = Math.min(.1, clock.getDelta()), t = clock.elapsedTime; // getDelta d'abord : getElapsedTime remettrait le delta à zéro
     smooth += (prog - smooth) * (1 - Math.exp(-dt * 8)); // lissage lié au temps : même ressenti à 30 ou 120 images/s
     const z = zStart + (zEnd - zStart) * smooth;
     cam.position.set(Math.sin(smooth * Math.PI * 3) * 0.6 + mx * 0.9, 3.4 + Math.sin(t * .6) * 0.08 - my * 0.5, z);

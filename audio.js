@@ -3,6 +3,7 @@
 (() => {
   const D = window.DN, L = document.documentElement.lang, BASE = new URL("./", document.currentScript.src).href, A = BASE + "assets/audio/";
   if (!(D.ON || {}).audio) return;
+  if (new URLSearchParams(location.search).get("embed") === "1") return; // surcouche : la musique vient de la page principale
   const TX = {
     he: { on: "הפעלת סאונד", off: "השתקה", go: "התנעת המנוע", mute: "כניסה בלי סאונד", tag: "חוויה סוחפת · מומלץ עם אוזניות" },
     en: { on: "Sound on", off: "Mute", go: "Start the engine", mute: "Enter without sound", tag: "Immersive experience · headphones recommended" },
@@ -100,9 +101,9 @@
     eng.lp.frequency.setTargetAtTime(180 + r * 380, t, .1); eng.g.gain.setTargetAtTime(.06 + r * .016, t, .12); }
 
   const NO_VOICE = new Set(["accel", "rocket"]); // ces voix ne disent pas le texte affiché : musique et effets seulement
-  const SECTIONS = [["hero", ".hero"], ["drive", ".drive"], ["accel", ".chap--accel"], ["work", "#work"], ["rooms", ".rooms"], ["services", "#services"], ["refer", "#refer"], ["offers", "#offers"],
+  const SECTIONS = [["hero", ".hero"], ["drive", ".drive"], ["accel", ".chap--accel"], ["work", "#work"], ["rooms", ".rooms"], ["reels", "#reels"], ["services", "#services"], ["refer", "#refer"], ["offers", "#offers"],
     ["audit", "#audit"], ["devis", "#devis"], ["rocket", ".chap--space"], ["lab", "#lab"], ["values", ".chap--values"], ["contact", "#contact"]];
-  const MUSIC_OF = { hero: "hero", drive: "drive", accel: "accel", work: "work", rooms: "rooms", services: "work", refer: "work", offers: "work", audit: "work", devis: "work", rocket: "rocket", lab: "rocket", values: "sky", contact: "contact" };
+  const MUSIC_OF = { hero: "hero", drive: "drive", accel: "accel", work: "work", rooms: "rooms", reels: "work", services: "work", refer: "work", offers: "work", audit: "work", devis: "work", rocket: "rocket", lab: "rocket", values: "sky", contact: "contact" };
   function watch() {
     if (SVC) { document.querySelectorAll(".btn--gold,.off,.pj,.build-steps li").forEach(b => b.addEventListener("pointerenter", e => sfx("click", (e.clientX / innerWidth - .5) * 2, .3))); return; }
     if (!window.ScrollTrigger) return;
@@ -128,8 +129,10 @@
   const prev = ss("dn-sound");
   if (SVC || prev !== null) {
     if (SVC ? prev !== "0" : prev === "1") {
-      const arm = async () => { ["pointerdown", "keydown", "touchend"].forEach(e => removeEventListener(e, arm)); if (!on) await setOn(true); };
-      ["pointerdown", "keydown", "touchend"].forEach(e => addEventListener(e, arm, { passive: true }));
+      const EV = ["pointerdown", "keydown", "touchend", "scroll"], detach = () => EV.forEach(e => removeEventListener(e, arm));
+      const arm = async () => { if (!ctx || ctx.state !== "running" || (music && music.a.paused)) { await setOn(true); if (music && music.a.paused) music.a.play().catch(() => {}); } if (ctx && ctx.state === "running" && !(music && music.a.paused)) detach(); };
+      EV.forEach(e => addEventListener(e, arm, { passive: true }));
+      if (SVC && prev === "1") setTimeout(arm, 300); // le navigateur autorise souvent la reprise après une navigation sur le même site
       if (SVC && prev === null) btn.classList.add("is-hint"); // première page de service sans choix : le bouton son clignote
     }
     window.DNAudio = { sfx, voiceKey, engine, engineRpm, get on() { return on; } };

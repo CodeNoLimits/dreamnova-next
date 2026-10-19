@@ -40,7 +40,7 @@ const reelCards = D.REEL.map(r => {
   if (r.v) {
     n++;
     return `<article class="card ${r.w ? "card--wide" : ""}" data-cursor="${esc(T["work.view"])}">
-      <video class="card__media" muted loop playsinline preload="none" poster="${BASE}assets/reel/poster_0${r.v.slice(-1)}.webp" data-src="${BASE}assets/reel/${r.v}.mp4"></video>
+      <video class="card__media" muted loop playsinline preload="none" poster="${BASE}assets/reel/poster_0${r.v.slice(-1)}.webp" data-src="${BASE}assets/reel/${r.v}.mp4"></video><img class="card__pre" src="${BASE}assets/reel/poster_0${r.v.slice(-1)}.webp" alt="" fetchpriority="${n < 3 ? "high" : "auto"}" aria-hidden="true">
       <span class="card__num">${String(n).padStart(2, "0")}</span>
       <div class="card__meta"><div><span class="card__tag">${esc(r.tag[L])}</span><h3 class="card__title">${esc(r.t[L])}</h3></div></div></article>`;
   }
@@ -106,14 +106,26 @@ fb.addEventListener("click", e => {
   window.ScrollTrigger && ScrollTrigger.refresh();
 });
 
-/* ---------- offres ---------- */
-$("[data-offers]").innerHTML = D.OFFERS[L].map(([t, d, [lab, p]], i) =>
-  `<a class="off reveal${i > 5 ? " is-extra" : ""}" href="${wa(t)}" target="_blank" rel="noopener"><span class="off__n">${String(i + 1).padStart(2, "0")}</span><span class="off__t">${esc(t)}</span><span class="off__d">${esc(d)}</span><span class="off__p">${lab ? `<small>${esc(lab)}</small>` : ""}${esc(p)}</span><span class="off__c">${ARROW}</span></a>`).join("");
+/* ---------- reels ---------- */
+{ const RI = D.REELS_I[L]; $$("[data-r2]").forEach(e => e.textContent = RI[e.dataset.r2]);
+  const list = (D.REELS || []).slice().sort((a, b) => (b.lang === L) - (a.lang === L));
+  const box = $("[data-reels]"); if (box) { if (!list.length) $("#reels").hidden = true;
+    box.innerHTML = list.map(r => `<figure class="reel"><div class="reel__frame"><video data-src="${BASE}assets/reels/${r.id}.mp4" poster="${BASE}assets/reels/${r.id}.webp" muted loop playsinline preload="none"></video><button type="button" class="reel__snd" aria-label="${esc(RI.tap)}">🔊</button></div><figcaption>${esc(r.t[L])}</figcaption></figure>`).join("");
+    box.addEventListener("click", e => { const b = e.target.closest(".reel__snd"); if (!b) return; const v = b.previousElementSibling; v.muted = !v.muted; b.classList.toggle("is-on", !v.muted); if (!v.muted) { v.currentTime = 0; v.play().catch(() => {}); $$(".reel video", box).forEach(o => { if (o !== v) o.muted = true; }); $$(".reel__snd", box).forEach(o => o !== b && o.classList.remove("is-on")); } }); } }
 
-{ const ol = $("[data-offers]"), more = document.createElement("button");
-  more.className = "btn btn--glass offers__more"; more.innerHTML = `<span>${esc({ he: "לכל ההצעות", en: "All offers", fr: "Toutes les offres" }[L])} (${D.OFFERS[L].length})</span><span class="btn__ico">+</span>`;
-  more.onclick = () => { ol.classList.add("is-open"); more.remove(); window.ScrollTrigger && ScrollTrigger.refresh(); };
-  ol.after(more); }
+/* ---------- offres ---------- */
+const isQuote = o => !o[2][0] && /devis|quote|הצעת/i.test(o[2][1]);
+const offRow = (o, i, extra) => { const [t, d, [lab, p]] = o; return `<a class="off reveal${extra ? " is-extra" : ""}" href="${wa(t)}" target="_blank" rel="noopener"><span class="off__n">${String(i + 1).padStart(2, "0")}</span><span class="off__t">${esc(t)}</span><span class="off__d">${esc(d)}</span><span class="off__p">${lab ? `<small>${esc(lab)}</small>` : ""}${esc(p)}</span><span class="off__c">${ARROW}</span></a>`; };
+{ const all = D.OFFERS[L], fixed = all.filter(o => !isQuote(o)), prem = all.filter(isQuote), RI = D.REELS_I[L];
+  const ol = $("[data-offers]");
+  ol.innerHTML = `<h3 class="offers__group">${esc(RI.fixed)}</h3>` + fixed.map((o, i) => offRow(o, i, i > 5)).join("")
+    + `<h3 class="offers__group offers__group--prem">${esc(RI.premium)}</h3>` + prem.map((o, i) => offRow(o, fixed.length + i, false)).join("");
+  if (fixed.length > 6) { const more = document.createElement("button"); more.className = "btn btn--glass offers__more"; more.innerHTML = `<span>${esc({ he: "לכל החבילות", en: "All packages", fr: "Tous les packs" }[L])} (${fixed.length})</span><span class="btn__ico">+</span>`;
+    more.onclick = () => { ol.classList.add("is-open"); more.remove(); window.ScrollTrigger && ScrollTrigger.refresh(); }; ol.querySelector(".offers__group--prem").before(more); } }
+
+/* ---------- WhatsApp dans les sections (on ne descend pas jusqu'en bas pour écrire) ---------- */
+{ const mk = () => { const a = document.createElement("a"); a.className = "btn btn--gold btn--sm sec-cta"; a.href = wa(""); a.target = "_blank"; a.rel = "noopener"; a.innerHTML = `<span>${esc(T["ct.wa"])}</span><span class="btn__ico">${ARROW}</span>`; return a; };
+  ["#index .sec-head--row", "#lab .fine", "#reels .sec-head", ".rooms__fallback"].forEach(sel => { const e = $(sel); if (e) e.after(mk()); }); }
 
 /* ---------- process + labo ---------- */
 $("[data-process]").innerHTML = D.PROCESS[L].map(([t, p], i) => `<article class="step reveal"><span class="step__bar"></span><div class="step__n">0${i + 1}</div><h3>${esc(t)}</h3><p>${esc(p)}</p></article>`).join("");
@@ -136,6 +148,17 @@ document.querySelector(".startbtn")?.addEventListener("click", () => window.DNAu
 /* ---------- bouton flottant : masqué là où il gênerait ---------- */
 { const vis = new Set(); const io = new IntersectionObserver(es => { es.forEach(e => e.isIntersecting ? vis.add(e.target) : vis.delete(e.target)); document.body.classList.toggle("no-fab", vis.size > 0); });
   ["#audit", "#devis", "#contact", ".foot"].forEach(s => { const e = $(s); if (e) io.observe(e); }); }
+/* ---------- pages de service en surcouche : la page (et sa musique) reste vivante ---------- */
+{ let ov = null;
+  const close = () => { if (!ov) return; ov.classList.remove("is-in"); const o = ov; ov = null; setTimeout(() => o.remove(), 450); document.body.classList.remove("svc-open"); window.__lenis?.start?.(); window.DNAudio?.sfx("portal", .4, .5); };
+  const open = href => { if (ov) return; ov = document.createElement("div"); ov.className = "svc-overlay"; ov.innerHTML = `<button type="button" class="svc-overlay__x" aria-label="${esc({ he: "סגירה", en: "Close", fr: "Fermer" }[L])}">×</button><iframe title="DreamNova" src="${href}${href.includes("?") ? "&" : "?"}embed=1" loading="eager"></iframe>`;
+    document.body.appendChild(ov); requestAnimationFrame(() => ov.classList.add("is-in")); document.body.classList.add("svc-open"); window.__lenis?.stop?.(); history.pushState({ dn: "svc" }, "", location.href); window.DNAudio?.sfx("portal", -.4, .6);
+    ov.querySelector(".svc-overlay__x").onclick = () => history.back(); };
+  addEventListener("popstate", () => close());
+  addEventListener("keydown", e => e.key === "Escape" && ov && history.back());
+  addEventListener("message", e => { const m = e.data || {}; if (m.dn === "close") history.back(); if (m.dn === "devis") { history.back(); const sel = document.querySelector('.quote__form select[name="service"]'); if (sel && m.s != null) sel.selectedIndex = m.s; setTimeout(() => (window.__lenis ? window.__lenis.scrollTo("#devis", { offset: -20 }) : $("#devis").scrollIntoView({ behavior: "smooth" })), 420); } });
+  document.addEventListener("click", e => { const a = e.target.closest("a[href]"); if (!a || a.target === "_blank" || e.metaKey || e.ctrlKey) return; const u = new URL(a.href, location.href); if (u.origin !== location.origin || !/\/(he|en|fr)\/s\/[a-z0-9]+\/?$/.test(u.pathname)) return; e.preventDefault(); open(u.pathname); }); }
+
 /* ---------- menu ---------- */
 const burger = $(".nav__burger");
 burger.addEventListener("click", () => { const o = document.body.classList.toggle("menu-open"); burger.setAttribute("aria-expanded", o); $(".menu").setAttribute("aria-hidden", !o); });
@@ -257,8 +280,8 @@ function intro() {
   const SPIN = ".who,.step,.lc,.off", TOUCH = matchMedia("(hover: none)").matches || mobile();
   gsap.set(SPIN, { transformPerspective: 1100 });
   ScrollTrigger.batch(SPIN, { start: TOUCH ? "top 100%" : "top 92%", once: true, onEnter: b => gsap.fromTo(b,
-    TOUCH ? { rotationY: (RTL ? -1 : 1) * 55, rotationX: 10, y: 34, opacity: 0, transformOrigin: "50% 50% -80px" } : { rotationY: (RTL ? -1 : 1) * 115, rotationX: 22, z: -320, opacity: 0, transformOrigin: "50% 50% -140px" },
-    TOUCH ? { rotationY: 0, rotationX: 0, y: 0, opacity: 1, duration: .9, ease: "expo.out", stagger: .05, overwrite: true, clearProps: "transform" } : { rotationY: 0, rotationX: 0, z: 0, opacity: 1, duration: 1.7, ease: "expo.out", stagger: .07, overwrite: true, clearProps: "transform" }) });
+    TOUCH ? { rotationY: (RTL ? -1 : 1) * 55, rotationX: 10, y: 34, opacity: 0, transformOrigin: "50% 50% -80px" } : { rotationY: (RTL ? -1 : 1) * 38, rotationX: 8, y: 28, opacity: 0, transformOrigin: "50% 50% -90px" },
+    TOUCH ? { rotationY: 0, rotationX: 0, y: 0, opacity: 1, duration: .9, ease: "expo.out", stagger: .05, overwrite: true, clearProps: "transform" } : { rotationY: 0, rotationX: 0, y: 0, opacity: 1, duration: 1.2, ease: "expo.out", stagger: .06, overwrite: true, clearProps: "transform" }) });
   $$(".who").forEach(el => el.addEventListener("pointerenter", () => {
     if (el._spin || matchMedia("(hover: none)").matches) return; el._spin = 1;
     gsap.fromTo(el, { rotationY: 0 }, { rotationY: (RTL ? -360 : 360), duration: 1.25, ease: "power3.inOut", onComplete: () => { gsap.set(el, { rotationY: 0 }); el._spin = 0; } });

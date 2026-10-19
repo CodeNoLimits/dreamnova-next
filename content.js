@@ -115,6 +115,16 @@ SVC_I: {
  fr:{back:"Retour au cockpit",works:"Réalisations liées",offers:"Offres",next:"Rapport suivant",cta:"Parler de votre projet",spec:"Fiche technique"}
 },
 
+/* reels : vidéos verticales produites depuis le site (assets/reels) */
+REELS_I: {
+ he:{eyebrow:"רילס",title:"הרילס שלנו — ישר מהאתר.",lead:"כל סרטון כאן נוצר מתוך האתר הזה: הצילומים, המוזיקה והאנימציות. כך נראה שיווק ברמה הזאת לעסק שלכם.",tap:"לחצו לסאונד",fixed:"חבילות במחיר קבוע",premium:"פרימיום — בהתאמה אישית עם דוד"},
+ en:{eyebrow:"Reels",title:"Our reels — straight from the site.",lead:"Every clip here was produced from this very website: the footage, the music, the motion. This is what marketing at this level looks like for your business.",tap:"Tap for sound",fixed:"Fixed-price packages",premium:"Premium — tailored with David"},
+ fr:{eyebrow:"Reels",title:"Nos reels — tirés du site.",lead:"Chaque clip ici a été produit à partir de ce site : les plans, la musique, le mouvement. Voilà ce que donne un marketing de ce niveau pour votre entreprise.",tap:"Touchez pour le son",fixed:"Packs à prix fixe",premium:"Premium — sur mesure avec David"}
+},
+REELS: [
+ {id:"reel01_volant_he",lang:"he",t:{he:"קחו את ההגה",en:"Take the wheel",fr:"Prenez le volant"}}
+],
+
 /* chapitres cinématiques (vidéos assets/car2, assets/space, assets/scenes) */
 CHAPTERS: {
  accel: {

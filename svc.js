@@ -8,6 +8,7 @@
   const wa = t => `https://wa.me/${D.WA}?text=${encodeURIComponent(T["wa.msg"] + " — " + t)}`;
   const ARROW = RTL ? "↖" : "↗";
   document.title = `${sv[0]} — DreamNova`;
+  const EMBED = new URLSearchParams(location.search).get("embed") === "1"; if (EMBED) document.body.classList.add("is-embed");
   const works = s.w.map(w => D.WORKS.find(x => x.id === w)).filter(w => w && (!w.only || w.only === L));
   const offers = s.o.map(k => D.OFFERS[L][k]).filter(Boolean);
   const nxt = D.SVC[(i + 1) % D.SVC.length], nsv = D.SERVICES[(i + 1) % D.SVC.length][L];
@@ -47,6 +48,8 @@
     `<a class="off r" href="${wa(t)}" target="_blank" rel="noopener"><span class="off__n">${String(k + 1).padStart(2, "0")}</span><span class="off__t">${esc(t)}</span><span class="off__d">${esc(d)}</span><span class="off__p">${lab ? `<small>${esc(lab)}</small>` : ""}${esc(p)}</span><span class="off__c">${ARROW}</span></a>`).join("")}</div></section>` : ""}
   <a class="svc-next" href="${BASE}${L}/s/${nxt.id}/"><span class="eyebrow">${esc(U.next)} · ${esc(nxt.part[L])}</span><span class="svc-next__t">${esc(nsv[0])} <i>${ARROW}</i></span></a>
   <footer class="foot"><div class="foot__row"><span>© 2026 DreamNova · David Amor · <a href="https://wa.me/${D.WA}" dir="ltr">+972 58-492-1492</a></span><span>${esc(T["foot.where"])}</span></div></footer>`;
+  if (EMBED) { document.querySelectorAll(".svc__back, .nav__brand").forEach(a => a.addEventListener("click", e => { e.preventDefault(); parent.postMessage({ dn: "close" }, "*"); }));
+    document.querySelectorAll('a[href*="#devis"]').forEach(a => a.addEventListener("click", e => { e.preventDefault(); parent.postMessage({ dn: "devis", s: i }, "*"); })); }
   if (window.gsap && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
     gsap.registerPlugin(ScrollTrigger);
     if (window.Lenis && innerWidth > 767) { const l = new Lenis({ lerp: .09 }); l.on("scroll", ScrollTrigger.update); gsap.ticker.add(t => l.raf(t * 1000)); gsap.ticker.lagSmoothing(0); }

@@ -55,7 +55,7 @@ export default async function handler(req, res) {
   const g = GRID[lang];
   const { text, ...meta } = facts;
   const prompt = `You are the senior consultant of DreamNova (AI design & engineering studio, Jerusalem, founder David Amor). A business owner pasted their website for a free AI audit.
-Write in ${LANG_NAME[lang]} only${lang === "he" ? " (simple, natural modern Hebrew, plural 'אתם', short sentences)" : ""}. Be concrete, specific to THIS business, never generic. No flattery. Use Google Search to understand the business, its market and competitors when useful.
+Write in ${LANG_NAME[lang]} only${lang === "he" ? " (simple, natural modern Hebrew, plural 'אתם', short sentences)" : ""}. Be concrete, specific to THIS business, never generic. No flattery. Compare with best practices of this sector in Israel/France/international markets as you know them.
 Measured facts about the page (trust them): ${JSON.stringify(meta)}
 Visible text of the page (truncated): """${text}"""
 DreamNova services: ${g.services.join(" | ")}
@@ -74,12 +74,12 @@ Scores must reflect the measured facts (no viewport = low mobile; no WhatsApp/te
     for (let t = 0; t < 2 && !out; t++) {
       try {
         const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${key}`, { method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: prompt }] }], tools: m.startsWith("gemini-3.8") || m === "gemini-3.5-flash" ? [{ google_search: {} }] : [], generationConfig: { temperature: 0.5, maxOutputTokens: 3000 } }) });
+          body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: prompt }] }], tools: process.env.GEMINI_SEARCH === "1" ? [{ google_search: {} }] : [], generationConfig: { temperature: 0.5, maxOutputTokens: 6000 } }) });
         const d = await r.json(); const txt = (d.candidates?.[0]?.content?.parts || []).map(p => p.text || "").join("").trim();
         if (!txt) continue;
         const j = JSON.parse(txt.replace(/^```(?:json)?\s*|\s*```$/g, "").replace(/^[^{]*/, "").replace(/[^}]*$/, ""));
         if (!j.summary || !Array.isArray(j.quick_wins)) continue;
-        if (lang === "he" && BAD.test(JSON.stringify(j))) continue;
+        if (lang === "he" && (JSON.stringify(j).match(BAD) || []).length > 3) continue; // quelques lettres étrangères isolées = on garde, sinon on régénère
         out = j; used = m;
       } catch (_) { /* on réessaie, puis modèle suivant */ }
     }
