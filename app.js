@@ -28,7 +28,8 @@ const stack = D.STACK.map(s => `<span>${s}</span>`).join("");
 $("[data-marquee]").innerHTML = stack + stack;
 
 /* ---------- reel ---------- */
-const works = D.WORKS.filter(w => !w.only || w.only === L);
+const HE_FIRST = ["consult", "pinkas", "mehadrin", "editions", "diagnostic", "voiceava", "site3d"];
+const works = D.WORKS.filter(w => !w.only || w.only === L).sort((a, b) => L !== "he" ? 0 : (HE_FIRST.indexOf(b.id) > -1) - (HE_FIRST.indexOf(a.id) > -1));
 const byId = Object.fromEntries(works.map(w => [w.id, w]));
 const url = w => w.u && w.u.replace("{l}", L);
 let n = 0;
