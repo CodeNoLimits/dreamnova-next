@@ -75,6 +75,44 @@ STATS: {
  fr:[["25+","réalisations & démos"],["3","langues · FR, EN, HE"],["4","pays · Israël, France, Canada, USA"],["24/7","des agents IA qui ne dorment jamais"]]
 },
 
+ROOMS_I: {
+ he:{eyebrow:"סיור בסטודיו",title:"היכנסו לסטודיו.",hint:"גללו כדי לעבור בין החדרים"},
+ en:{eyebrow:"Studio tour",title:"Step inside the studio.",hint:"Scroll to walk through the rooms"},
+ fr:{eyebrow:"Visite du studio",title:"Entrez dans le studio.",hint:"Faites défiler pour traverser les salles"}
+},
+/* m = média du portail (v:vidéo reel, i:image galerie, r:clip avatar assets/rooms) */
+ROOMS: [
+ {m:"v:cinema_pipeline_01",he:["חדר הקולנוע","סרטי AI ברמת קולנוע — מהתסריט ועד המסך."],en:["The Cinema","AI films at cinema level — from script to screen."],fr:["La salle de cinéma","Des films IA niveau cinéma — du scénario à l'écran."]},
+ {m:"i:gal_lumen",he:["סטודיו האתרים","אתרים וחנויות שעוצרים את הנשימה."],en:["The Web Studio","Websites and stores that take your breath away."],fr:["Le studio web","Des sites et des boutiques qui coupent le souffle."]},
+ {m:"i:gal_voiceava",he:["חדר הבקרה","סוכנים קוליים ובוטים שעונים לכל לקוח, 24/7."],en:["The Control Room","Voice agents and bots that answer every client, 24/7."],fr:["La salle de contrôle","Des agents vocaux et des bots qui répondent à chaque client, 24/7."]},
+ {m:"i:gal_onprem",he:["הכספת","בינה מלאכותית פרטית — המידע שלכם לא יוצא."],en:["The Vault","Private AI — your data never leaves."],fr:["La chambre forte","Une IA privée — vos données ne sortent pas."]},
+ {m:"v:adcreative_pipeline_05",he:["סטודיו הרילס","רילס ושיווק שמביאים לקוחות."],en:["The Reels Studio","Reels and marketing that bring clients in."],fr:["Le studio Reels","Des Reels et du marketing qui amènent des clients."]},
+ {m:"i:gal_devis",he:["חדר המערכות","CRM ומערכות שמנהלים את העסק."],en:["The Systems Room","CRM and software that run the business."],fr:["La salle des systèmes","Des CRM et des logiciels qui font tourner l'entreprise."]},
+ {m:"i:gal_site3d",he:["הגלריה האינסופית","עולמות תלת־ממד שאי אפשר לשכוח."],en:["The Infinite Gallery","3D worlds people never forget."],fr:["La galerie infinie","Des mondes 3D qu'on n'oublie pas."]}
+],
+
+/* cockpit : chaque élément mène à une page de service (s = index dans SERVICES) */
+DRIVE_I: {
+ he:{eyebrow:"DreamNova · מהדורת מירוץ",l1:"קחו את",l2:"ההגה.",sub:"היכנסו לתא הנהג. כל כפתור, מסך והילוך מוביל לאחד מהשירותים שלנו.",hint:"גללו כדי להיכנס",tap:"היכנסו"},
+ en:{eyebrow:"DreamNova · Racing edition",l1:"Take",l2:"the wheel.",sub:"Step into the cockpit. Every button, screen and gear leads to one of our services.",hint:"Scroll to step in",tap:"Enter"},
+ fr:{eyebrow:"DreamNova · Édition course",l1:"Prenez",l2:"le volant.",sub:"Entrez dans le cockpit. Chaque bouton, chaque écran, chaque rapport mène à l'un de nos services.",hint:"Faites défiler pour entrer",tap:"Entrer"}
+},
+SVC: [
+ {id:"film",hot:"paddle_left",w:["media"],o:[6,10],v:"reel/cinema_pipeline_01.mp4",part:{he:"מנוף העברה שמאלי",en:"Left paddle",fr:"Palette gauche"}},
+ {id:"web",hot:"screen",w:["lumen","artisans","site3d","joaillerie"],o:[0,1,3],v:"reel/bijoux_pipeline_04.mp4",part:{he:"מסך מרכזי",en:"Center screen",fr:"Écran central"}},
+ {id:"crm",hot:"gear",w:["devis","leadmachine","facturation"],o:[13,9],v:"",part:{he:"ידית ההילוכים",en:"Gear selector",fr:"Levier de vitesse"}},
+ {id:"agents",hot:"wheel",w:["voiceava","stockvox","leadmachine","pinkas"],o:[5,7],v:"",part:{he:"הגה",en:"Steering wheel",fr:"Volant"}},
+ {id:"marketing",hot:"gauge",w:["media","academy"],o:[14,11,12],v:"reel/adcreative_pipeline_05.mp4",part:{he:"לוח המחוונים",en:"Dashboard gauges",fr:"Compteurs"}},
+ {id:"private",hot:"console",w:["onprem","pilote","pinkas","mehadrin"],o:[4,8],v:"",part:{he:"קונסולה",en:"Center console",fr:"Console centrale"}},
+ {id:"3d",hot:"paddle_right",w:["site3d","dreamai","rd"],o:[2],v:"reel/animation_pipeline_02.mp4",part:{he:"מנוף העברה ימני",en:"Right paddle",fr:"Palette droite"}},
+ {id:"consult",hot:"start",w:["auditprivee","auditflash","diagnostic","academy","consult"],o:[16,15],v:"reel/subtitled_pipeline_03.mp4",part:{he:"כפתור ההתנעה",en:"Start button",fr:"Bouton start"}}
+],
+SVC_I: {
+ he:{back:"חזרה לתא הנהג",works:"עבודות קשורות",offers:"הצעות",next:"ההילוך הבא",cta:"לדבר על הפרויקט",spec:"מפרט"},
+ en:{back:"Back to the cockpit",works:"Related work",offers:"Offers",next:"Next gear",cta:"Talk about your project",spec:"Specs"},
+ fr:{back:"Retour au cockpit",works:"Réalisations liées",offers:"Offres",next:"Rapport suivant",cta:"Parler de votre projet",spec:"Fiche technique"}
+},
+
 STACK: ["Claude","Gemini","Veo 3.1","Kling","Grok Imagine","ElevenLabs","Whisper","Three.js","WebGL","Next.js","Shopify","Stripe","Supabase","Vercel","WhatsApp API","GSAP","Python","Rust"],
 
 /* reel : v = vidéo, p = projet (référence WORKS.id) */
@@ -157,9 +195,9 @@ SERVICES: [
   en:["3D experiences","Scroll-driven WebGL worlds, virtual showrooms and 3D avatars — so your brand is remembered.",["WebGL website","Virtual showroom","3D avatar","Interactive experience"]],
   fr:["Expériences 3D","Des mondes WebGL qui défilent, des salons virtuels et des avatars 3D — pour que votre marque marque les esprits.",["Site WebGL","Salon virtuel","Avatar 3D","Expérience interactive"]]},
  {ic:"compass",
-  he:["אודיט, רגולציה והדרכה","לפני שבונים, רואים ברור: מיפוי הכלים, הנגשת אתרים, תיקון 13 לחוק הגנת הפרטיות, חשבונית ישראל והדרכת צוותים.",["אבחון AI מלא","הנגשת אתרים · תקן 5568","תיקון 13 · פרטיות","חשבונית ישראל","אקדמיית AI","Apex Pulse"]],
-  en:["Audit, compliance & training","Before building, see clearly: tool mapping, privacy, accessibility, e-invoicing, the AI Act and team training.",["Full AI audit","Privacy & AI Act","Accessibility (WCAG)","E-invoicing","AI Academy","Apex Pulse"]],
-  fr:["Audit, conformité & formation","Avant de construire, voir clair : cartographie des outils, RGPD, accessibilité RGAA, facture électronique 2026, AI Act et formation des équipes.",["Audit IA complet","RGPD & AI Act","Accessibilité RGAA","Facture électronique 2026","Academy IA","Apex Pulse"]]}
+  he:["ייעוץ, שיעורים פרטיים ורגולציה","לפני שבונים, רואים ברור: ייעוץ ושיעורים פרטיים ב־AI לבעלי עסקים ולצוותים, הנגשת אתרים, תיקון 13 לחוק הגנת הפרטיות וחשבונית ישראל.",["שיעורים פרטיים ב־AI","ייעוץ אישי","אבחון AI מלא","הנגשת אתרים · תקן 5568","תיקון 13 · פרטיות","חשבונית ישראל","אקדמיית AI","Apex Pulse"]],
+  en:["Consulting, lessons & compliance","Before building, see clearly: one-to-one AI lessons and consulting for owners and teams, privacy, accessibility, e-invoicing and the AI Act.",["Private AI lessons","1:1 consulting","Full AI audit","Privacy & AI Act","Accessibility (WCAG)","E-invoicing","AI Academy","Apex Pulse"]],
+  fr:["Conseil, cours & conformité","Avant de construire, voir clair : cours particuliers et conseil IA pour dirigeants et équipes, RGPD, accessibilité RGAA, facture électronique 2026 et AI Act.",["Cours particuliers IA","Conseil individuel","Audit IA complet","RGPD & AI Act","Accessibilité RGAA","Facture électronique 2026","Academy IA","Apex Pulse"]]}
 ],
 
 REFER: {
@@ -170,7 +208,7 @@ REFER: {
      ["נדל״ן, יזמים ואולמות","„הלקוח צריך לראות את הפרויקט לפני שהוא קיים.”","<b>אתר תלת־ממד וסיור וירטואלי</b> שמוכרים את החזון."],
      ["רבנים, מרצים, מאמנים וסופרים","„יש לי תוכן מצוין, אבל אף אחד לא רואה אותו.”","<b>שורטס, קורסים וספרים</b> — בכמה שפות."],
      ["חברות B2B וצוותי מכירות","„אנחנו צריכים יותר לידים איכותיים.”","<b>מכונת לידים</b> — טירגוט, פנייה ומעקב אוטומטי."],
-     ["עמותות, מוסדות וארגונים","„אנחנו רוצים להשתמש ב־AI, אבל לא יודעים מאיפה להתחיל.”","<b>אבחון AI</b> ותוכנית ל־30 יום."]],
+     ["בעלי עסקים, עמותות וארגונים","„אנחנו רוצים להשתמש ב־AI, אבל לא יודעים מאיפה להתחיל.”","<b>ייעוץ, שיעורים פרטיים</b> ואבחון AI עם תוכנית ל־30 יום."]],
  en:[["Clinics, offices & service businesses","“We keep missing calls.”","<b>24/7 voice agent</b> that answers, qualifies and books."],
      ["Shops & brands","“We want to sell online — abroad too.”","<b>Multilingual store</b> with payments and product video."],
      ["Jewelry, fashion & luxury","“Our photos don't do the product justice.”","<b>360° visuals and campaign films</b> at studio level."],
@@ -178,7 +216,7 @@ REFER: {
      ["Real estate, developers & venues","“Clients need to see the project before it exists.”","<b>3D site and virtual tour</b> that sell the vision."],
      ["Teachers, coaches & authors","“I have great content, but nobody sees it.”","<b>Shorts, courses and books</b> — in several languages."],
      ["B2B companies & sales teams","“We need more qualified leads.”","<b>Lead machine</b> — targeting, outreach and automated follow-up."],
-     ["NGOs, institutions & organizations","“We want to use AI but don't know where to start.”","<b>AI audit</b> and a 30-day plan."]],
+     ["Owners, NGOs & organizations","“We want to use AI but don't know where to start.”","<b>Consulting, private lessons</b> and an AI audit with a 30-day plan."]],
  fr:[["Cliniques, cabinets & artisans","« On rate des appels. »","<b>Agent vocal 24/7</b> qui répond, qualifie et prend les rendez-vous."],
      ["Boutiques & marques","« On veut vendre en ligne, aussi à l'étranger. »","<b>Boutique multilingue</b> avec paiement et vidéo produit."],
      ["Joaillerie, mode & luxe","« Nos photos ne rendent pas justice au produit. »","<b>Visuels 360° et films de campagne</b> niveau studio."],
@@ -186,7 +224,7 @@ REFER: {
      ["Immobilier, promoteurs & lieux","« Le client doit voir le projet avant qu'il existe. »","<b>Site 3D et visite virtuelle</b> qui vendent la vision."],
      ["Enseignants, coachs & auteurs","« J'ai un excellent contenu, mais personne ne le voit. »","<b>Shorts, cours et livres</b> — en plusieurs langues."],
      ["Entreprises B2B & équipes commerciales","« Il nous faut plus de leads qualifiés. »","<b>Machine à leads</b> — ciblage, prospection et relances automatiques."],
-     ["Associations, institutions & organisations","« On veut utiliser l'IA, mais on ne sait pas par où commencer. »","<b>Audit IA</b> et plan sur 30 jours."]]
+     ["Dirigeants, associations & organisations","« On veut utiliser l'IA, mais on ne sait pas par où commencer. »","<b>Conseil, cours particuliers</b> et audit IA avec plan sur 30 jours."]]
 },
 
 PSTEPS: {
@@ -212,7 +250,8 @@ OFFERS: {
      ["Apex Pulse · עדכון שבועי","סקירה שבועית של אותות השוק, הזדמנויות וצעדים ברורים להצעה הבאה.",["","בהצעת מחיר"]],
      ["CRM ומערכת לעסק","CRM בהתאמה אישית, מחובר לוואטסאפ ולחשבוניות.",["","לפי הצעת מחיר"]],
      ["רילס ושיווק חודשי","רילס, ניהול רשתות ופרופיל גוגל לעסק — ליווי חודשי.",["","לפי הצעת מחיר"]],
-     ["הנגשת אתר לפי תקן 5568","בדיקה, תיקונים והצהרת נגישות לאתר קיים.",["","לפי הצעת מחיר"]]],
+     ["הנגשת אתר לפי תקן 5568","בדיקה, תיקונים והצהרת נגישות לאתר קיים.",["","לפי הצעת מחיר"]],
+     ["שיעורים פרטיים וייעוץ AI","שיעור אחד־על־אחד או ליווי צמוד: ללמוד להשתמש ב־AI בעסק שלכם, צעד אחר צעד.",["","לפי הצעת מחיר"]]],
  en:[["Website sprint · 48 hours","A focused landing page that explains your offer and makes it easy to enquire.",["From","$1,390"]],
      ["Premium website, made for you","A complete brand presence, from editorial design to launch.",["From","$5,300"]],
      ["Immersive 3D experience","An interactive world that makes your proposition tangible.",["From","$10,700"]],
@@ -228,7 +267,8 @@ OFFERS: {
      ["Apex Pulse · weekly brief","A weekly brief that sorts market signals and helps you decide what to offer, to whom and why.",["Subscription","$449/mo"]],
      ["Custom CRM & business system","A CRM built around your process, connected to WhatsApp and invoicing.",["","Custom quote"]],
      ["Monthly Reels & marketing","Reels, social media and Google Business Profile — monthly support.",["","Custom quote"]],
-     ["Website accessibility (WCAG)","Audit, fixes and accessibility statement for an existing site.",["","Custom quote"]]],
+     ["Website accessibility (WCAG)","Audit, fixes and accessibility statement for an existing site.",["","Custom quote"]],
+     ["Private AI lessons & consulting","One-to-one lessons or close coaching: learn to use AI in your own business, step by step.",["","Custom quote"]]],
  fr:[["Site Sprint 48 h","Une page de lancement qui explique votre offre et facilite la prise de contact.",["À partir de","1 290 €"]],
      ["Site premium sur mesure","Une présence de marque complète, du design éditorial à la mise en ligne.",["À partir de","4 900 €"]],
      ["Expérience 3D immersive","Un monde interactif pour rendre votre proposition tangible.",["À partir de","9 900 €"]],
@@ -244,7 +284,8 @@ OFFERS: {
      ["Apex Pulse · brief hebdomadaire","Un rendez-vous régulier pour trier les signaux du marché et décider quoi proposer, à qui et pourquoi.",["Abonnement","397 €/mois"]],
      ["CRM & système métier","Un CRM construit autour de vos process, relié à WhatsApp et à la facturation.",["","Sur devis"]],
      ["Reels & marketing mensuel","Reels, réseaux sociaux et fiche Google Business — accompagnement mensuel.",["","Sur devis"]],
-     ["Mise en accessibilité (RGAA)","Audit, corrections et déclaration d'accessibilité pour un site existant.",["","Sur devis"]]]
+     ["Mise en accessibilité (RGAA)","Audit, corrections et déclaration d'accessibilité pour un site existant.",["","Sur devis"]],
+     ["Cours particuliers & conseil IA","Cours individuels ou accompagnement rapproché : apprendre à utiliser l'IA dans votre activité, pas à pas.",["","Sur devis"]]]
 },
 
 PROCESS: {

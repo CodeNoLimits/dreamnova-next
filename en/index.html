@@ -28,7 +28,7 @@
 </div>
 
 <header class="nav">
-  <a href="#top" class="nav__brand" aria-label="DreamNova"><span class="nav__logo">DN</span><span class="nav__name">DreamNova</span></a>
+  <a href="#top" class="nav__brand" aria-label="DreamNova"><img class="nav__crest" src="../assets/brand/crest.svg" alt="" width="26" height="32"><span class="nav__name">DreamNova</span></a>
   <nav class="nav__links" aria-label="main">
     <a href="#work" data-i="nav.work"></a><a href="#services" data-i="nav.services"></a><a href="#refer" data-i="nav.refer"></a><a href="#offers" data-i="nav.offers"></a><a href="#lab" data-i="nav.lab"></a>
   </nav>
@@ -60,6 +60,22 @@
     <div class="hero__scroll" aria-hidden="true"><span></span></div>
   </section>
 
+  <section class="drive" id="drive" hidden>
+    <div class="drive__pin">
+      <canvas class="drive__seq" aria-hidden="true"></canvas>
+      <div class="drive__cockpit" aria-hidden="true"><video class="drive__loop" muted loop playsinline preload="none"></video></div>
+      <div class="drive__shade" aria-hidden="true"></div>
+      <div class="drive__intro">
+        <img class="drive__crest" src="../assets/brand/crest.svg" alt="" width="84" height="105">
+        <p class="eyebrow eyebrow--gold" data-d="eyebrow"></p>
+        <h2 class="drive__title"><span data-d="l1"></span> <em data-d="l2"></em></h2>
+        <p class="drive__sub" data-d="sub"></p>
+      </div>
+      <div class="drive__hots" role="list"></div>
+      <p class="drive__hint" data-d="hint"></p>
+    </div>
+  </section>
+
   <section class="marquee" aria-label="stack"><div class="marquee__track" data-marquee></div></section>
 
   <section class="work" id="work">
@@ -75,6 +91,19 @@
   </section>
 
   <section class="manifesto"><p class="manifesto__text" data-manifesto></p></section>
+
+  <section class="rooms" id="rooms">
+    <div class="rooms__pin">
+      <canvas class="rooms__gl" aria-hidden="true"></canvas>
+      <div class="rooms__ui">
+        <div class="rooms__head"><p class="eyebrow eyebrow--gold" data-r="eyebrow"></p><h2 class="rooms__title" data-r="title"></h2></div>
+        <div class="rooms__cap" aria-live="polite"><span class="rooms__num" dir="ltr"></span><h3 class="rooms__name"></h3><p class="rooms__line"></p></div>
+        <ol class="rooms__dots"></ol>
+        <p class="rooms__hint" data-r="hint"></p>
+      </div>
+      <div class="rooms__fallback"></div>
+    </div>
+  </section>
 
   <section class="services" id="services">
     <div class="sec-head">
@@ -192,5 +221,8 @@
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
 <script src="../content.js"></script>
 <script src="../app.js"></script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<script type="module" src="../rooms.js"></script>
+<script src="../drive.js"></script>
 </body>
 </html>

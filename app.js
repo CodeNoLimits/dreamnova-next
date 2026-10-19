@@ -190,7 +190,7 @@ setTimeout(finish, 2600); // filet de sécurité : la page ne reste jamais bloqu
 
 /* ---------- animations ---------- */
 function intro() {
-  if (!window.gsap || reduced) { document.documentElement.classList.add("reduced"); return; }
+  if (!window.gsap || reduced) { document.documentElement.classList.add("reduced"); window.__DN = { lang: L, reduced: true }; window.dispatchEvent(new Event("dn:ready")); return; }
   gsap.registerPlugin(ScrollTrigger);
   let lenis = null;
   if (window.Lenis && !mobile()) {
@@ -237,5 +237,6 @@ function intro() {
 
   addEventListener("load", () => ScrollTrigger.refresh());
   window.__DN = { lang: L, lenis: !!lenis };
+  window.dispatchEvent(new Event("dn:ready"));
 }
 })();
