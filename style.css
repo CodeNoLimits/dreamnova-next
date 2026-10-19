@@ -755,3 +755,14 @@ html[dir=rtl] .drive.is-in .hud{transform:translateX(50%) scale(1)}
 @keyframes road{from{background-position:0 0}to{background-position:-120px 0}}
 @media (min-width:768px){.cp-panel{inset-inline:auto;right:var(--pad)}html[dir=rtl] .cp-panel{transform:translateY(-50%) translateX(30px)}html[dir=rtl] .cp-panel.is-open{transform:translateY(-50%)}}
 .founder{padding-block:clamp(80px,9vw,140px)}
+
+.streak{position:absolute;inset:0;z-index:3;pointer-events:none;background:linear-gradient(100deg,transparent 40%,rgba(255,226,160,.95) 49.5%,#fff 50%,rgba(255,226,160,.95) 50.5%,transparent 60%);mix-blend-mode:screen;
+  transform:translateX(calc((var(--sw,0) * 260% - 130%)));opacity:calc(var(--sw,0) * 1.6)}
+html[dir=rtl] .streak{transform:translateX(calc(130% - var(--sw,0) * 260%))}
+.contact{isolation:isolate}
+.contact__dash{position:absolute;inset:0;z-index:-2;background:url(assets/car/cockpit.webp) center 60%/cover no-repeat;filter:blur(6px) brightness(.28) saturate(1.1);transform:scale(1.08);transition:filter 1.2s var(--ease)}
+html[lang] .contact__dash{background-image:url(/assets/car/cockpit.webp)}
+.contact:has(.startbtn:hover) .contact__dash{filter:blur(4px) brightness(.55) saturate(1.3)}
+.contact::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(70% 60% at 50% 55%,transparent 30%,rgba(5,4,3,.85) 80%),linear-gradient(180deg,var(--bg),transparent 25%,transparent 75%,var(--bg))}
+.startbtn{background:radial-gradient(circle at 50% 38%,#ff5a3c,#a3120a 58%,#3d0602);box-shadow:0 0 0 9px #0d0a06,0 0 0 13px #d4af37,0 0 0 15px #7a5c18,0 30px 90px -10px rgba(255,70,40,.65),inset 0 6px 14px rgba(255,255,255,.3),inset 0 -14px 26px rgba(0,0,0,.5)}
+.startbtn:hover{box-shadow:0 0 0 9px #0d0a06,0 0 0 13px #f0d98c,0 0 0 15px #a07d24,0 30px 120px -4px rgba(255,90,50,.95),inset 0 6px 14px rgba(255,255,255,.4),inset 0 -14px 26px rgba(0,0,0,.5)}

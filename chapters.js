@@ -1,6 +1,6 @@
 // Chapitres cinématiques : accélération (vidéo + vitesse), espace (4 plans), valeurs (5 aventures). Activés par D.ON.
 (() => {
-  const D = window.DN, L = document.documentElement.lang, BASE = new URL("./", document.currentScript.src).href, C = D.CHAPTERS, ON = D.ON || {};
+  const D = window.DN, L = document.documentElement.lang, RTLc = L === "he", BASE = new URL("./", document.currentScript.src).href, C = D.CHAPTERS, ON = D.ON || {};
   const mob = matchMedia("(max-width: 767px)").matches, esc = x => String(x).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const src = v => `${BASE}assets/${v}${mob ? "_m" : ""}.mp4`, poster = v => `${BASE}assets/${v}${mob ? "_m" : ""}.webp`;
   const ready = fn => window.__DN ? fn() : addEventListener("dn:ready", fn, { once: true });
@@ -9,13 +9,13 @@
   const ac = document.querySelector(".chap--accel");
   if (ac && ON.accel) {
     const A = C.accel[L]; ac.hidden = false;
-    ac.innerHTML = `<div class="chap__pin"><video class="chap__v" src="${src("car2/accel_v2")}" muted loop playsinline preload="metadata"></video><div class="speed" aria-hidden="true"></div><div class="chap__shade"></div>
+    ac.innerHTML = `<div class="chap__pin"><video class="chap__v" src="${src("car2/accel_v2")}" muted loop playsinline preload="metadata"></video><div class="speed" aria-hidden="true"></div><div class="streak" aria-hidden="true"></div><div class="chap__shade"></div>
       <div class="chap__txt"><p class="eyebrow eyebrow--gold">${esc(A.eyebrow)}</p><h2 class="chap__t">${esc(A.t)}</h2><p class="chap__d">${esc(A.d)}</p></div></div>`;
     const v = ac.querySelector("video"), sp = ac.querySelector(".speed");
     ready(() => { const ST = window.ScrollTrigger; if (!ST) return;
       ST.create({ trigger: ac, start: "top top", end: () => "+=" + innerHeight * 1.4, pin: ac.querySelector(".chap__pin"), scrub: true, refreshPriority: 9,
         onEnter: () => { v.play().catch(() => {}); window.DNAudio?.sfx("accel"); }, onEnterBack: () => v.play().catch(() => {}), onLeave: () => v.pause(), onLeaveBack: () => v.pause(),
-        onUpdate: s => { const k = s.progress; v.style.transform = `scale(${1 + k * .18})`; sp.style.opacity = Math.min(1, k * 1.6); sp.style.setProperty("--k", k); v.playbackRate = 1 + k * 1.2; } });
+        onUpdate: s => { const k = s.progress, out = Math.max(0, (k - .55) / .45); v.style.transform = `translateX(${(RTLc ? -1 : 1) * out * out * 70}vw) scale(${1 + k * .18})`; v.style.filter = `blur(${out * 6}px)`; ac.style.setProperty("--sw", out); sp.style.opacity = Math.min(1, k * 1.6); sp.style.setProperty("--k", k); v.playbackRate = 1 + k * 1.2; } });
       ST.sort(); ST.refresh(); });
   }
 
