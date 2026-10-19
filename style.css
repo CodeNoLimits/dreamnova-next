@@ -890,3 +890,32 @@ html[lang=he] body,html[lang=he] p,html[lang=he] li{line-height:1.7}
   html[lang=he] .lead,html[lang=he] .hero__sub,html[lang=he] .drive__sub{font-size:19px}
   .subs{display:none} /* téléphone : pas de boîte de sous-titres ; la voix suffit */
 }
+
+/* ===== sélecteur de rapport + bouton son lisible + apparitions « reel » (David 20/10 00h30) ===== */
+.gear{position:fixed;z-index:75;bottom:22px;inset-inline-start:22px;display:flex;flex-direction:column;align-items:center;gap:6px;opacity:0;pointer-events:none;transform:scale(.7);transition:opacity .5s,transform .6s var(--ease)}
+body.past-hero .gear,body.cruising .gear{opacity:1;pointer-events:auto;transform:none}
+body.gated .gear,body.is-loading .gear,body.menu-open .gear,body.printing .gear{opacity:0!important;pointer-events:none!important}
+.gear__knob{position:relative;width:64px;height:64px;border:0;border-radius:50%;cursor:pointer;color:#fff6dc;background:radial-gradient(circle at 50% 35%,#2a2114,#0b0906 70%);box-shadow:0 0 0 2px rgba(240,217,140,.55),0 0 0 6px rgba(10,8,5,.8),0 16px 40px -10px rgba(0,0,0,.9),inset 0 2px 4px rgba(255,255,255,.14);display:grid;place-items:center;transition:transform .5s var(--ease),box-shadow .5s}
+.gear__knob:hover{transform:scale(1.06)}.gear__knob:active{transform:scale(.94)}
+.gear__knob b{font:800 24px/1 var(--f-display);letter-spacing:-.02em}
+.gear__knob i{position:absolute;top:7px;font:700 9px/1 var(--f-body);color:var(--gold);font-style:normal;animation:gearbob 1.6s ease-in-out infinite}
+@keyframes gearbob{50%{transform:translateY(-3px)}}
+.gear__ring{position:absolute;inset:-3px;border-radius:50%;border:1px dashed rgba(240,217,140,.5);animation:spin 18s linear infinite}
+body.cruising .gear__ring{border-style:solid;border-color:var(--gold-lt);animation-duration:2.4s;box-shadow:0 0 24px rgba(255,200,90,.6)}
+body.cruising .gear__knob{box-shadow:0 0 0 2px var(--gold-lt),0 0 0 6px rgba(10,8,5,.8),0 0 40px rgba(255,200,90,.55)}
+.gear__lab{font:600 10.5px/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--gold-lt);text-shadow:0 2px 10px rgba(0,0,0,.9);white-space:nowrap}
+html[lang=he] .gear__lab{letter-spacing:.02em;font-size:12px}
+.gear.is-end .gear__knob i{transform:rotate(180deg);animation:none}
+@media (max-width:767px){.gear{bottom:16px;inset-inline-start:14px}.gear__knob{width:56px;height:56px}.gear__knob b{font-size:21px}}
+/* bouton son : vraie icône haut-parleur, barres seulement quand ça joue */
+.snd__ico{width:20px;height:20px;flex:0 0 auto}
+.snd .snd__bars{display:none}.snd.is-on .snd__bars{display:flex}.snd.is-on .snd__ico .snd__w1,.snd.is-on .snd__ico .snd__w2{animation:eq .9s ease-in-out infinite alternate;transform-origin:left center}
+.snd:not(.is-on) .snd__w2{opacity:.35}
+@media (max-width:767px){.snd{padding:0 11px;min-width:44px;color:var(--gold-lt);background:rgba(212,175,55,.12)}.snd.is-on{background:rgba(212,175,55,.22)}}
+/* apparitions de texte façon reel : flou → net, dans toutes les langues */
+.chap__swap>*{transition:opacity .45s var(--ease),transform .7s var(--ease),filter .6s var(--ease)}
+.chap__swap.is-swap>*{filter:blur(14px)}
+.rooms__name,.rooms__line,.rooms__num{transition:opacity .5s var(--ease),transform .7s var(--ease),filter .6s var(--ease)}
+.rooms__cap.is-swap .rooms__name,.rooms__cap.is-swap .rooms__line{filter:blur(10px)}
+.cp-panel__t,.cp-panel__d{transition:filter .5s var(--ease),opacity .4s}
+.cp-panel:not(.is-open) .cp-panel__t,.cp-panel:not(.is-open) .cp-panel__d{filter:blur(10px);opacity:0}

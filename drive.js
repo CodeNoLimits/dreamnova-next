@@ -54,7 +54,7 @@
     const placeParts = () => { const B = imgBox();
       for (const id in PARTS) { const h = byId[id], el = part[id]; if (!h) { el.hidden = true; continue; }
         const cx = B.ox + h.x * B.w, cy = B.oy + h.y * B.h, r = PARTS[id] * B.w;
-        const m = `radial-gradient(circle ${r}px at ${cx}px ${cy}px, #000 ${r - Math.max(10, r * .14)}px, transparent ${r}px)`;
+        const m = `radial-gradient(circle ${r}px at ${cx}px ${cy}px, #000 ${r - Math.max(12, r * (id === "wheel" ? .34 : .16))}px, transparent ${r}px)`; // volant : fondu large, pas de couture visible
         el.style.webkitMaskImage = el.style.maskImage = m; el.style.transformOrigin = `${cx}px ${cy}px`; }
       const s = byId.screen; if (s) { const w = (MOB ? .2 : .17) * B.w, hh = (MOB ? .075 : .15) * B.h; Object.assign(screenEl.style, { left: B.ox + s.x * B.w - w / 2 + "px", top: B.oy + s.y * B.h - hh / 2 + "px", width: w + "px", height: hh + "px" }); } };
     const hit = id => { const el = part[id]; if (!el) return; el.classList.remove("is-hit"); void el.offsetWidth; el.classList.add("is-hit"); };
@@ -73,10 +73,15 @@
       canvas.width = sec.clientWidth * Math.min(devicePixelRatio, 2); canvas.height = (pin.clientHeight || innerHeight) * Math.min(devicePixelRatio, 2); draw(cur);
       placeParts();
     };
+    // deux sauts de caméra dans la séquence ordinateur (46→50 : siège, 58→65 : entrée dans l'habitacle) : fondu entre les deux bords
+    const JUMPS = MOB ? [] : [[46, 50], [58, 65]];
+    const ready = k => frames[k] && frames[k].complete && frames[k].naturalWidth;
+    const paint = (im, alpha) => { const cw = canvas.width, ch = canvas.height, sc = Math.max(cw / im.naturalWidth, ch / im.naturalHeight), w = im.naturalWidth * sc, h = im.naturalHeight * sc; ctx.globalAlpha = alpha; ctx.drawImage(im, (cw - w) / 2, (ch - h) / 2, w, h); ctx.globalAlpha = 1; };
     function draw(i) {
-      let im = frames[i]; if (!im || !im.complete || !im.naturalWidth) { for (let k = i; k >= 0; k--) if (frames[k] && frames[k].complete && frames[k].naturalWidth) { im = frames[k]; break; } if (!im || !im.naturalWidth) return; }
-      const cw = canvas.width, ch = canvas.height, sc = Math.max(cw / im.naturalWidth, ch / im.naturalHeight), w = im.naturalWidth * sc, h = im.naturalHeight * sc;
-      ctx.drawImage(im, (cw - w) / 2, (ch - h) / 2, w, h);
+      const j = JUMPS.find(([a, b]) => i > a && i < b);
+      if (j && ready(j[0]) && ready(j[1])) { paint(frames[j[0]], 1); paint(frames[j[1]], (i - j[0]) / (j[1] - j[0])); return; }
+      let im = frames[i]; if (!im || !im.complete || !im.naturalWidth) { for (let k = i; k >= 0; k--) if (ready(k)) { im = frames[k]; break; } if (!im || !im.naturalWidth) return; }
+      paint(im, 1);
     }
     addEventListener("resize", place); place();
 
@@ -147,7 +152,7 @@
       const shake = car.on ? (Math.sin(now / 23) * .6 + Math.sin(now / 41) * .4) * (.3 + r / 10) : 0;
       const tr = `translate3d(${car.steer * -14 + shake}px,${shake * .6}px,0) rotate(${car.steer * .5}deg) scale(${MOB ? 1.02 : 1.08})`;
       canvas.style.transform = cockpit.style.transform = tr;
-      if (part.wheel) part.wheel.style.transform = `rotate(${car.steer * 34 * (RTL ? -1 : 1)}deg)`;
+      if (part.wheel) part.wheel.style.transform = `rotate(${car.steer * 15 * (RTL ? -1 : 1)}deg)`; // amplitude contenue : le volant reste solidaire du tableau de bord
       glow.style.opacity = car.on ? .55 + r / 16 : 0;
       road.style.setProperty("--v", Math.min(1, car.speed / 160)); road.style.opacity = car.speed > 3 ? Math.min(.9, car.speed / 80) : 0;
       A()?.engineRpm(r);

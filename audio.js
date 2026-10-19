@@ -10,7 +10,7 @@
   }[L];
   // bouton du menu
   const btn = document.createElement("button"); btn.className = "snd"; btn.type = "button";
-  btn.innerHTML = `<span class="snd__bars"><i></i><i></i><i></i><i></i></span><span class="snd__t">${TX.on}</span>`;
+  btn.innerHTML = `<svg class="snd__ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z" fill="currentColor"/><path class="snd__w1" d="M15.5 9.2a4 4 0 0 1 0 5.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path class="snd__w2" d="M18 6.8a7.4 7.4 0 0 1 0 10.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span class="snd__bars"><i></i><i></i><i></i><i></i></span><span class="snd__t">${TX.on}</span>`;
   btn.setAttribute("aria-pressed", "false"); btn.setAttribute("aria-label", TX.on); document.querySelector(".nav").insertBefore(btn, document.querySelector(".nav__burger"));
   const SVC = document.body.dataset.svc || null; // page de service : pas de porte, même ambiance que le cockpit
   const ss = (k, v) => { try { return v === undefined ? sessionStorage.getItem(k) : sessionStorage.setItem(k, v); } catch (_) { return null; } };
@@ -90,14 +90,14 @@
       const k = 18, c = new Float32Array(1024); for (let i = 0; i < 1024; i++) { const x = i / 512 - 1; c[i] = (1 + k) * x / (1 + k * Math.abs(x)); } sh.curve = c;
       lp.type = "lowpass"; lp.Q.value = 3; g.gain.value = 0; p.panningModel = "HRTF"; p.positionZ ? (p.positionZ.value = -2) : p.setPosition(0, 0, -2);
       [o1, o2, o3].forEach(o => { o.connect(mix); o.start(); }); mix.gain.value = .35; mix.connect(sh); sh.connect(lp); lp.connect(g); g.connect(p); p.connect(bus.engine);
-      g.gain.setTargetAtTime(.16, ctx.currentTime, .4); eng = { o1, o2, o3, lp, g };
+      g.gain.setTargetAtTime(.085, ctx.currentTime, .4); eng = { o1, o2, o3, lp, g }; // ronronnement discret : jamais une vibration dans la musique
     } else if (!start && eng) { const e = eng; eng = null; e.g.gain.setTargetAtTime(0, ctx.currentTime, .35); setTimeout(() => [e.o1, e.o2, e.o3].forEach(o => o.stop()), 1600); }
   }
   let lastR = -1, lastT = 0;
   function engineRpm(r) { if (!eng) return; const now = performance.now(); if (Math.abs(r - lastR) < .05 || now - lastT < 50) return; lastR = r; lastT = now;
     const t = ctx.currentTime, f = 32 + r * 24; [eng.o1.frequency, eng.o2.frequency, eng.o3.frequency, eng.lp.frequency, eng.g.gain].forEach(p => p.cancelScheduledValues(t));
     eng.o1.frequency.setTargetAtTime(f, t, .08); eng.o2.frequency.setTargetAtTime(f * 1.5, t, .08); eng.o3.frequency.setTargetAtTime(f / 2, t, .08);
-    eng.lp.frequency.setTargetAtTime(260 + r * 520, t, .1); eng.g.gain.setTargetAtTime(.12 + r * .022, t, .12); }
+    eng.lp.frequency.setTargetAtTime(180 + r * 380, t, .1); eng.g.gain.setTargetAtTime(.06 + r * .016, t, .12); }
 
   const NO_VOICE = new Set(["accel", "rocket"]); // ces voix ne disent pas le texte affiché : musique et effets seulement
   const SECTIONS = [["hero", ".hero"], ["drive", ".drive"], ["accel", ".chap--accel"], ["work", "#work"], ["rooms", ".rooms"], ["services", "#services"], ["refer", "#refer"], ["offers", "#offers"],
