@@ -12,7 +12,13 @@
   const btn = document.createElement("button"); btn.className = "snd"; btn.type = "button";
   btn.innerHTML = `<span class="snd__bars"><i></i><i></i><i></i><i></i></span><span class="snd__t">${TX.on}</span>`;
   btn.setAttribute("aria-pressed", "false"); btn.setAttribute("aria-label", TX.on); document.querySelector(".nav").insertBefore(btn, document.querySelector(".nav__burger"));
+  const SVC = document.body.dataset.svc || null; // page de service : pas de porte, même ambiance que le cockpit
+  const ss = (k, v) => { try { return v === undefined ? sessionStorage.getItem(k) : sessionStorage.setItem(k, v); } catch (_) { return null; } };
   const sub = document.createElement("div"); sub.className = "subs"; sub.setAttribute("aria-live", "polite"); document.body.appendChild(sub);
+  const subT = document.createElement("span"); subT.className = "subs__t"; sub.appendChild(subT);
+  const subX = document.createElement("button"); subX.type = "button"; subX.className = "subs__x"; subX.setAttribute("aria-label", { he: "סגירת הכתוביות", en: "Hide captions", fr: "Masquer les sous-titres" }[L]); subX.textContent = "×"; sub.appendChild(subX);
+  let subsOff = ss("dn-subs") === "0";
+  subX.addEventListener("click", () => { subsOff = true; ss("dn-subs", "0"); sub.classList.remove("is-on"); });
 
   let queued = null, ctx, bus, rev, on = false, man = { files: [] }, voices = {}, curVoice = null, played = new Set(), music = null, eng = null;
   const has = f => man.files.includes(f);
@@ -52,7 +58,7 @@
     played.add(key); if (curVoice) curVoice.pause();
     const a = media(f), s = ctx.createMediaElementSource(a), g = ctx.createGain(), send = ctx.createGain(); send.gain.value = .12;
     s.connect(g); g.connect(bus.voice); s.connect(send); send.connect(rev); curVoice = a; duck(true);
-    const txt = voices[key] && voices[key][L] && voices[key][L].replace(/[֑-ׇ]/g, ""); if (txt) { sub.textContent = txt; sub.classList.add("is-on"); }
+    const txt = voices[key] && voices[key][L] && voices[key][L].replace(/[֑-ׇ]/g, ""); if (txt && !subsOff) { subT.textContent = txt; sub.classList.add("is-on"); }
     a.onended = () => { duck(false); sub.classList.remove("is-on"); if (queued) { const q = queued; queued = null; setTimeout(() => { const a = activeSection(); if (a && a[0] === q) voiceKey(q); }, 500); } };
     a.play().catch(() => {});
   }
@@ -98,6 +104,7 @@
     ["devis", "#devis"], ["rocket", ".chap--space"], ["lab", "#lab"], ["values", ".chap--values"], ["contact", "#contact"]];
   const MUSIC_OF = { hero: "hero", drive: "drive", accel: "accel", work: "work", rooms: "rooms", services: "work", refer: "work", offers: "work", devis: "work", rocket: "rocket", lab: "rocket", values: "sky", contact: "contact" };
   function watch() {
+    if (SVC) { document.querySelectorAll(".btn--gold,.off,.pj,.build-steps li").forEach(b => b.addEventListener("pointerenter", e => sfx("click", (e.clientX / innerWidth - .5) * 2, .3))); return; }
     if (!window.ScrollTrigger) return;
     SECTIONS.forEach(([n, s]) => { const e = document.querySelector(s); if (!e || e.hidden) return;
       ScrollTrigger.create({ trigger: e, start: "top 55%", end: "bottom 45%", onToggle: st => { if (st.isActive && on) { playMusic(MUSIC_OF[n] || n); if (!NO_VOICE.has(n)) voiceKey(n); } } }); });
@@ -111,18 +118,30 @@
     if (!ctx) await init(); await ctx.resume(); on = v;
     btn.classList.toggle("is-on", on); btn.setAttribute("aria-pressed", on); btn.querySelector(".snd__t").textContent = on ? TX.off : TX.on; btn.setAttribute("aria-label", on ? TX.off : TX.on);
     try { sessionStorage.setItem("dn-sound", on ? "1" : "0"); } catch (_) {}
-    if (on) { const a = activeSection(); playMusic(MUSIC_OF[a ? a[0] : "hero"] || "hero"); if (a) voiceKey(a[0]); }
+    if (on && SVC) { playMusic("drive"); const s = (D.SVC || []).find(x => x.id === SVC); if (s) voiceKey("cp_" + s.hot); } // la musique du cockpit continue, la voix présente le service
+    else if (on) { const a = activeSection(); playMusic(MUSIC_OF[a ? a[0] : "hero"] || "hero"); if (a) voiceKey(a[0]); }
     else { if (music) { music.a.pause(); music = null; } if (curVoice) curVoice.pause(); sub.classList.remove("is-on"); engine(false); }
   }
   btn.addEventListener("click", () => setOn(!on));
 
+  // choix déjà fait dans cette session (ou page de service) : pas de porte ; si le son était actif, il reprend au premier geste
+  const prev = ss("dn-sound");
+  if (SVC || prev !== null) {
+    if (SVC ? prev !== "0" : prev === "1") {
+      const arm = async () => { ["pointerdown", "keydown", "touchend"].forEach(e => removeEventListener(e, arm)); if (!on) await setOn(true); };
+      ["pointerdown", "keydown", "touchend"].forEach(e => addEventListener(e, arm, { passive: true }));
+      if (SVC && prev === null) btn.classList.add("is-hint"); // première page de service sans choix : le bouton son clignote
+    }
+    window.DNAudio = { sfx, voiceKey, engine, engineRpm, get on() { return on; } };
+    return;
+  }
   // écran d'entrée : le premier geste démarre l'expérience sonore
   const gate = document.createElement("div"); gate.className = "gate"; gate.setAttribute("role", "dialog");
   gate.innerHTML = `<div class="gate__in"><img src="${BASE}assets/brand/crest.svg" alt="" width="86" height="108"><p class="gate__tag">${TX.tag}</p>
     <button type="button" class="btn btn--gold btn--xl gate__go"><span>${TX.go}</span><span class="btn__ico">◉</span></button><button type="button" class="gate__mute">${TX.mute}</button></div>`;
   document.body.appendChild(gate);
   let gated = true;
-  const close = async withSound => { if (!gated) return; gated = false; gate.classList.add("is-out"); document.body.classList.remove("gated"); window.__lenis?.start?.();
+  const close = async withSound => { if (!gated) return; gated = false; ss("dn-sound", withSound ? "1" : "0"); gate.classList.add("is-out"); document.body.classList.remove("gated"); window.__lenis?.start?.();
     if (withSound) { await setOn(true); sfx("engine", 0, .9); } setTimeout(() => gate.remove(), 1200); };
   gate.querySelector(".gate__go").addEventListener("click", () => close(true));
   gate.querySelector(".gate__mute").addEventListener("click", () => close(false));

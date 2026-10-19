@@ -252,8 +252,8 @@ function intro() {
   const SPIN = ".who,.step,.lc,.off", TOUCH = matchMedia("(hover: none)").matches || mobile();
   gsap.set(SPIN, { transformPerspective: 1100 });
   ScrollTrigger.batch(SPIN, { start: TOUCH ? "top 100%" : "top 92%", once: true, onEnter: b => gsap.fromTo(b,
-    TOUCH ? { y: 24, opacity: 0 } : { rotationY: (RTL ? -1 : 1) * 115, rotationX: 22, z: -320, opacity: 0, transformOrigin: "50% 50% -140px" },
-    TOUCH ? { y: 0, opacity: 1, duration: .4, ease: "power2.out", stagger: .03, overwrite: true, clearProps: "transform" } : { rotationY: 0, rotationX: 0, z: 0, opacity: 1, duration: 1.7, ease: "expo.out", stagger: .07, overwrite: true, clearProps: "transform" }) });
+    TOUCH ? { rotationY: (RTL ? -1 : 1) * 55, rotationX: 10, y: 34, opacity: 0, transformOrigin: "50% 50% -80px" } : { rotationY: (RTL ? -1 : 1) * 115, rotationX: 22, z: -320, opacity: 0, transformOrigin: "50% 50% -140px" },
+    TOUCH ? { rotationY: 0, rotationX: 0, y: 0, opacity: 1, duration: .9, ease: "expo.out", stagger: .05, overwrite: true, clearProps: "transform" } : { rotationY: 0, rotationX: 0, z: 0, opacity: 1, duration: 1.7, ease: "expo.out", stagger: .07, overwrite: true, clearProps: "transform" }) });
   $$(".who").forEach(el => el.addEventListener("pointerenter", () => {
     if (el._spin || matchMedia("(hover: none)").matches) return; el._spin = 1;
     gsap.fromTo(el, { rotationY: 0 }, { rotationY: (RTL ? -360 : 360), duration: 1.25, ease: "power3.inOut", onComplete: () => { gsap.set(el, { rotationY: 0 }); el._spin = 0; } });

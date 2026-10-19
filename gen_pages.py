@@ -48,7 +48,7 @@ for l in ("he", "en", "fr"):
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
-<script src="../../../content.js"></script><script src="../../../build.js"></script><script src="../../../svc.js"></script></body></html>
+<script src="../../../content.js"></script><script src="../../../build.js"></script><script src="../../../svc.js"></script><script src="../../../audio.js"></script></body></html>
 '''
         p = root / l / "s" / sid; p.mkdir(parents=True, exist_ok=True); (p / "index.html").write_text(page)
 print("pages service ok", 24)

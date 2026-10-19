@@ -43,6 +43,21 @@
     addEventListener("scroll", warm, { passive: true }); // rien de lourd avant le premier geste
     cockpit.style.backgroundImage = `url(${BASE}assets/${FINAL.img})`;
     if (!MOB) loop.dataset.src = BASE + "assets/car/cockpit.mp4";
+    // pièces mobiles : copies masquées de la même image (volant, palettes, levier, START) + écran central vivant
+    const PARTS = { wheel: MOB ? .19 : .125, paddle_left: MOB ? .05 : .03, paddle_right: MOB ? .05 : .03, selector: MOB ? .065 : .042, start: MOB ? .048 : .03 };
+    const part = {};
+    for (const id in PARTS) { const el = document.createElement("div"); el.className = "cp-part cp-part--" + id; cockpit.appendChild(el); part[id] = el; }
+    const screenEl = document.createElement("div"); screenEl.className = "cp-screen"; screenEl.innerHTML = `<small></small><b></b><i></i>`; cockpit.appendChild(screenEl);
+    const imgBox = () => { const vw = sec.clientWidth, vh = pin.clientHeight || innerHeight, ar = FINAL.ar;
+      if (MOB) { const w = vw, hh = vw / ar; return { ox: 0, oy: Math.max(0, (vh - hh) * .25), w, h: hh }; }
+      const sc = Math.max(vw / ar, vh), w = sc * ar; return { ox: (vw - w) / 2, oy: (vh - sc) / 2, w, h: sc }; };
+    const placeParts = () => { const B = imgBox();
+      for (const id in PARTS) { const h = byId[id], el = part[id]; if (!h) { el.hidden = true; continue; }
+        const cx = B.ox + h.x * B.w, cy = B.oy + h.y * B.h, r = PARTS[id] * B.w;
+        const m = `radial-gradient(circle ${r}px at ${cx}px ${cy}px, #000 ${r - Math.max(10, r * .14)}px, transparent ${r}px)`;
+        el.style.webkitMaskImage = el.style.maskImage = m; el.style.transformOrigin = `${cx}px ${cy}px`; }
+      const s = byId.screen; if (s) { const w = (MOB ? .2 : .17) * B.w, hh = (MOB ? .075 : .15) * B.h; Object.assign(screenEl.style, { left: B.ox + s.x * B.w - w / 2 + "px", top: B.oy + s.y * B.h - hh / 2 + "px", width: w + "px", height: hh + "px" }); } };
+    const hit = id => { const el = part[id]; if (!el) return; el.classList.remove("is-hit"); void el.offsetWidth; el.classList.add("is-hit"); };
 
     // points interactifs
     hotsEl.innerHTML = S.map((s, i) => { const h = byId[s.hot]; if (!h) return "";
@@ -56,6 +71,7 @@
       hotBtns.forEach(a => { const [x, y] = pos(+a.dataset.x, +a.dataset.y); a.style.left = x + "px"; a.style.top = y + "px"; });
       const st = byId.start; if (st) { let [x, y] = pos(st.x, st.y); if (MOB) x = Math.min(Math.max(x, 125), sec.clientWidth - 125); startHint.style.left = x + "px"; startHint.style.top = y + "px"; }
       canvas.width = sec.clientWidth * Math.min(devicePixelRatio, 2); canvas.height = (pin.clientHeight || innerHeight) * Math.min(devicePixelRatio, 2); draw(cur);
+      placeParts();
     };
     function draw(i) {
       let im = frames[i]; if (!im || !im.complete || !im.naturalWidth) { for (let k = i; k >= 0; k--) if (frames[k] && frames[k].complete && frames[k].naturalWidth) { im = frames[k]; break; } if (!im || !im.naturalWidth) return; }
@@ -77,11 +93,11 @@
       else { A()?.engine(false); setRpmTarget(0); loop.pause(); loop.classList.remove("is-on"); car.gear = "P"; car.gi = 0; }
     }
     const EFFECT = {
-      start: () => engine(!car.on),
+      start: () => { engine(!car.on); hit("start"); },
       cluster: () => { if (!car.on) engine(true); rev(7.6); A()?.sfx("rev", pan("cluster")); },
-      paddle_right: () => { if (!car.on) engine(true); car.gi = Math.min(7, (typeof car.gear === "number" ? car.gear : 0) + 1); car.gear = car.gi; rev(6, 2 + car.gi * .4); A()?.sfx("gear", pan("paddle_right")); },
-      paddle_left: () => { if (!car.on) engine(true); car.gi = Math.max(1, (typeof car.gear === "number" ? car.gear : 2) - 1); car.gear = car.gi; rev(5.2, 1.6 + car.gi * .4); A()?.sfx("gear", pan("paddle_left")); },
-      selector: () => { const k = (GEARS.indexOf(String(car.gear)) + 1) % GEARS.length; car.gear = GEARS[k < 0 ? 0 : k]; A()?.sfx("selector", pan("selector")); if (car.gear === "D" && !car.on) engine(true); },
+      paddle_right: () => { if (!car.on) engine(true); car.gi = Math.min(7, (typeof car.gear === "number" ? car.gear : 0) + 1); car.gear = car.gi; rev(6, 2 + car.gi * .4); A()?.sfx("gear", pan("paddle_right")); hit("paddle_right"); },
+      paddle_left: () => { if (!car.on) engine(true); car.gi = Math.max(1, (typeof car.gear === "number" ? car.gear : 2) - 1); car.gear = car.gi; rev(5.2, 1.6 + car.gi * .4); A()?.sfx("gear", pan("paddle_left")); hit("paddle_left"); },
+      selector: () => { const k = (GEARS.indexOf(String(car.gear)) + 1) % GEARS.length; car.gear = GEARS[k < 0 ? 0 : k]; A()?.sfx("selector", pan("selector")); if (car.gear === "D" && !car.on) engine(true); hit("selector"); },
       wheel: () => { car.steerT = car.steerT > 0 ? -1 : 1; setTimeout(() => car.steerT = 0, 900); A()?.sfx("steer", pan("wheel")); },
       screen: () => { glow.classList.remove("is-flash"); void glow.offsetWidth; glow.classList.add("is-flash"); A()?.sfx("power", pan("screen")); },
       ambient: () => { const c = ["gold", "ice", "rose", "off"]; const k = (c.indexOf(amb.dataset.c || "gold") + 1) % c.length; amb.dataset.c = c[k]; A()?.sfx("click", pan("ambient")); }
@@ -94,6 +110,7 @@
       panel.querySelector(".cp-panel__x2").innerHTML = sv[2].slice(0, 4).map(c => `<span>${esc(c)}</span>`).join("");
       panel.querySelector(".cp-panel__go").href = `${BASE}${L}/s/${s.id}/`;
       panel.hidden = false; requestAnimationFrame(() => panel.classList.add("is-open"));
+      screenEl.querySelector("small").textContent = s.part[L]; screenEl.querySelector("b").textContent = sv[0]; screenEl.classList.remove("is-on"); void screenEl.offsetWidth; screenEl.classList.add("is-on");
       hotBtns.forEach(b => b.classList.toggle("is-active", +b.dataset.i === i));
       A()?.voiceKey("cp_" + s.hot);
     }
@@ -107,6 +124,12 @@
 
     // volant à la souris (ordinateur) : on « braque » en déplaçant la souris dans le cockpit
     if (!MOB) pin.addEventListener("pointermove", e => { if (!sec.classList.contains("is-in")) return; car.steerT = ((e.clientX / innerWidth) - .5) * 2 * (RTL ? -1 : 1) * .6; });
+    else { // téléphone : on braque en glissant le doigt à l'horizontale (le défilement vertical reste libre)
+      let sx = null, tmr = 0;
+      pin.addEventListener("touchstart", e => { if (sec.classList.contains("is-in") && e.touches.length === 1) sx = e.touches[0].clientX; }, { passive: true });
+      pin.addEventListener("touchmove", e => { if (sx === null) return; const dx = e.touches[0].clientX - sx; if (Math.abs(dx) < 8) return;
+        car.steerT = Math.max(-1, Math.min(1, dx / (innerWidth * .35))); clearTimeout(tmr); if (!car.on) engine(true); }, { passive: true });
+      pin.addEventListener("touchend", () => { if (sx !== null && Math.abs(car.steerT) > .25) A()?.sfx("steer", car.steerT); sx = null; tmr = setTimeout(() => car.steerT = 0, 700); }, { passive: true }); }
 
     // boucle d'animation : régime lissé, compteur, braquage, lueurs
     let last = performance.now();
@@ -123,6 +146,7 @@
       const shake = car.on ? (Math.sin(now / 23) * .6 + Math.sin(now / 41) * .4) * (.3 + r / 10) : 0;
       const tr = `translate3d(${car.steer * -14 + shake}px,${shake * .6}px,0) rotate(${car.steer * .5}deg) scale(${MOB ? 1.02 : 1.08})`;
       canvas.style.transform = cockpit.style.transform = tr;
+      if (part.wheel) part.wheel.style.transform = `rotate(${car.steer * 34 * (RTL ? -1 : 1)}deg)`;
       glow.style.opacity = car.on ? .55 + r / 16 : 0;
       road.style.setProperty("--v", Math.min(1, car.speed / 160)); road.style.opacity = car.speed > 3 ? Math.min(.9, car.speed / 80) : 0;
       A()?.engineRpm(r);
