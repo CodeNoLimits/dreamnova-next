@@ -44,7 +44,7 @@
       <p class="doc__one">${esc(a.one_liner)}</p>
       <section><h4>${esc(Q.scores)} · <b>${avg}/10</b></h4><div class="scores">${Object.keys(Q.ax).map(k => ring(k, sc[k])).join("")}</div><p>${esc(a.summary)}</p></section>
       <section><h4>${esc(Q.wins)}</h4><ol class="wins">${(a.quick_wins || []).map(w => `<li><b>${esc(w.title)}</b><p>${esc(w.why)}</p><p class="how">${esc(w.how)}</p></li>`).join("")}</ol></section>
-      <div class="doc__cols"><section><h4>${esc(Q.plan)}</h4><ol>${(a.plan_30d || []).map(p => `<li><b>${esc(p.week)}</b> — ${esc(p.action)}</li>`).join("")}</ol></section>
+      <div class="doc__cols"><section><h4>${esc(Q.plan)}</h4><ol>${(a.plan_30d || []).map((p, k) => `<li><b>${esc(k < 2 ? ({ he: "שבוע", en: "Week", fr: "Semaine" }[L] + " " + (k + 1)) : { he: "שבועות 3–4", en: "Weeks 3–4", fr: "Semaines 3–4" }[L])}</b> — ${esc(p.action)}</li>`).join("")}</ol></section>
       <section><h4>${esc(Q.offers)}</h4><div class="doc__opts">${(a.offers || []).map(o => `<div class="doc__opt"><b>${esc(o.name)}</b><p>${esc(o.why)}</p><span>${esc(o.price)}</span></div>`).join("")}</div></section></div>
       <section><h4>${esc(Q.next)}</h4><p>${esc(a.next_step)}</p></section>
       <section class="doc__bot"><p>${esc(Q.bot)}</p></section>

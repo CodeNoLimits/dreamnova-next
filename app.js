@@ -89,10 +89,10 @@ addEventListener("pointermove", e => { flo.style.left = e.clientX + "px"; flo.st
 $("[data-index]").innerHTML = works.map(w => {
   const u = url(w);
   return `<${u ? "a" : "div"} class="pj ${u ? "" : "pj--private"}" data-c="${w.c}" ${u ? `href="${u}" target="_blank" rel="noopener"` : ""}>
-    <img class="pj__img" src="${gal(w)}" alt="${esc(w.t[L])}" loading="lazy" decoding="async">
+    <img class="pj__img" src="${gal(w)}" alt="${esc(w.t[L])}" loading="lazy" decoding="async">${w.demo && w.demo !== L ? `<span class="pj__lang">${w.demo.toUpperCase()}</span>` : ""}
     <div class="pj__b"><div><div class="pj__s">${esc(w.s[L])}</div><div class="pj__t">${esc(w.t[L])}</div></div><span class="pj__a">${esc(u ? T["work.visit"].replace("↗", ARROW) : T["work.private"])}</span></div></${u ? "a" : "div"}>`;
 }).join("");
-$("[data-index]").addEventListener("pointerover", e => { const p = e.target.closest(".pj"); if (!p) return flo.classList.remove("is-on"); flo.querySelector("img").src = p.querySelector(".pj__img").src; flo.classList.add("is-on"); });
+$("[data-index]").addEventListener("pointerover", e => { const p = e.target.closest(".pj"); if (!p) return flo.classList.remove("is-on"); flo.querySelector("img").src = p.querySelector(".pj__img").src; flo.classList.toggle("is-fr", !!p.querySelector(".pj__lang")); flo.classList.add("is-on"); });
 $("[data-index]").addEventListener("pointerleave", () => flo.classList.remove("is-on"));
 { const rows = $$(".pj"); if (rows.length > 8) { rows.forEach((r, i) => i > 7 && r.classList.add("is-more"));
     const b = document.createElement("button"); b.type = "button"; b.className = "btn btn--glass index__more"; b.innerHTML = `<span>${esc({ he: "לכל העבודות", en: "See all work", fr: "Tout voir" }[L])} (${rows.length})</span><span class="btn__ico">+</span>`;

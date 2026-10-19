@@ -993,3 +993,26 @@ body.svc-open .fab,body.svc-open .gear,body.svc-open .nav{opacity:0!important;po
 body.is-embed .nav--svc,body.is-embed .foot,body.is-embed::before{display:none}
 body.is-embed .svc-hero{padding-top:80px}
 @media (max-width:767px){.reel{width:min(260px,74vw)}.offers__group{font-size:19px}}
+
+/* ===== R4 (8,4 / DA 8,6) : ⚙️ empilé sur WhatsApp, reels compacts, pages de service plus riches, badge FR ===== */
+.gear{inset-inline-start:auto;inset-inline-end:22px;bottom:94px;align-items:center}
+.gear__knob{width:56px;height:56px}.gear__knob b{font-size:21px}
+@media (max-width:767px){.gear{inset-inline-start:auto;inset-inline-end:14px;bottom:80px}.gear__knob{width:50px;height:50px}.gear__knob b{font-size:19px}.gear__lab{display:none}}
+.fab.is-away ~ .gear,body.no-fab .gear{transform:translateY(0)}
+body.no-fab .gear{bottom:22px}@media (max-width:767px){body.no-fab .gear{bottom:16px}}
+.reels{padding-block:clamp(56px,7vh,96px)}
+.reels .sec-head{margin-bottom:28px}
+.reels__strip{padding-bottom:8px}
+.pj{position:relative}
+.pj__lang{position:absolute;top:10px;inset-inline-end:10px;z-index:2;padding:5px 9px;border-radius:999px;font:700 10.5px/1 var(--f-body);letter-spacing:.14em;color:#140f04;background:var(--gold-lt)}
+.index__grid .pj__lang{position:static;margin-inline-start:10px;vertical-align:middle;font-size:10px;padding:4px 8px}
+.pj__float.is-fr::after{content:"FR";position:absolute;top:10px;inset-inline-end:10px;padding:5px 9px;border-radius:999px;font:700 10.5px/1 var(--f-body);letter-spacing:.14em;color:#140f04;background:var(--gold-lt)}
+.svc-works .pj__img[data-demo]{filter:saturate(.85)}
+.svc-visual{position:relative;margin:clamp(60px,8vw,110px) var(--pad) 0;max-width:1500px;border-radius:28px;overflow:hidden;aspect-ratio:21/9;box-shadow:inset 0 0 0 1px var(--line),0 40px 100px -40px rgba(0,0,0,.9)}
+.svc-visual video{width:100%;height:100%;object-fit:cover;display:block}
+.svc-visual__cap{position:absolute;inset-inline-start:28px;bottom:24px;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.svc-visual__cap b{font:650 clamp(22px,2.4vw,36px)/1.05 var(--f-display);text-shadow:0 8px 40px rgba(0,0,0,.8)}
+@media (max-width:767px){.svc-visual{aspect-ratio:4/5;margin-inline:16px;border-radius:20px}}
+.svc-next{margin-block:clamp(56px,7vw,96px) 40px;padding:32px 0}
+.svc-spec,.svc-works,.svc-offers,.svc-build{padding-top:clamp(56px,7vw,96px)}
+.svc-works .pj{opacity:1}

@@ -31,6 +31,7 @@
   </section>
   <section class="svc-spec"><p class="eyebrow">${esc(U.spec)}</p>
     <ol class="spec">${sv[2].map((c, k) => `<li class="r"><span>${String(k + 1).padStart(2, "0")}</span><b>${esc(c)}</b></li>`).join("")}</ol></section>
+  ${vid && !s.films ? `<section class="svc-visual"><video src="${vid}" muted loop playsinline autoplay preload="metadata"></video><div class="svc-visual__cap"><span class="eyebrow eyebrow--gold">${esc(s.part[L])}</span><b>${esc(sv[0])}</b></div></section>` : ""}
   ${(() => { const B = D.BUILD && D.BUILD[id] && D.BUILD[id][L]; if (!B) return "";
     const H = { he: ["איך אנחנו בונים", "הטכנולוגיה", "מה תקבלו", "שאלות נפוצות"], en: ["How we build it", "The stack", "What you get", "FAQ"], fr: ["Comment on le construit", "Les technologies", "Ce que vous recevez", "Questions fréquentes"] }[L];
     return `<section class="svc-build"><p class="eyebrow eyebrow--gold">${esc(H[0])}</p><h2 class="h2 svc-build__t">${esc(B.intro)}</h2>
@@ -42,7 +43,7 @@
   ${s.films ? `<section class="svc-films"><div class="svc-films__grid">${s.films.map(f => `<video class="r" src="${BASE}assets/reel/${f}.mp4" poster="${BASE}assets/reel/poster_0${f.slice(-1)}.webp" muted loop playsinline autoplay preload="none"></video>`).join("")}</div></section>` : ""}
   ${works.length ? `<section class="svc-works"><p class="eyebrow">${esc(U.works)}</p><div class="index__grid">${works.map(w => {
     const u = w.u && w.u.replace("{l}", L);
-    return `<${u ? "a" : "div"} class="pj r" ${u ? `href="${u}" target="_blank" rel="noopener"` : ""}><img class="pj__img" src="${BASE}assets/work/gal_${w.id}${w.id === "site3d" ? "_" + L : ""}.webp" alt="${esc(w.t[L])}" loading="lazy"><div class="pj__b"><div><div class="pj__s">${esc(w.s[L])}</div><div class="pj__t">${esc(w.t[L])}</div></div><span class="pj__a">${esc(u ? T["work.visit"].replace("↗", ARROW) : T["work.private"])}</span></div></${u ? "a" : "div"}>`;
+    return `<${u ? "a" : "div"} class="pj r" ${u ? `href="${u}" target="_blank" rel="noopener"` : ""}><img class="pj__img" src="${BASE}assets/work/gal_${w.id}${w.id === "site3d" ? "_" + L : ""}.webp"${w.demo && w.demo !== L ? ` data-demo="${w.demo}"` : ""} alt="${esc(w.t[L])}" loading="lazy"><div class="pj__b"><div><div class="pj__s">${esc(w.s[L])}</div><div class="pj__t">${esc(w.t[L])}</div></div><span class="pj__a">${esc(u ? T["work.visit"].replace("↗", ARROW) : T["work.private"])}</span></div></${u ? "a" : "div"}>`;
   }).join("")}</div></section>` : ""}
   ${offers.length ? `<section class="svc-offers"><p class="eyebrow">${esc(U.offers)}</p><div class="offers__list">${offers.map(([t, d, [lab, p]], k) =>
     `<a class="off r" href="${wa(t)}" target="_blank" rel="noopener"><span class="off__n">${String(k + 1).padStart(2, "0")}</span><span class="off__t">${esc(t)}</span><span class="off__d">${esc(d)}</span><span class="off__p">${lab ? `<small>${esc(lab)}</small>` : ""}${esc(p)}</span><span class="off__c">${ARROW}</span></a>`).join("")}</div></section>` : ""}
@@ -55,6 +56,6 @@
     if (window.Lenis && innerWidth > 767) { const l = new Lenis({ lerp: .09 }); l.on("scroll", ScrollTrigger.update); gsap.ticker.add(t => l.raf(t * 1000)); gsap.ticker.lagSmoothing(0); }
     gsap.from(".svc-hero__in > *", { y: 60, opacity: 0, duration: 1.4, stagger: .1, ease: "expo.out", delay: .1 });
     gsap.from(".svc-hero__num", { yPercent: 30, opacity: 0, duration: 2, ease: "expo.out" });
-    gsap.utils.toArray(".r").forEach(e => gsap.from(e, { y: 50, opacity: 0, duration: 1.1, ease: "expo.out", scrollTrigger: { trigger: e, start: "top 90%" } }));
+    gsap.utils.toArray(".r").forEach(e => gsap.from(e, { y: 50, opacity: 0, duration: 1.1, ease: "expo.out", scrollTrigger: { trigger: e, start: "top 96%" } }));
   }
 })();
