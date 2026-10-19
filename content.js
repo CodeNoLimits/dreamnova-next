@@ -134,7 +134,7 @@ CHAPTERS: {
   {v:"scenes/bungee",he:["תעוזה","קופצים למקום שאחרים מפחדים ממנו."],en:["Audacity","We take the leap others avoid."],fr:["Audace","On saute là où les autres hésitent."]},
   {v:"scenes/sea",he:["זרימה","טכנולוגיה שמרגישה טבעית."],en:["Flow","Technology that feels natural."],fr:["Fluidité","Une technologie qui paraît naturelle."]},
   {v:"scenes/mountain",he:["חזון","לראות את העסק מלמעלה."],en:["Vision","See your business from above."],fr:["Vision","Voir votre entreprise d'en haut."]},
-  {v:"scenes/parachute",he:["דיוק","נוחתים בדיוק איפה שתכננו."],en:["Precision","We land exactly where we planned."],fr:["Précision","On se pose exactement là où c'était prévu."]}
+  {v:"scenes/parachute_v2",he:["דיוק","נוחתים בדיוק איפה שתכננו."],en:["Precision","We land exactly where we planned."],fr:["Précision","On se pose exactement là où c'était prévu."]}
  ]
 },
 
@@ -144,7 +144,6 @@ STACK: ["Claude","Gemini","Veo 3.1","Kling","Grok Imagine","ElevenLabs","Whisper
 REEL: [
  {v:"cinema_pipeline_01",w:1,tag:{he:"סרט AI",en:"AI film",fr:"Film IA"},t:{he:"קולנוע AI פוטוריאליסטי",en:"Photoreal AI cinema",fr:"Cinéma IA photoréaliste"}},
  {v:"animation_pipeline_02",tag:{he:"אנימציה",en:"Animation",fr:"Animation"},t:{he:"אנימציית תלת־ממד בסגנון סטודיו",en:"Studio-style 3D animation",fr:"Animation 3D style studio"}},
- {p:"lumen"},
  {v:"bijoux_pipeline_04",w:1,tag:{he:"קמפיין",en:"Campaign",fr:"Campagne"},t:{he:"סרט יופי ותכשיטים",en:"Beauty & jewelry film",fr:"Film beauté & joaillerie"}},
  {p:"site3d"}
 ],

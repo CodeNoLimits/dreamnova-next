@@ -364,7 +364,7 @@ html[lang=he] .rooms__title{letter-spacing:-.01em;line-height:1.05}
 html[lang=he] .rooms__name{letter-spacing:-.01em;line-height:1}
 .rooms__line{margin-top:16px;font-size:clamp(16px,1.3vw,20px);color:#e2d8c4;text-shadow:0 4px 30px rgba(0,0,0,.9)}
 .rooms__name,.rooms__line,.rooms__num{transition:opacity .5s var(--ease),transform .7s var(--ease)}
-.rooms__cap.is-swap .rooms__name,.rooms__cap.is-swap .rooms__line,.rooms__cap.is-swap .rooms__num{opacity:0;transform:translateY(24px)}
+.rooms__cap.is-swap .rooms__name,.rooms__cap.is-swap .rooms__line,.rooms__cap.is-swap .rooms__num{opacity:.6;transform:translateY(8px)}
 .rooms__dots{position:absolute;top:50%;inset-inline-end:var(--pad);transform:translateY(-50%);list-style:none;display:flex;flex-direction:column;gap:12px}
 .rooms__dots li{width:8px;height:8px;border-radius:50%;background:rgba(240,217,140,.22);transition:transform .5s var(--ease),background .5s}
 .rooms__dots li.is-on{background:var(--gold-lt);transform:scale(1.6)}

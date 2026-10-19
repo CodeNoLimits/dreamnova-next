@@ -86,7 +86,7 @@ const flo = document.createElement("div"); flo.className = "pj__float"; flo.inne
 addEventListener("pointermove", e => { flo.style.left = e.clientX + "px"; flo.style.top = e.clientY + "px"; }, { passive: true });
 $("[data-index]").innerHTML = works.map(w => {
   const u = url(w);
-  return `<${u ? "a" : "div"} class="pj reveal ${u ? "" : "pj--private"}" data-c="${w.c}" ${u ? `href="${u}" target="_blank" rel="noopener"` : ""}>
+  return `<${u ? "a" : "div"} class="pj ${u ? "" : "pj--private"}" data-c="${w.c}" ${u ? `href="${u}" target="_blank" rel="noopener"` : ""}>
     <img class="pj__img" src="${BASE}assets/work/gal_${w.id}.webp" alt="${esc(w.t[L])}" loading="lazy" decoding="async">
     <div class="pj__b"><div><div class="pj__s">${esc(w.s[L])}</div><div class="pj__t">${esc(w.t[L])}</div></div><span class="pj__a">${esc(u ? T["work.visit"].replace("↗", ARROW) : T["work.private"])}</span></div></${u ? "a" : "div"}>`;
 }).join("");
@@ -242,6 +242,9 @@ function intro() {
     gsap.from(h.querySelectorAll(".wm>span"), { yPercent: 110, duration: 1.3, stagger: .06, ease: "expo.out", scrollTrigger: { trigger: h, start: "top 85%" } });
     gsap.from([...h.children].filter(c => !c.classList.contains("h2")), { y: 40, opacity: 0, duration: 1.2, stagger: .08, ease: "expo.out", scrollTrigger: { trigger: h, start: "top 85%" } });
   });
+  // index : un seul lot propre, sans décalage résiduel
+  { const rows = $$(".index__grid .pj"); gsap.set(rows, { opacity: 0, y: 24 });
+    ScrollTrigger.create({ trigger: ".index__grid", start: "top 90%", once: true, onEnter: () => gsap.to(rows, { opacity: 1, y: 0, stagger: .04, duration: .5, ease: "power2.out", clearProps: "transform,opacity" }) }); }
   // cartes : entrée en vrille 3D, puis vrille complète au survol
   const SPIN = ".who,.step,.lc,.off", TOUCH = matchMedia("(hover: none)").matches || mobile();
   gsap.set(SPIN, { transformPerspective: 1100 });
