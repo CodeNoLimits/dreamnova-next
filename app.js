@@ -122,7 +122,10 @@ const vio = new IntersectionObserver(es => es.forEach(e => {
   const v = e.target;
   if (e.isIntersecting) { if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); } else v.pause();
 }), { rootMargin: "200px" });
-$$("video[data-src]").forEach(v => vio.observe(v));
+$$("video[data-src]").filter(v => !v.closest(".room-card")).forEach(v => vio.observe(v)); // les cartes des salles ont leur propre lecteur (une seule à la fois)
+/* ---------- fond du final (cockpit) : image adaptée à l'écran, chargée à l'approche ---------- */
+{ const dash = $(".contact__dash"); if (dash) { const io = new IntersectionObserver(es => { if (!es.some(e => e.isIntersecting)) return;
+    dash.style.backgroundImage = `url(${BASE}assets/${mobile() ? "car2/cockpit_m.webp" : "car/cockpit.webp"})`; io.disconnect(); }, { rootMargin: "1500px 0px" }); io.observe(dash); } }
 
 document.querySelector(".startbtn")?.addEventListener("click", () => window.DNAudio?.sfx("engine", 0, 1));
 /* ---------- bouton flottant : masqué là où il gênerait ---------- */

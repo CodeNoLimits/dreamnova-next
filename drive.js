@@ -4,6 +4,7 @@
   const D = window.DN, L = document.documentElement.lang, RTL = L === "he", BASE = new URL("./", document.currentScript.src).href;
   const sec = document.querySelector(".drive"); if (!sec || !D.CAR) return;
   const MOB = innerWidth < 768 || (innerWidth <= 1024 && innerHeight > innerWidth), ON = D.ON || {};
+  const TOUCH = matchMedia("(hover: none) and (pointer: coarse)").matches; // tactile : épinglage par position:sticky (zéro saut de mise en page)
   const T = D.DRIVE_I[L], S = D.SVC;
   const TX = {
     he: { start: "לחצו על START כדי להתניע", enter: "כניסה", gear: "הילוך", tap: "לחצו על כל אלמנט", close: "סגירה" },
@@ -48,13 +49,13 @@
       return `<button type="button" class="hot ${h.x > 0.55 ? "hot--left" : ""}" data-i="${i}" data-id="${s.hot}" data-x="${h.x}" data-y="${h.y}" aria-label="${esc(s.part[L])} — ${esc(D.SERVICES[i][L][0])}"><span class="hot__dot"></span><span class="hot__card"><span class="hot__part">${esc(s.part[L])}</span><span class="hot__name">${esc(D.SERVICES[i][L][0])}</span></span></button>`; }).join("");
     sec.querySelector(".drive__chips").innerHTML = S.map((s, i) => `<button type="button" data-i="${i}"><small>${esc(s.part[L])}</small>${esc(D.SERVICES[i][L][0])}</button>`).join("");
     const hotBtns = [...hotsEl.querySelectorAll(".hot")];
-    const pos = (x, y) => { const vw = sec.clientWidth, vh = innerHeight, ar = FINAL.ar;
+    const pos = (x, y) => { const vw = sec.clientWidth, vh = pin.clientHeight || innerHeight, ar = FINAL.ar;
       if (MOB) { const w = vw, hh = vw / ar, oy = Math.max(0, (vh - hh) * .25); return [x * w, oy + y * hh]; } // mobile : toute la largeur du tableau de bord
       const sc = Math.max(vw / ar, vh), w = sc * ar, hh = sc, ox = (vw - w) / 2, oy = (vh - hh) / 2; return [ox + x * w, oy + y * hh]; };
     const place = () => {
       hotBtns.forEach(a => { const [x, y] = pos(+a.dataset.x, +a.dataset.y); a.style.left = x + "px"; a.style.top = y + "px"; });
       const st = byId.start; if (st) { let [x, y] = pos(st.x, st.y); if (MOB) x = Math.min(Math.max(x, 125), sec.clientWidth - 125); startHint.style.left = x + "px"; startHint.style.top = y + "px"; }
-      canvas.width = sec.clientWidth * Math.min(devicePixelRatio, 2); canvas.height = innerHeight * Math.min(devicePixelRatio, 2); draw(cur);
+      canvas.width = sec.clientWidth * Math.min(devicePixelRatio, 2); canvas.height = (pin.clientHeight || innerHeight) * Math.min(devicePixelRatio, 2); draw(cur);
     };
     function draw(i) {
       let im = frames[i]; if (!im || !im.complete || !im.naturalWidth) { for (let k = i; k >= 0; k--) if (frames[k] && frames[k].complete && frames[k].naturalWidth) { im = frames[k]; break; } if (!im || !im.naturalWidth) return; }
@@ -131,7 +132,10 @@
       const g = window.gsap, ST = window.ScrollTrigger;
       if (!g || !ST || window.__DN?.reduced) { cockpit.style.opacity = 1; sec.classList.add("is-in"); return; }
       const intro = sec.querySelector(".drive__intro");
-      ST.create({ trigger: sec, start: "top top", end: () => "+=" + innerHeight * 3.4, pin, scrub: true, anticipatePin: 1, invalidateOnRefresh: true, refreshPriority: 10,
+      if (TOUCH) { pin.style.position = "sticky"; pin.style.top = "0"; pin.style.height = "100svh"; sec.style.height = "440svh"; }
+      const leave = () => { sec.classList.remove("is-in"); document.body.classList.remove("in-cockpit"); panel.classList.remove("is-open"); panel.hidden = true; hintEl.textContent = T.hint; if (car.on) engine(false); };
+      ST.create({ trigger: sec, start: "top top", end: TOUCH ? "bottom bottom" : () => "+=" + innerHeight * 3.4, pin: TOUCH ? false : pin, scrub: true, anticipatePin: 1, invalidateOnRefresh: true, refreshPriority: 10,
+        onLeave: leave, onLeaveBack: leave,
         onUpdate: st => {
           const p = st.progress, seqEnd = 0.7;
           const f = Math.min(N - 1, Math.floor((p / seqEnd) * (N - 1)));
@@ -139,7 +143,7 @@
           const k = Math.min(1, Math.max(0, (p - seqEnd) / 0.08));
           cockpit.style.opacity = MOB ? k : Math.min(1, k * 1.0);
           intro.style.opacity = Math.max(0, 1 - p * 3.2); intro.style.transform = `translateY(${-p * 120}px)`;
-          const inside = p > seqEnd + 0.06;
+          const inside = st.isActive && p > seqEnd + 0.06; // jamais « dedans » une fois la section quittée (le bouton WhatsApp revient)
           if (inside !== sec.classList.contains("is-in")) { hintEl.textContent = inside ? TX.tap : T.hint; if (!inside) { panel.classList.remove("is-open"); panel.hidden = true; } }
           sec.classList.toggle("is-in", inside); document.body.classList.toggle("in-cockpit", inside);
         } });

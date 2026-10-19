@@ -766,3 +766,23 @@ html[lang] .contact__dash{background-image:url(/assets/car/cockpit.webp)}
 .contact::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(70% 60% at 50% 55%,transparent 30%,rgba(5,4,3,.85) 80%),linear-gradient(180deg,var(--bg),transparent 25%,transparent 75%,var(--bg))}
 .startbtn{background:radial-gradient(circle at 50% 38%,#ff5a3c,#a3120a 58%,#3d0602);box-shadow:0 0 0 9px #0d0a06,0 0 0 13px #d4af37,0 0 0 15px #7a5c18,0 30px 90px -10px rgba(255,70,40,.65),inset 0 6px 14px rgba(255,255,255,.3),inset 0 -14px 26px rgba(0,0,0,.5)}
 .startbtn:hover{box-shadow:0 0 0 9px #0d0a06,0 0 0 13px #f0d98c,0 0 0 15px #a07d24,0 30px 120px -4px rgba(255,90,50,.95),inset 0 6px 14px rgba(255,255,255,.4),inset 0 -14px 26px rgba(0,0,0,.5)}
+
+/* ===== passe jury mobile 7,6 → corrections (2026-10-20) ===== */
+.contact__dash,html[lang] .contact__dash{background-image:none} /* posée par app.js à l'approche, image adaptée à l'écran */
+.quote__load,.quote__out{scroll-margin-top:96px}
+.gate__mute{min-height:44px;padding:12px 22px}
+.cp-panel__x{width:44px;height:44px;top:6px;inset-inline-end:8px}
+.cp-panel{max-height:calc(100svh - 24px);overflow:auto}
+.hot,.hot{width:44px;height:44px}.hot__dot{margin:13px}
+.menu__langs a{display:inline-flex;align-items:center;min-height:44px;padding:12px 10px}
+.drive__chips button{min-height:44px}
+@media (max-width:767px){
+  .hot{width:44px;height:44px}.hot__dot{margin:13px}
+  .cp-panel{bottom:max(12px,env(safe-area-inset-bottom))}
+  .hero__title .line{padding-bottom:.12em}
+}
+@media (max-width:600px){
+  .off{grid-template-columns:auto minmax(0,1fr);grid-template-areas:"n t" "n d" "n p";gap:6px 14px}
+  .off__p{text-align:start;white-space:normal;margin-top:4px}
+  .off__c{display:none}
+}

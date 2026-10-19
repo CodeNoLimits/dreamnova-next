@@ -6,7 +6,7 @@ const BASE = new URL("./", import.meta.url).href;
 const sec = document.querySelector(".rooms"), pin = sec.querySelector(".rooms__pin");
 const canvas = sec.querySelector(".rooms__gl"), cap = sec.querySelector(".rooms__cap");
 const ROOMS = D.ROOMS, N = ROOMS.length, GAP = 14;
-const mobile = innerWidth < 768;
+const mobile = innerWidth < 768 || (innerWidth <= 1024 && innerHeight > innerWidth); // même critère que le cockpit (tablette portrait = cartes, pas de three.js)
 const media = r => { const [k, v] = r.m.split(":"); return k === "v" ? { video: `${BASE}assets/reel/${v}.mp4` } : k === "r" ? { video: `${BASE}assets/rooms_v2/${v}.mp4` } : { img: `${BASE}assets/work/${v}.webp` }; };
 
 sec.querySelectorAll("[data-r]").forEach(e => e.textContent = D.ROOMS_I[L][e.dataset.r]);
@@ -14,10 +14,16 @@ sec.querySelector(".rooms__dots").innerHTML = ROOMS.map(() => "<li></li>").join(
 function fallback() { // seulement si la 3D est désactivée (mobile / sans WebGL) : vidéos chargées à l'approche
   sec.querySelector(".rooms__fallback").innerHTML = ROOMS.map(r => {
     const m = media(r), pn = (r.m.match(/room_0(\d)/) || [])[1];
-    return `<article class="room-card">${m.video ? `<video data-src="${m.video}" ${pn ? `poster="${BASE}assets/rooms_v2/poster_room_0${pn}.webp"` : ""} muted loop playsinline preload="none"></video>` : `<img src="${m.img}" alt="" loading="lazy">`}<div><b>${r[L][0]}</b><p>${r[L][1]}</p></div></article>`;
+    return `<article class="room-card">${m.video ? `<video data-src="${m.video}" ${pn ? `data-poster="${BASE}assets/rooms_v2/poster_room_0${pn}.webp"` : ""} muted loop playsinline preload="none"></video>` : `<img src="${m.img}" alt="" loading="lazy">`}<div><b>${r[L][0]}</b><p>${r[L][1]}</p></div></article>`;
   }).join("");
-  const io = new IntersectionObserver(es => es.forEach(e => { const v = e.target; if (e.intersectionRatio >= .6) { if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); } else v.pause(); }), { threshold: [0, .6] });
-  sec.querySelectorAll(".room-card video").forEach(v => io.observe(v));
+  const vids = [...sec.querySelectorAll(".room-card video")], ratio = new Map();
+  // affiches à l'approche ; une seule vidéo lue à la fois : la plus visible
+  const pio = new IntersectionObserver(es => { if (!es.some(e => e.isIntersecting)) return; vids.forEach(v => { if (v.dataset.poster) { v.poster = v.dataset.poster; v.removeAttribute("data-poster"); } }); pio.disconnect(); }, { rootMargin: "1500px 0px" }); pio.observe(sec);
+  const io = new IntersectionObserver(es => { es.forEach(e => ratio.set(e.target, e.intersectionRatio));
+    let best = null, br = .5; vids.forEach(v => { const r = ratio.get(v) || 0; if (r > br) { br = r; best = v; } });
+    vids.forEach(v => { if (v === best) { if (!v.src) v.src = v.dataset.src; if (v.paused) v.play().catch(() => {}); } else if (!v.paused) v.pause(); });
+  }, { threshold: [0, .25, .5, .6, .75, .9, 1] });
+  vids.forEach(v => io.observe(v));
 }
 
 let gl = null;
