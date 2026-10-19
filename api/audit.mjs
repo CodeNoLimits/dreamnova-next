@@ -45,7 +45,13 @@ export default async function handler(req, res) {
   let host; try { host = new URL(url).hostname; } catch (_) { return res.status(400).json({ error: "url" }); }
   if (/^(localhost|127\.|10\.|192\.168\.|0\.)/.test(host) || !host.includes(".")) return res.status(400).json({ error: "url" });
   const key = process.env.GEMINI_API_KEY; if (!key) return res.status(500).json({ error: "config" });
-  let facts; try { facts = await readSite(url); } catch (e) { return res.status(422).json({ error: "unreachable" }); }
+  // variantes essayées dans l'ordre : telle quelle, avec www., en http (certificats mal posés, redirections absentes)
+  const u0 = new URL(url), tries = [url];
+  if (!u0.hostname.startsWith("www.")) tries.push(url.replace("://", "://www."));
+  tries.push(url.replace(/^https:/, "http:")); if (!u0.hostname.startsWith("www.")) tries.push(url.replace("https://", "http://www."));
+  let facts = null, lastErr = "";
+  for (const u of tries) { try { facts = await readSite(u); if (facts.status < 400 && facts.words > 20) break; lastErr = "status " + facts.status; facts = null; } catch (e) { lastErr = String(e && e.message || e).slice(0, 120); } }
+  if (!facts) return res.status(422).json({ error: "unreachable", detail: lastErr });
   const g = GRID[lang];
   const { text, ...meta } = facts;
   const prompt = `You are the senior consultant of DreamNova (AI design & engineering studio, Jerusalem, founder David Amor). A business owner pasted their website for a free AI audit.
