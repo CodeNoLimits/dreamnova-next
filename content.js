@@ -107,7 +107,7 @@ SVC: [
  {id:"marketing",hot:"cluster",w:["media","academy"],o:[14,11,12],v:"rooms_v2/room_06_marketing.mp4",part:{he:"לוח המחוונים",en:"Dashboard gauges",fr:"Compteurs"}},
  {id:"private",hot:"ambient",w:["onprem","pilote","pinkas","mehadrin"],o:[4,8],v:"rooms_v2/room_05_vault.mp4",part:{he:"לוח המכשירים",en:"Dashboard",fr:"Planche de bord"}},
  {id:"3d",hot:"paddle_right",w:["site3d","dreamai","rd"],o:[2],v:"rooms_v2/room_07_gallery.mp4",part:{he:"מנוף העברה ימני",en:"Right paddle",fr:"Palette droite"}},
- {id:"consult",hot:"start",w:["auditprivee","auditflash","diagnostic","academy","consult"],o:[16,15],v:"rooms_v2/room_01_hero.mp4",part:{he:"כפתור ההתנעה",en:"Start button",fr:"Bouton start"}}
+ {id:"consult",hot:"start",w:["nekuda","auditprivee","auditflash","diagnostic","academy","consult"],o:[16,17,15],v:"rooms_v2/room_01_hero.mp4",part:{he:"כפתור ההתנעה",en:"Start button",fr:"Bouton start"}}
 ],
 SVC_I: {
  he:{back:"חזרה לתא הנהג",works:"עבודות קשורות",offers:"הצעות",next:"ההילוך הבא",cta:"לדבר על הפרויקט",spec:"מפרט"},
@@ -183,6 +183,7 @@ WORKS: [
  {id:"consult",c:"audit",u:"https://dreamnova-consult-prod.vercel.app",s:{he:"ייעוץ",en:"Consulting",fr:"Conseil"},t:{he:"סוכנות AI — השיטה",en:"AI Agency — The Method",fr:"Agence IA — La Méthode"}},
  {id:"edtech",c:"web",u:null,s:{he:"משחק חינוכי",en:"Educational game",fr:"Jeu éducatif"},t:{he:"EdTech — משחק לוגיקה",en:"EdTech — Logic Game",fr:"EdTech — Jeu Logique"}},
  {id:"site3d",c:"web",u:"https://dreamnova-3d-{l}.vercel.app",s:{he:"WebGL",en:"WebGL",fr:"WebGL"},t:{he:"אתר תלת־ממד סוחף",en:"Immersive 3D Site",fr:"Site Immersif 3D"}},
+ {id:"nekuda",c:"web",u:null,s:{he:"קורס דיגיטלי",en:"Online course",fr:"Cours en ligne"},t:{he:"אקדמיה אונליין — קורס בעברית עם סרט",en:"Online Academy — Hebrew course with film",fr:"Académie en ligne — cours en hébreu avec film"}},
  {id:"rd",c:"deep",u:"https://dreamnova-inventions-investisseurs.vercel.app",s:{he:"דיפ־טק",en:"Deep-tech",fr:"Deep-tech"},t:{he:"מו״פ — תיק IP",en:"R&D — IP Dossier",fr:"R&D — Dossier IP"}}
 ],
 
@@ -223,9 +224,9 @@ SERVICES: [
   en:["3D experiences","Scroll-driven WebGL worlds, virtual showrooms and 3D avatars — so your brand is remembered.",["WebGL website","Virtual showroom","3D avatar","Interactive experience"]],
   fr:["Expériences 3D","Des mondes WebGL qui défilent, des salons virtuels et des avatars 3D — pour que votre marque reste dans les esprits.",["Site WebGL","Salon virtuel","Avatar 3D","Expérience interactive"]]},
  {ic:"compass",
-  he:["ייעוץ, שיעורים פרטיים ורגולציה","לפני שבונים, רואים ברור: ייעוץ ושיעורים פרטיים ב־AI לבעלי עסקים ולצוותים, הנגשת אתרים, תיקון 13 לחוק הגנת הפרטיות וחשבונית ישראל.",["שיעורים פרטיים ב־AI","ייעוץ אישי","אבחון AI מלא","הנגשת אתרים · תקן 5568","תיקון 13 · פרטיות","חשבונית ישראל","אקדמיית AI","Apex Pulse"]],
-  en:["Consulting, lessons & compliance","Before building, see clearly: one-to-one AI lessons and consulting for owners and teams, privacy, accessibility, e-invoicing and the AI Act.",["Private AI lessons","1:1 consulting","Full AI audit","Privacy & AI Act","Accessibility (WCAG)","E-invoicing","AI Academy","Apex Pulse"]],
-  fr:["Conseil, cours & conformité","Avant de construire, voir clair : cours particuliers et conseil IA pour dirigeants et équipes, RGPD, accessibilité RGAA, facture électronique 2026 et AI Act.",["Cours particuliers IA","Conseil individuel","Audit IA complet","RGPD & AI Act","Accessibilité RGAA","Facture électronique 2026","Academy IA","Apex Pulse"]]}
+  he:["ייעוץ, שיעורים פרטיים ורגולציה","לפני שבונים, רואים ברור: ייעוץ ושיעורים פרטיים ב־AI לבעלי עסקים ולצוותים, הנגשת אתרים, תיקון 13 לחוק הגנת הפרטיות וחשבונית ישראל.",["שיעורים פרטיים ב־AI","קורס דיגיטלי עד המפתח","ייעוץ אישי","אבחון AI מלא","הנגשת אתרים · תקן 5568","תיקון 13 · פרטיות","חשבונית ישראל","אקדמיית AI","Apex Pulse"]],
+  en:["Consulting, lessons & compliance","Before building, see clearly: one-to-one AI lessons and consulting for owners and teams, privacy, accessibility, e-invoicing and the AI Act.",["Private AI lessons","Turnkey online course","1:1 consulting","Full AI audit","Privacy & AI Act","Accessibility (WCAG)","E-invoicing","AI Academy","Apex Pulse"]],
+  fr:["Conseil, cours & conformité","Avant de construire, voir clair : cours particuliers et conseil IA pour dirigeants et équipes, RGPD, accessibilité RGAA, facture électronique 2026 et AI Act.",["Cours particuliers IA","Cours en ligne clé en main","Conseil individuel","Audit IA complet","RGPD & AI Act","Accessibilité RGAA","Facture électronique 2026","Academy IA","Apex Pulse"]]}
 ],
 
 REFER: {
@@ -279,7 +280,8 @@ OFFERS: {
      ["CRM ומערכת לעסק","CRM בהתאמה אישית, מחובר לוואטסאפ ולחשבוניות.",["","לפי הצעת מחיר"]],
      ["רילס ושיווק חודשי","רילס, ניהול רשתות ופרופיל גוגל לעסק — ליווי חודשי.",["","לפי הצעת מחיר"]],
      ["הנגשת אתר לפי תקן 5568","בדיקה, תיקונים והצהרת נגישות לאתר קיים.",["","לפי הצעת מחיר"]],
-     ["שיעורים פרטיים וייעוץ AI","שיעור אחד־על־אחד או ליווי צמוד: ללמוד להשתמש ב־AI בעסק שלכם, צעד אחר צעד.",["","לפי הצעת מחיר"]]],
+     ["שיעורים פרטיים וייעוץ AI","שיעור אחד־על־אחד או ליווי צמוד: ללמוד להשתמש ב־AI בעסק שלכם, צעד אחר צעד.",["","לפי הצעת מחיר"]],
+     ["הקורס הדיגיטלי שלכם — עד המפתח","עמוד קורס בעברית, סרט הקדמה, תשלום והרשמה, שליחת הגישה אוטומטית — כמו שבנינו למורות ולמנחות.",["","לפי הצעת מחיר"]]],
  en:[["Website sprint · 48 hours","A focused landing page that explains your offer and makes it easy to enquire.",["From","$1,390"]],
      ["Premium website, made for you","A complete brand presence, from editorial design to launch.",["From","$5,300"]],
      ["Immersive 3D experience","An interactive world that makes your proposition tangible.",["From","$10,700"]],
@@ -296,7 +298,8 @@ OFFERS: {
      ["Custom CRM & business system","A CRM built around your process, connected to WhatsApp and invoicing.",["","Custom quote"]],
      ["Monthly Reels & marketing","Reels, social media and Google Business Profile — monthly support.",["","Custom quote"]],
      ["Website accessibility (WCAG)","Audit, fixes and accessibility statement for an existing site.",["","Custom quote"]],
-     ["Private AI lessons & consulting","One-to-one lessons or close coaching: learn to use AI in your own business, step by step.",["","Custom quote"]]],
+     ["Private AI lessons & consulting","One-to-one lessons or close coaching: learn to use AI in your own business, step by step.",["","Custom quote"]],
+     ["Your online course — turnkey","Course page, intro film, payment and enrolment, automatic access delivery — as we built for teachers and coaches.",["","Custom quote"]]],
  fr:[["Site Sprint 48 h","Une page de lancement qui explique votre offre et facilite la prise de contact.",["À partir de","1 290 €"]],
      ["Site premium sur mesure","Une présence de marque complète, du design éditorial à la mise en ligne.",["À partir de","4 900 €"]],
      ["Expérience 3D immersive","Un monde interactif pour rendre votre proposition tangible.",["À partir de","9 900 €"]],
@@ -313,7 +316,8 @@ OFFERS: {
      ["CRM & système métier","Un CRM construit autour de vos process, relié à WhatsApp et à la facturation.",["","Sur devis"]],
      ["Reels & marketing mensuel","Reels, réseaux sociaux et fiche Google Business — accompagnement mensuel.",["","Sur devis"]],
      ["Mise en accessibilité (RGAA)","Audit, corrections et déclaration d'accessibilité pour un site existant.",["","Sur devis"]],
-     ["Cours particuliers & conseil IA","Cours individuels ou accompagnement rapproché : apprendre à utiliser l'IA dans votre activité, pas à pas.",["","Sur devis"]]]
+     ["Cours particuliers & conseil IA","Cours individuels ou accompagnement rapproché : apprendre à utiliser l'IA dans votre activité, pas à pas.",["","Sur devis"]],
+     ["Votre cours en ligne — clé en main","Page de cours, film d'introduction, paiement et inscription, envoi automatique des accès — comme nous l'avons fait pour des enseignantes et des coachs.",["","Sur devis"]]]
 },
 
 PROCESS: {
