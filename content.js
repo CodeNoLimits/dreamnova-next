@@ -2,7 +2,7 @@
 window.DN = {
 WA: "972584921492",
 CAR: true,
-ON: { accel: true, space: true, values: true, audio: true }, /* activer quand les médias sont livrés */ /* passe à true quand assets/car/ est livré */
+ON: { accel: true, space: true, values: true, audio: true, seqm: 72 }, /* activer quand les médias sont livrés */ /* passe à true quand assets/car/ est livré */
 I: {
 he: {
  "nav.work":"עבודות","nav.services":"שירותים","nav.refer":"למי זה מתאים","nav.offers":"מחירים","nav.lab":"מעבדה","nav.cta":"בואו נדבר",
@@ -143,7 +143,6 @@ STACK: ["Claude","Gemini","Veo 3.1","Kling","Grok Imagine","ElevenLabs","Whisper
 /* reel : v = vidéo, p = projet (référence WORKS.id) */
 REEL: [
  {v:"cinema_pipeline_01",w:1,tag:{he:"סרט AI",en:"AI film",fr:"Film IA"},t:{he:"קולנוע AI פוטוריאליסטי",en:"Photoreal AI cinema",fr:"Cinéma IA photoréaliste"}},
- {p:"voiceava"},
  {v:"animation_pipeline_02",tag:{he:"אנימציה",en:"Animation",fr:"Animation"},t:{he:"אנימציית תלת־ממד בסגנון סטודיו",en:"Studio-style 3D animation",fr:"Animation 3D style studio"}},
  {p:"lumen"},
  {v:"bijoux_pipeline_04",w:1,tag:{he:"קמפיין",en:"Campaign",fr:"Campagne"},t:{he:"סרט יופי ותכשיטים",en:"Beauty & jewelry film",fr:"Film beauté & joaillerie"}},

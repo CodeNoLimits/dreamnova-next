@@ -120,7 +120,7 @@
       speedEl.textContent = Math.round(car.speed); gearEl.textContent = car.gear;
       car.steer += (car.steerT - car.steer) * Math.min(1, dt * 5);
       const shake = car.on ? (Math.sin(now / 23) * .6 + Math.sin(now / 41) * .4) * (.3 + r / 10) : 0;
-      const tr = `translate3d(${car.steer * -14 + shake}px,${shake * .6}px,0) rotate(${car.steer * 2.4}deg) scale(1.06)`;
+      const tr = `translate3d(${car.steer * -14 + shake}px,${shake * .6}px,0) rotate(${car.steer * 2.4}deg) scale(${MOB ? 1.02 : 1.12})`;
       canvas.style.transform = cockpit.style.transform = tr;
       glow.style.opacity = car.on ? .55 + r / 16 : 0;
       A()?.engineRpm(r);

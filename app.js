@@ -92,6 +92,9 @@ $("[data-index]").innerHTML = works.map(w => {
 }).join("");
 $("[data-index]").addEventListener("pointerover", e => { const p = e.target.closest(".pj"); if (!p) return flo.classList.remove("is-on"); flo.querySelector("img").src = p.querySelector(".pj__img").src; flo.classList.add("is-on"); });
 $("[data-index]").addEventListener("pointerleave", () => flo.classList.remove("is-on"));
+{ const rows = $$(".pj"); if (rows.length > 8) { rows.forEach((r, i) => i > 7 && r.classList.add("is-more"));
+    const b = document.createElement("button"); b.type = "button"; b.className = "btn btn--glass index__more"; b.innerHTML = `<span>${esc({ he: "לכל העבודות", en: "See all work", fr: "Tout voir" }[L])} (${rows.length})</span><span class="btn__ico">+</span>`;
+    b.onclick = () => { $("[data-index]").classList.add("is-open"); b.remove(); window.ScrollTrigger && ScrollTrigger.refresh(); }; $("[data-index]").after(b); } }
 const fb = $("[data-filters]");
 fb.innerHTML = D.FILTERS[L].map(([k, v], i) => `<button type="button" data-f="${k}" class="${i ? "" : "is-on"}" aria-pressed="${!i}">${esc(v)}</button>`).join("");
 fb.addEventListener("click", e => {
@@ -121,6 +124,7 @@ const vio = new IntersectionObserver(es => es.forEach(e => {
 }), { rootMargin: "200px" });
 $$("video[data-src]").forEach(v => vio.observe(v));
 
+document.querySelector(".startbtn")?.addEventListener("click", () => window.DNAudio?.sfx("engine", 0, 1));
 /* ---------- bouton flottant : masqué là où il gênerait ---------- */
 { const vis = new Set(); const io = new IntersectionObserver(es => { es.forEach(e => e.isIntersecting ? vis.add(e.target) : vis.delete(e.target)); document.body.classList.toggle("no-fab", vis.size > 0); });
   ["#devis", "#contact", ".foot"].forEach(s => { const e = $(s); if (e) io.observe(e); }); }

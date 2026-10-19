@@ -9,7 +9,7 @@
   const ac = document.querySelector(".chap--accel");
   if (ac && ON.accel) {
     const A = C.accel[L]; ac.hidden = false;
-    ac.innerHTML = `<div class="chap__pin"><video class="chap__v" src="${src("car2/accel")}" muted loop playsinline preload="metadata"></video><div class="speed" aria-hidden="true"></div><div class="chap__shade"></div>
+    ac.innerHTML = `<div class="chap__pin"><video class="chap__v" src="${src("car2/accel_v2")}" muted loop playsinline preload="metadata"></video><div class="speed" aria-hidden="true"></div><div class="chap__shade"></div>
       <div class="chap__txt"><p class="eyebrow eyebrow--gold">${esc(A.eyebrow)}</p><h2 class="chap__t">${esc(A.t)}</h2><p class="chap__d">${esc(A.d)}</p></div></div>`;
     const v = ac.querySelector("video"), sp = ac.querySelector(".speed");
     ready(() => { const ST = window.ScrollTrigger; if (!ST) return;

@@ -53,7 +53,7 @@
     const a = media(f), s = ctx.createMediaElementSource(a), g = ctx.createGain(), send = ctx.createGain(); send.gain.value = .12;
     s.connect(g); g.connect(bus.voice); s.connect(send); send.connect(rev); curVoice = a; duck(true);
     const txt = voices[key] && voices[key][L] && voices[key][L].replace(/[֑-ׇ]/g, ""); if (txt) { sub.textContent = txt; sub.classList.add("is-on"); }
-    a.onended = () => { duck(false); sub.classList.remove("is-on"); if (queued) { const q = queued; queued = null; setTimeout(() => voiceKey(q), 500); } };
+    a.onended = () => { duck(false); sub.classList.remove("is-on"); if (queued) { const q = queued; queued = null; setTimeout(() => { const a = activeSection(); if (a && a[0] === q) voiceKey(q); }, 500); } };
     a.play().catch(() => {});
   }
   const SFX = { engine: ["sfx_engine_start.mp3"], rev: ["sfx_engine_rev.mp3"], accel: ["sfx_accel_whoosh.mp3"], rocket: ["sfx_rocket_launch.mp3"], wind: ["sfx_wind_freefall.mp3"],
@@ -83,13 +83,14 @@
     eng.o1.frequency.setTargetAtTime(f, t, .08); eng.o2.frequency.setTargetAtTime(f * 1.5, t, .08); eng.o3.frequency.setTargetAtTime(f / 2, t, .08);
     eng.lp.frequency.setTargetAtTime(260 + r * 520, t, .1); eng.g.gain.setTargetAtTime(.12 + r * .022, t, .12); }
 
+  const NO_VOICE = new Set(["accel", "rocket"]); // ces voix ne disent pas le texte affiché : musique et effets seulement
   const SECTIONS = [["hero", ".hero"], ["drive", ".drive"], ["accel", ".chap--accel"], ["work", "#work"], ["rooms", ".rooms"], ["services", "#services"], ["refer", "#refer"], ["offers", "#offers"],
     ["devis", "#devis"], ["rocket", ".chap--space"], ["lab", "#lab"], ["values", ".chap--values"], ["contact", "#contact"]];
   const MUSIC_OF = { hero: "hero", drive: "drive", accel: "accel", work: "work", rooms: "rooms", services: "work", refer: "work", offers: "work", devis: "work", rocket: "rocket", lab: "rocket", values: "sky", contact: "contact" };
   function watch() {
     if (!window.ScrollTrigger) return;
     SECTIONS.forEach(([n, s]) => { const e = document.querySelector(s); if (!e || e.hidden) return;
-      ScrollTrigger.create({ trigger: e, start: "top 55%", end: "bottom 45%", onToggle: st => { if (st.isActive && on) { playMusic(MUSIC_OF[n] || n); voiceKey(n); } } }); });
+      ScrollTrigger.create({ trigger: e, start: "top 55%", end: "bottom 45%", onToggle: st => { if (st.isActive && on) { playMusic(MUSIC_OF[n] || n); if (!NO_VOICE.has(n)) voiceKey(n); } } }); });
     document.querySelector(".chap--space")?.addEventListener("chap", e => e.detail === 0 ? sfx("rocket", 0) : sfx("portal", e.detail % 2 ? .7 : -.7, .6));
     document.querySelector(".chap--values")?.addEventListener("chap", e => sfx(["wind", "wind", "portal", "wind", "chute"][e.detail] || "portal", e.detail % 2 ? .6 : -.6));
     addEventListener("dn:room", e => sfx("portal", e.detail % 2 ? .8 : -.8, .7));
