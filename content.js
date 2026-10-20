@@ -106,7 +106,7 @@ SVC: [
  {id:"agents",hot:"wheel",w:["voiceava","stockvox","leadmachine","pinkas"],o:[5,7],v:"rooms_v2/room_04_agents.mp4",part:{he:"הגה",en:"Steering wheel",fr:"Volant"}},
  {id:"marketing",hot:"cluster",w:["reseau","leadmachine","voiceava"],o:[14,11,12],v:"rooms_v2/room_06_marketing.mp4",part:{he:"לוח המחוונים",en:"Dashboard gauges",fr:"Compteurs"}},
  {id:"private",hot:"ambient",w:["onprem","pilote","pinkas","mehadrin","rd"],o:[4,8],v:"rooms_v2/room_05_vault.mp4",part:{he:"לוח המכשירים",en:"Dashboard",fr:"Planche de bord"}},
- {id:"3d",hot:"paddle_right",w:["site3d","cahiers","rd"],o:[2],v:"rooms_v2/room_07_gallery.mp4",part:{he:"מנוף העברה ימני",en:"Right paddle",fr:"Palette droite"}},
+ {id:"3d",hot:"paddle_right",w:["site3d","cahiers"],o:[2],v:"rooms_v2/room_07_gallery.mp4",part:{he:"מנוף העברה ימני",en:"Right paddle",fr:"Palette droite"}},
  {id:"consult",hot:"start",w:["diagnostic","auditprivee","facturation"],o:[16,17,15],v:"rooms_v2/room_01_hero.mp4",part:{he:"כפתור ההתנעה",en:"Start button",fr:"Bouton start"}}
 ],
 SVC_I: {
@@ -170,7 +170,7 @@ REEL: [
 /* u:null = pas de lien public (nom du client dans l'adresse) ; only:"he" = carte hébreu seulement ; r = résultat prouvé ; ordre = impact (phase B 20/10) */
 WORKS: [
  {id:"site3d",c:"web",u:"https://dreamnova-3d-{l}.vercel.app",s:{he:"WebGL",en:"WebGL",fr:"WebGL"},t:{he:"אתר תלת־ממד סוחף",en:"Immersive 3D Site",fr:"Site Immersif 3D"},r:{he:"3 שפות · 3 אתרים חיים",en:"3 languages, 3 live sites — WebGL in the browser",fr:"3 langues, 3 sites en ligne — WebGL dans le navigateur"}},
- {id:"voiceava",c:"ai",u:"https://dreamnova-voice-demo.vercel.app",s:{he:"סוכן קולי 24/7",en:"Voice agent 24/7",fr:"Agent vocal 24/7"},t:{he:"Ava — פקידת קבלה AI",en:"Ava — AI Receptionist",fr:"Ava — Réceptionniste IA"},r:{he:"דמו חי — מדברים איתה מהדפדפן",en:"Live demo — talk to it from your browser",fr:"Démo en direct — parlez-lui depuis le navigateur"}},
+ {id:"voiceava",c:"ai",demo:"en",u:"https://dreamnova-voice-demo.vercel.app",s:{he:"סוכן קולי 24/7",en:"Voice agent 24/7",fr:"Agent vocal 24/7"},t:{he:"Ava — פקידת קבלה AI",en:"Ava — AI Receptionist",fr:"Ava — Réceptionniste IA"},r:{he:"דמו חי — מדברים איתה מהדפדפן",en:"Live demo — talk to it from your browser",fr:"Démo en direct — parlez-lui depuis le navigateur"}},
  {id:"memorial",c:"video",demo:"en",u:"https://dreamnova-memorial-films.vercel.app",s:{he:"סרט AI",en:"AI film",fr:"Film IA"},t:{he:"סרטי זיכרון AI — פנים אמיתיות",en:"AI Memorial Films — Real Faces, Verified",fr:"Films mémoriels IA — visages vérifiés"},r:{he:"סרט ביוגרפי של 60 דקות · 240 שוטים נבדקו אחד־אחד",en:"60-minute biographical film — 240/240 shots checked one by one",fr:"Film biographique de 60 min — 240/240 plans vérifiés un par un"}},
  {id:"joaillerie",c:"web",u:null,s:{he:"מסחר אלקטרוני",en:"E‑commerce",fr:"E‑commerce"},t:{he:"מותג — תכשיטי יוקרה",en:"Maison — Fine Jewelry",fr:"Maison — Haute Joaillerie"}},
  {id:"onprem",c:"deep",u:"https://dreamnova-onprem.vercel.app",s:{he:"דיפ־טק פרטי",en:"Private deep-tech",fr:"Deep-tech privé"},t:{he:"AI פרטי On-Premise",en:"Private On-Premise AI",fr:"IA Privée On-Premise"}},
@@ -185,7 +185,7 @@ WORKS: [
  {id:"lumen",c:"web",demo:"fr",u:"https://maison-lumen-demo.vercel.app",s:{he:"איקומרס",en:"E‑commerce demo",fr:"E‑commerce démo"},t:{he:"Maison Lumen — חנות דמו",en:"Maison Lumen — Store",fr:"Maison Lumen — Boutique"}},
  {id:"diagnostic",c:"audit",u:"https://diagnostic-ia-israel.vercel.app",s:{he:"אודיט",en:"Audit",fr:"Audit"},t:{he:"אבחון AI — ישראל",en:"AI Diagnostic — Israel",fr:"Diagnostic IA — Israël"}},
  {id:"facturation",c:"audit",demo:"fr",u:"https://dreamnova-facturation.vercel.app",s:{he:"אודיט תאימות",en:"Compliance audit",fr:"Audit conformité"},t:{he:"מוכנות לחשבונית דיגיטלית 2026",en:"E-Invoicing Readiness 2026",fr:"Facturation Électronique 2026"}},
- {id:"auditprivee",c:"audit",demo:"fr",u:"https://audit-ia-privee.vercel.app",s:{he:"אודיט",en:"Audit",fr:"Audit"},t:{he:"אודיט AI פרטי וריבוני",en:"Private & Sovereign AI Audit",fr:"Audit IA Privée & Souveraine"}},
+ {id:"auditprivee",c:"audit",demo:"fr",u:"https://audit-ia-privee.vercel.app",s:{he:"אודיט",en:"Sovereign AI",fr:"IA souveraine"},t:{he:"אודיט AI פרטי וריבוני",en:"Private & Sovereign AI Audit",fr:"Audit IA Privée & Souveraine"}},
  {id:"editions",c:"web",u:null,only:"he",s:{he:"הוצאה לאור",en:"",fr:""},t:{he:"חנות ספרים — מהדורה חדשה",en:"",fr:""}},
  {id:"mehadrin",c:"ai",u:"https://mehadrin-ai.vercel.app",only:"he",s:{he:"מוצר",en:"",fr:""},t:{he:"MEHADRIN AI — הבינה הכשרה",en:"",fr:""}}
 ],

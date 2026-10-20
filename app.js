@@ -132,7 +132,7 @@ const offRow = (o, i, extra) => { const [t, d, [lab, p]] = o; return `<a class="
 
 /* ---------- WhatsApp dans les sections (on ne descend pas jusqu'en bas pour écrire) ---------- */
 { const mk = () => { const a = document.createElement("a"); a.className = "btn btn--gold btn--sm sec-cta"; a.href = wa(""); a.target = "_blank"; a.rel = "noopener"; a.innerHTML = `<span>${esc(T["ct.wa"])}</span><span class="btn__ico">${ARROW}</span>`; return a; };
-  ["#index .sec-head--row", "#lab .fine", "#reels .sec-head", ".rooms__fallback"].forEach(sel => { const e = $(sel); if (e) e.after(mk()); }); }
+  ["#lab .fine", "#reels .sec-head", ".rooms__fallback"].forEach(sel => { const e = $(sel); if (e) e.after(mk()); }); $("#index")?.append(mk()); }
 
 /* ---------- process + labo ---------- */
 $("[data-process]").innerHTML = D.PROCESS[L].map(([t, p], i) => `<article class="step reveal"><span class="step__bar"></span><div class="step__n">0${i + 1}</div><h3>${esc(t)}</h3><p>${esc(p)}</p></article>`).join("");
