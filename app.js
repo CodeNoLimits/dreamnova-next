@@ -277,7 +277,8 @@ function intro() {
     gsap.ticker.add(t => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0);
     $$('a[href^="#"]').forEach(a => a.addEventListener("click", e => { const el = $(a.getAttribute("href")); if (el) { e.preventDefault(); lenis.scrollTo(el, { offset: -20 }); } }));
   }
-  const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
+  const tl = gsap.timeline({ defaults: { ease: "expo.out" }, paused: document.body.classList.contains("gated") }); // derrière la porte : le hero attend qu'elle s'ouvre (le premier grand élément reste la porte)
+  addEventListener("dn:gate", () => tl.play(), { once: true });
   tl.from(".hero__title .line>*", { yPercent: 110, duration: mobile() ? .9 : 1.4, stagger: .1 })
     .from(".hero__eyebrow", { y: 20, opacity: 0, duration: 1 }, .2)
     .from(".hero__sub,.hero__ctas", { y: 30, opacity: 0, duration: 1.2, stagger: .1 }, .5)

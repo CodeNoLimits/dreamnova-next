@@ -147,7 +147,7 @@
   // écran d'entrée : le premier geste démarre l'expérience sonore
   const gate = document.querySelector(".gate"); // porte en HTML statique (index.html) : peinte avant tout JavaScript (élément LCP)
   let gated = true;
-  const close = async withSound => { if (!gated) return; gated = false; ss("dn-sound", withSound ? "1" : "0"); gate.classList.add("is-out"); document.body.classList.remove("gated"); window.__lenis?.start?.();
+  const close = async withSound => { if (!gated) return; gated = false; ss("dn-sound", withSound ? "1" : "0"); gate.classList.add("is-out"); document.body.classList.remove("gated"); window.__lenis?.start?.(); window.dispatchEvent(new Event("dn:gate"));
     if (withSound) { await setOn(true); sfx("engine", 0, .9); } setTimeout(() => gate.remove(), 1200); };
   gate.querySelector(".gate__go").addEventListener("click", () => close(true));
   gate.querySelector(".gate__mute").addEventListener("click", () => close(false));
