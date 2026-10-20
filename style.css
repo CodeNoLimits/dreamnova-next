@@ -1094,3 +1094,31 @@ body:has(.cp-panel.is-open) .gear,body.no-fab .gear,body.svc-open .gear{opacity:
 .course__leave{flex:1 1 420px;font:400 clamp(16px,1.3vw,19px)/1.5 var(--f-body);color:#d8d2c0;margin:0}
 @media (max-width:1100px){.course__grid{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:767px){.course__grid{grid-template-columns:1fr}.course{padding-block:48px 56px}.course__foot{padding-inline-end:58px}}
+
+/* studio : catalogue d'outils (affiche 16:9, clip au survol, badge, prix) */
+.bento{grid-template-columns:repeat(4,1fr)}
+.tile,.tile:nth-child(n){grid-column:span 1}
+.tile__core{min-height:0;padding:0 22px 22px;display:flex;flex-direction:column}
+.tile__media{position:relative;margin:0 -22px 18px;aspect-ratio:16/9;overflow:hidden;border-radius:calc(var(--r) - 6px) calc(var(--r) - 6px) 0 0;background:#000}
+.tile__media img,.tile__media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.tile__media video{opacity:0;transition:opacity .5s}.tile__media video.is-on{opacity:1}
+.tile__badge{position:absolute;top:12px;inset-inline-start:12px;padding:5px 10px;border-radius:999px;font:600 11px/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase;background:rgba(10,8,5,.72);backdrop-filter:blur(8px);color:var(--gold-lt);box-shadow:inset 0 0 0 1px rgba(240,217,140,.35)}
+.tile__badge--new{color:#b9dcc4;box-shadow:inset 0 0 0 1px rgba(185,220,196,.4)}
+.tile .tile__n{top:auto;bottom:22px;inset-inline-end:22px;display:none}
+.tile h3{font-size:20px;margin-top:0}.tile p{font-size:14px;margin-top:8px;color:var(--mute)}
+.tile .chips{margin-top:12px}
+.tile__foot{margin-top:auto;padding-top:16px;display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.tile__price{font:600 17px/1 var(--f-display);color:var(--gold-lt)}.tile__price small{display:block;margin-bottom:4px;font:500 11px/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.tile .tile__go{position:static;opacity:1;transform:none;font:500 13px/1 var(--f-body);color:var(--gold-lt)}
+@media (max-width:1100px){.bento{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:767px){.bento{grid-template-columns:1fr}.tile__core{padding:0 18px 18px}.tile__media{margin:0 -18px 14px}.tile h3{font-size:19px}.tile p{font-size:15px}}
+
+/* gratuit, tout de suite (couleur d'identité : bleu glacier) */
+.free{--acc:#a9d4ff;background:linear-gradient(180deg,var(--bg),#070b12 20%,#070b12 80%,var(--bg));padding-block:clamp(56px,7vh,96px)}
+.free .eyebrow{color:var(--acc);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--acc) 34%,transparent);background:color-mix(in srgb,var(--acc) 8%,transparent)}
+.free__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:1500px}
+.free__card{display:flex;flex-direction:column;text-decoration:none;color:inherit}
+.free__card .who__sig{font:400 16px/1.5 var(--f-body);color:#d8d2c0}
+.free__btn{margin-top:auto;align-self:flex-start;margin-top:22px}
+@media (max-width:1100px){.free__grid{grid-template-columns:1fr}}
+@media (max-width:767px){.free{padding-block:48px 56px}.free__grid{padding-inline-end:58px}}

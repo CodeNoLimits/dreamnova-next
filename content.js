@@ -116,6 +116,19 @@ SVC_I: {
 },
 
 /* reels : vidéos verticales produites depuis le site (assets/reels) */
+STUDIO_I: {
+ he:{top:"פופולרי",new:"חדש",open:"פתיחה",from:"החל מ־",quote:"לפי הצעה",badges:{film:"top",web:"top",agents:"new",private:"new",crm:"",marketing:"top","3d":"new",consult:""}},
+ en:{top:"Top",new:"New",open:"Open",from:"From",quote:"Custom quote",badges:{film:"top",web:"top",agents:"new",private:"new",crm:"",marketing:"top","3d":"new",consult:""}},
+ fr:{top:"Top",new:"Nouveau",open:"Ouvrir",from:"À partir de",quote:"Sur devis",badges:{film:"top",web:"top",agents:"new",private:"new",crm:"",marketing:"top","3d":"new",consult:""}}
+},
+FREE_I: {
+ he:{eyebrow:"בחינם, עכשיו",title:"נסו לפני שתחליטו.",lead:"שלושה דברים אמיתיים שעובדים כבר בדפדפן שלכם, בלי הרשמה ובלי כרטיס.",
+  c:[["אבחון AI של האתר שלכם","מדביקים כתובת — ומקבלים ציון, חמישה שיפורים מהירים ותוכנית ל־30 יום, עם PDF.","#audit","לאבחון"],["לדבר עם Ava, המזכירה הקולית","סוכנת קולית חיה (באנגלית) שעונה, מבינה דחיפות ומסכמת את השיחה לצוות.","https://dreamnova-voice-demo.vercel.app","לדבר עם Ava"],["הצעת מחיר חכמה תוך דקה","מתארים את הפרויקט במשפט — ומקבלים הצעה מסודרת עם היקף, לוח זמנים ומחיר.","#devis","להצעת מחיר"]]},
+ en:{eyebrow:"Free, right now",title:"Try before you decide.",lead:"Three real things that already work in your browser — no sign-up, no card.",
+  c:[["AI audit of your website","Paste an address and get a score, five quick wins and a 30-day plan, with a PDF.","#audit","Run the audit"],["Talk to Ava, the voice receptionist","A live voice agent that answers, detects urgency and hands your team a structured summary.","https://dreamnova-voice-demo.vercel.app","Talk to Ava"],["A smart quote in one minute","Describe your project in a sentence and get a clear proposal: scope, timeline and price.","#devis","Get a quote"]]},
+ fr:{eyebrow:"Gratuit, tout de suite",title:"Essayez avant de décider.",lead:"Trois choses réelles qui fonctionnent déjà dans votre navigateur — sans inscription, sans carte.",
+  c:[["Audit IA de votre site","Collez une adresse et recevez une note, cinq gains rapides et un plan sur 30 jours, avec PDF.","#audit","Lancer l'audit"],["Parler à Ava, la réceptionniste vocale","Un agent vocal en direct (en anglais) qui répond, détecte l'urgence et remet un résumé structuré à votre équipe.","https://dreamnova-voice-demo.vercel.app","Parler à Ava"],["Un devis intelligent en une minute","Décrivez votre projet en une phrase et recevez une proposition claire : périmètre, calendrier, prix.","#devis","Obtenir un devis"]]}
+},
 COURSE_I: {
  he:{eyebrow:"קורס AI",title:"קורס אמיתי: חמש סדנאות, אתר ועשרה רילס.",lead:"חמש סדנאות של שעתיים עד שלוש, במקום העבודה, עבור קבוצת יוצרות בישראל. הרילס שלמעלה הם מסוג הסרטונים שהן לומדות להפיק.",
   s:[["בינה מלאכותית באמת","מה זה AI, כלי רשת בסיסיים, Gemini ו־Google Flow, Claude ו־Claude Code, Grok."],["תמונות, אתרים וסרטונים ראשונים","Flow בלי קוד: כל אחת מעצבת הדמיית אתר משלה ומפיקה ארבעה סרטונים קצרים ראשונים. העברית נחרטת אחר כך, כשכבת טקסט."],["אתר אמיתי ואוטומציות","רשתות, אתר באוויר, מסמכים ופוסטים אוטומטיים. שום דבר לא יוצא בלי שאדם קרא אותו."],["סרטים וחיפוש לקוחות","סרטים אוטומטיים, שליטה בדפדפן ומציאת לקוחות עם Claude Code."],["המכונה שלך, מא׳ עד ת׳","כל אחת בונה מכונת חיפוש לקוחות משלה שמשתפרת עם הזמן, ובוחרת ערוץ יוטיוב אחד."]],

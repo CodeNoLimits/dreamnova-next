@@ -70,14 +70,24 @@ const ICONS = {
   grid: '<rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><path d="M17 13.5v7M13.5 17h7"/>',
   spark: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M6 18l2.5-2.5M15.5 8.5L18 6"/>'
 };
-$("[data-bento]").innerHTML = D.SERVICES.map((s, i) => {
-  const [t, p, chips] = s[L];
-  return `<a class="tile reveal" href="${BASE}${L}/s/${D.SVC[i].id}/"><div class="tile__core"><span class="tile__go">${esc(T["work.view"])} ${ARROW}</span>
-    ${s.v ? `<video class="tile__video" muted loop playsinline preload="none" data-src="${BASE}assets/reel/${s.v}.mp4"></video>` : ""}
-    <span class="tile__ico"><svg viewBox="0 0 24 24">${ICONS[s.ic]}</svg></span><span class="tile__n">${String(i + 1).padStart(2, "0")}</span>
-    <h3>${esc(t)}</h3><p>${esc(p)}</p><div class="chips">${chips.map(c => `<span>${esc(c)}</span>`).join("")}</div>
-  </div></a>`;
-}).join("");
+{ const SI = D.STUDIO_I[L], OF = D.OFFERS[L];
+  const price = i => { const o = (D.SVC[i].o || []).map(k => OF[k]).filter(Boolean).find(x => x[2][0]); return o ? `<span class="tile__price"><small>${esc(o[2][0])}</small>${esc(o[2][1])}</span>` : `<span class="tile__price"><small>${esc(SI.quote)}</small></span>`; };
+  $("[data-bento]").innerHTML = D.SERVICES.map((s, i) => {
+    const [t, p, chips] = s[L], id = D.SVC[i].id, b = SI.badges[id];
+    return `<a class="tile reveal" href="${BASE}${L}/s/${id}/"><div class="tile__core">
+      <div class="tile__media"><img src="${BASE}assets/svcclip/poster_${id}.webp" alt="" loading="lazy" width="1280" height="720"><video muted loop playsinline preload="none" data-clip="${BASE}assets/svcclip/svc_${id}.mp4"></video>${b ? `<span class="tile__badge tile__badge--${b}">${esc(SI[b])}</span>` : ""}</div>
+      <span class="tile__n">${String(i + 1).padStart(2, "0")}</span><h3>${esc(t)}</h3><p>${esc(p)}</p><div class="chips">${chips.slice(0, 3).map(c => `<span>${esc(c)}</span>`).join("")}</div>
+      <span class="tile__foot">${price(i)}<span class="tile__go">${esc(SI.open)} ${ARROW}</span></span>
+    </div></a>`;
+  }).join("");
+  // clip joué seulement au survol (ordinateur) ou quand la carte est au centre (téléphone) ; une seule vidéo à la fois
+  const tiles = $$(".tile"), play = v => { if (!v.src) v.src = v.dataset.clip; v.play().catch(() => {}); v.classList.add("is-on"); }, stop = v => { v.pause(); v.classList.remove("is-on"); };
+  if (matchMedia("(hover:hover)").matches) tiles.forEach(t => { const v = t.querySelector("video"); t.addEventListener("pointerenter", () => play(v)); t.addEventListener("pointerleave", () => stop(v)); });
+  else { const io = new IntersectionObserver(es => es.forEach(e => { const v = e.target.querySelector("video"); e.intersectionRatio > .75 ? (tiles.forEach(o => o !== e.target && stop(o.querySelector("video"))), play(v)) : stop(v); }), { threshold: [0, .75] }); tiles.forEach(t => io.observe(t)); } }
+
+/* ---------- gratuit, tout de suite ---------- */
+{ const FI = D.FREE_I[L]; $$("[data-f2]").forEach(e => e.textContent = FI[e.dataset.f2]);
+  $("[data-free]").innerHTML = FI.c.map(([t, d, h, c], i) => { const ext = h.startsWith("http"); return `<a class="who free__card reveal" href="${h}"${ext ? ' target="_blank" rel="noopener"' : ""}><span class="who__k">0${i + 1}${ext ? " · EN" : ""}</span><h3>${esc(t)}</h3><p class="who__sig">${esc(d)}</p><span class="btn btn--gold free__btn"><span>${esc(c)}</span><span class="btn__ico">${ext ? "↗" : "↘"}</span></span></a>`; }).join(""); }
 
 /* ---------- recommandations ---------- */
 $("[data-refer]").innerHTML = D.REFER[L].map(([t, s, g], i) =>

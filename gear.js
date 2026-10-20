@@ -4,7 +4,7 @@
   const D = window.DN, L = document.documentElement.lang;
   if (document.body.dataset.svc) return;
   const T = { he: { next: "להילוך הבא", top: "להתחלה" }, en: { next: "Next gear", top: "Back to start" }, fr: { next: "Rapport suivant", top: "Retour au départ" } }[L];
-  const SEL = [".hero", ".drive", ".chap--accel", "#work", ".manifesto", ".rooms", "#reels", "#refer", "#index", "#offers", "#audit", "#devis", ".chap--space", "#lab", ".chap--values", ".founder", "#contact"];
+  const SEL = [".hero", ".drive", ".chap--accel", "#work", ".manifesto", ".rooms", "#services", "#reels", "#refer", "#index", "#free", "#offers", "#audit", "#devis", ".chap--space", "#lab", ".chap--values", ".founder", "#contact"];
   const mob = () => innerWidth < 768;
   const el = document.createElement("div"); el.className = "gear";
   el.innerHTML = `<button type="button" class="gear__knob" aria-label="${T.next}"><span class="gear__ring" aria-hidden="true"></span><b>1</b><i aria-hidden="true">▲</i></button><small class="gear__lab">${T.next}</small>`;
