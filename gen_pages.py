@@ -10,12 +10,12 @@ FONTS = {
 }
 FONTS["fr"] = FONTS["en"]
 # hébreu : 2 polices (règle Leeya) ; Bricolage seulement pour les mots-marques latins, en sous-ensemble de ces lettres (~3 Ko au lieu de 75)
-XF = {"he": '<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&text=DreamNovSTAR0123456789&display=swap" rel="stylesheet">', "en": "", "fr": ""}
+XF = {"he": '<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&text=DreamNovSTAR0123456789&display=swap" rel="stylesheet" media="print" onload="this.media=\'all\'">', "en": "", "fr": ""}
 TITLE = {"he": "DreamNova — אנחנו בונים את הבלתי אפשרי", "en": "DreamNova — We build the impossible", "fr": "DreamNova — Nous construisons l'impossible"}
 for l in ("he", "en", "fr"):
     T = I[l]; h = src
     h = h.replace('<html lang="he" dir="rtl">', f'<html lang="{l}" dir="{"rtl" if l == "he" else "ltr"}">')
-    h = re.sub(r'family=Bricolage[^"]*&display=swap" rel="stylesheet">', FONTS[l] + '&display=swap" rel="stylesheet">' + XF[l], h)
+    h = re.sub(r'family=Bricolage[^"]*&display=swap" rel="stylesheet" media="print" onload="this.media=\'all\'">', FONTS[l] + '&display=swap" rel="stylesheet" media="print" onload="this.media=\'all\'">' + XF[l], h)
     h = re.sub(r"<title>.*?</title>", f"<title>{html.escape(TITLE[l])}</title>", h)
     h = re.sub(r'<meta property="og:title" content="[^"]*">', f'<meta property="og:title" content="{html.escape(TITLE[l])}">', h)
     h = h.replace('<meta property="og:image"', f'<link rel="canonical" href="https://dreamnova-next.vercel.app/{l}/">\n<meta property="og:url" content="https://dreamnova-next.vercel.app/{l}/">\n<meta property="og:image"', 1)

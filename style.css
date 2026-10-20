@@ -169,7 +169,7 @@ html[dir=rtl] .work__progress span{transform-origin:right}
 .manifesto{padding-block:clamp(120px,18vw,260px)}
 .manifesto__text{max-width:1400px;margin-inline:auto;font:500 clamp(32px,4.8vw,80px)/1.08 var(--f-display);letter-spacing:-.035em}
 html[lang=he] .manifesto__text{letter-spacing:-.01em;line-height:1.18}
-.manifesto__text .w{opacity:.14;transition:opacity .2s}
+.manifesto__text .w{opacity:.42;transition:opacity .2s}
 .manifesto__text .w.g{font-family:var(--f-accent);font-style:italic;font-weight:400;color:var(--gold-lt)}
 html[lang=he] .manifesto__text .w.g{font-style:normal}
 

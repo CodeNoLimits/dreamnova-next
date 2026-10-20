@@ -144,7 +144,7 @@
     return;
   }
   // écran d'entrée : le premier geste démarre l'expérience sonore
-  const gate = document.createElement("div"); gate.className = "gate"; gate.setAttribute("role", "dialog");
+  const gate = document.createElement("div"); gate.className = "gate"; gate.setAttribute("role", "dialog"); gate.setAttribute("aria-label", TX.tag);
   gate.innerHTML = `<div class="gate__in"><img src="${BASE}assets/brand/crest.svg" alt="" width="86" height="108"><p class="gate__tag">${TX.tag}</p>
     <button type="button" class="btn btn--gold btn--xl gate__go"><span>${TX.go}</span><span class="btn__ico">◉</span></button><button type="button" class="gate__mute">${TX.mute}</button></div>`;
   document.body.appendChild(gate);
