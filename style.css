@@ -1058,7 +1058,7 @@ body:has(.cp-panel.is-open) .gear,body.no-fab .gear,body.svc-open .gear{opacity:
 .cp-start-hint{min-height:44px}
 .foot a[href="#top"]{min-width:44px;justify-content:center}
 /* dans le cockpit sur téléphone, le ⚙️ monte sous la barre : il ne cache plus les boutons de service du bas */
-@media (max-width:767px){body.in-cockpit .gear{bottom:auto;top:84px}}
+@media (max-width:767px){body.in-cockpit .gear{transform:translateY(calc(188px - 100svh))}} /* transform au lieu de top : pas de décalage compté dans le CLS (84 px + ⚙️ 82 px + marge 22 px) */
 /* phase B : fiches riches (résultat prouvé), vignette sur téléphone, filtre par service défilant */
 .pj__r{margin-top:6px;font-size:14.5px;line-height:1.4;color:var(--mute)}
 .index .filters{max-width:100%}
@@ -1073,4 +1073,4 @@ body:has(.cp-panel.is-open) .gear,body.no-fab .gear,body.svc-open .gear{opacity:
   .pj__r{font-size:15px}
 }
 .index__grid .pj.is-out{display:none!important}
-.index__cta{margin-top:28px;display:flex;justify-content:center}
+.svc-works .pj .pj__img{height:auto}
