@@ -1083,3 +1083,14 @@ body:has(.cp-panel.is-open) .gear,body.no-fab .gear,body.svc-open .gear{opacity:
 @media (max-width:767px){.sigfilm{margin-inline:16px;border-radius:18px}}
 @media (min-width:1100px){.sigfilm{grid-column:1;margin:28px 0 0}}
 .sigfilm{cursor:pointer}
+
+/* cours : exemple anonymisé (couleur d'identité : sauge) */
+.course{--acc:#b9dcc4;background:linear-gradient(180deg,var(--bg),#0a100c 20%,#0a100c 80%,var(--bg));padding-block:clamp(56px,7vh,96px)}
+.course .eyebrow{color:var(--acc);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--acc) 34%,transparent);background:color-mix(in srgb,var(--acc) 8%,transparent)}
+.course .sec-head{margin-bottom:28px}
+.course__grid{grid-template-columns:repeat(5,1fr)}
+.course .who h3{margin-top:0}
+.course__foot{margin-top:28px;display:flex;flex-wrap:wrap;gap:20px 28px;align-items:center;max-width:1500px;padding-inline-end:96px}
+.course__leave{flex:1 1 420px;font:400 clamp(16px,1.3vw,19px)/1.5 var(--f-body);color:#d8d2c0;margin:0}
+@media (max-width:1100px){.course__grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:767px){.course__grid{grid-template-columns:1fr}.course{padding-block:48px 56px}.course__foot{padding-inline-end:58px}}

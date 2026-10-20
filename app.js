@@ -123,6 +123,11 @@ fb.addEventListener("click", e => {
     box.innerHTML = list.map(r => `<figure class="reel"><div class="reel__frame"><video data-src="${BASE}assets/reels/${r.id}.mp4" data-poster="${BASE}assets/reels/${r.id}.webp" muted loop playsinline preload="none"></video><button type="button" class="reel__snd" aria-label="${esc(RI.tap)}">🔊</button></div><figcaption>${esc(r.t[L])}</figcaption></figure>`).join("");
     box.addEventListener("click", e => { const b = e.target.closest(".reel__snd"); if (!b) return; const v = b.previousElementSibling; v.muted = !v.muted; b.classList.toggle("is-on", !v.muted); if (!v.muted) { v.currentTime = 0; v.play().catch(() => {}); $$(".reel video", box).forEach(o => { if (o !== v) o.muted = true; }); const sg = $(".sigfilm video"); if (sg) { sg.muted = true; $(".sigfilm .reel__snd").classList.remove("is-on"); } $$(".reel__snd", box).forEach(o => o !== b && o.classList.remove("is-on")); } }); } }
 
+/* ---------- cours (exemple anonymisé) ---------- */
+{ const CI = D.COURSE_I[L]; $$("[data-c2]").forEach(e => e.textContent = CI[e.dataset.c2]);
+  $("[data-course]").innerHTML = CI.s.map(([t, d]) => `<article class="who reveal"><h3>${esc(t)}</h3><p class="who__sig">${esc(d)}</p></article>`).join("");
+  const a = $("[data-course-wa]"); if (a) { a.href = wa(CI.eyebrow); a.target = "_blank"; a.rel = "noopener"; } }
+
 /* ---------- offres ---------- */
 const isQuote = o => !o[2][0] && /devis|quote|הצעת/i.test(o[2][1]);
 const offRow = (o, i, extra) => { const [t, d, [lab, p]] = o; return `<a class="off reveal${extra ? " is-extra" : ""}" href="${wa(t)}" target="_blank" rel="noopener"><span class="off__n">${String(i + 1).padStart(2, "0")}</span><span class="off__t">${esc(t)}</span><span class="off__d">${esc(d)}</span><span class="off__p">${lab ? `<small>${esc(lab)}</small>` : ""}${esc(p)}</span><span class="off__c">${ARROW}</span></a>`; };
