@@ -123,6 +123,7 @@ REELS_I: {
 },
 REELS: [
  {id:"reel01_volant_he",lang:"he",t:{"he": "קחו את ההגה", "en": "Take the wheel", "fr": "Prenez le volant"}},
+ {id:"reel02_cockpit_fr",lang:"fr",t:{"he": "תא הנהג — כל כפתור שירות", "en": "The cockpit — every part is a service", "fr": "Le cockpit — chaque élément est un service"}},
  {id:"reel03_accel_en",lang:"en",t:{"he": "לוחצים על הגז", "en": "We hit the throttle", "fr": "On appuie sur l'accélérateur"}},
  {id:"reel04_salles_he",lang:"he",t:{"he": "סיור בסטודיו", "en": "Studio tour", "fr": "Visite du studio"}},
  {id:"reel05_sites_he",lang:"he",t:{"he": "אתרים ומסחר אלקטרוני", "en": "Websites & e‑commerce", "fr": "Sites & e‑commerce"}},
