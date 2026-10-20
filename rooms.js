@@ -156,7 +156,7 @@ function start() {
       const d = p.g.position.z - z; // négatif = devant la caméra
       const dist = -d;
       // l'écran s'efface quand on le traverse
-      p.screen.material.opacity = THREE.MathUtils.clamp((dist - 3.5) / 4, 0, 1);
+      p.screen.material.opacity = THREE.MathUtils.clamp((dist - 3.5) / 4, 0, 1) * THREE.MathUtils.clamp((GAP * 1.45 - dist) / 3, 0, 1); // visible seulement dans sa fenêtre : pas deux salles à la fois
       p.halo.material.opacity = 0.45 * THREE.MathUtils.smoothstep(dist, 3, 10);
       
       if (p.video) {
