@@ -2,8 +2,9 @@
 // voix narratrice sous-titrée (musique abaissée), effets spatialisés (HRTF) + réverbération, moteur synthétisé qui suit le régime.
 (() => {
   const D = window.DN, L = document.documentElement.lang, BASE = new URL("./", document.currentScript.src).href, A = BASE + "assets/audio/";
-  if (!(D.ON || {}).audio) return;
-  if (new URLSearchParams(location.search).get("embed") === "1") return; // surcouche : la musique vient de la page principale
+  const noGate = () => { document.querySelector(".gate")?.remove(); document.body.classList.remove("gated"); };
+  if (!(D.ON || {}).audio) return noGate();
+  if (new URLSearchParams(location.search).get("embed") === "1") return noGate(); // surcouche : la musique vient de la page principale
   // manifestes chargés dès l'arrivée : au 1er geste, plus aucune attente réseau (iPhone refuse play() hors du geste)
   const getJ = f => fetch(A + f).then(r => r.json()).catch(() => null), MAN = getJ("manifest.json"), VOI = getJ("voices.json");
   const TX = {
@@ -141,13 +142,10 @@
       if (SVC && prev === null) btn.classList.add("is-hint"); // première page de service sans choix : le bouton son clignote
     }
     window.DNAudio = { sfx, voiceKey, engine, engineRpm, get on() { return on; } };
-    return;
+    noGate(); return;
   }
   // écran d'entrée : le premier geste démarre l'expérience sonore
-  const gate = document.createElement("div"); gate.className = "gate"; gate.setAttribute("role", "dialog"); gate.setAttribute("aria-label", TX.tag);
-  gate.innerHTML = `<div class="gate__in"><img src="${BASE}assets/brand/crest.svg" alt="" width="86" height="108"><p class="gate__tag">${TX.tag}</p>
-    <button type="button" class="btn btn--gold btn--xl gate__go"><span>${TX.go}</span><span class="btn__ico">◉</span></button><button type="button" class="gate__mute">${TX.mute}</button></div>`;
-  document.body.appendChild(gate);
+  const gate = document.querySelector(".gate"); // porte en HTML statique (index.html) : peinte avant tout JavaScript (élément LCP)
   let gated = true;
   const close = async withSound => { if (!gated) return; gated = false; ss("dn-sound", withSound ? "1" : "0"); gate.classList.add("is-out"); document.body.classList.remove("gated"); window.__lenis?.start?.();
     if (withSound) { await setOn(true); sfx("engine", 0, .9); } setTimeout(() => gate.remove(), 1200); };

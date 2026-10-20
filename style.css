@@ -444,7 +444,7 @@ html[lang=he] .svc-hero__t{letter-spacing:-.02em;line-height:1}
 
 /* rupture claire « papier » pour le manifeste */
 .manifesto{background:#f2ece1;color:#0d0a06}
-.manifesto__text .w{opacity:.12}
+.manifesto__text .w{opacity:.42}
 .manifesto__text .w.g{color:#8a6a1f}
 h1,h2,h3,.manifesto__text{text-wrap:balance}
 p{text-wrap:pretty}
@@ -731,7 +731,7 @@ html[dir=rtl] .hud{left:auto;right:24%;transform:translateX(50%) scale(.9)}
 html[dir=rtl] .drive.is-in .hud,html[dir=rtl] .drive.is-past .hud{transform:translateX(50%) scale(1)}
 .drive__pin{min-height:100svh}
 .manifesto{background:#050403;color:var(--ink)}
-.manifesto__text .w{opacity:.14}
+.manifesto__text .w{opacity:.42}
 .manifesto__text .w.g{color:var(--gold-lt)}
 .nav.on-light{background:rgba(14,11,8,.55);color:inherit}
 .nav.on-light .nav__links a,.nav.on-light .nav__langs a,.nav.on-light .snd{color:var(--mute)}
