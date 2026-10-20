@@ -85,6 +85,11 @@ const ICONS = {
   if (matchMedia("(hover:hover)").matches) tiles.forEach(t => { const v = t.querySelector("video"); t.addEventListener("pointerenter", () => play(v)); t.addEventListener("pointerleave", () => stop(v)); });
   else { const io = new IntersectionObserver(es => es.forEach(e => { const v = e.target.querySelector("video"); e.intersectionRatio > .75 ? (tiles.forEach(o => o !== e.target && stop(o.querySelector("video"))), play(v)) : stop(v); }), { threshold: [0, .75] }); tiles.forEach(t => io.observe(t)); } }
 
+/* ---------- Now (produit phare, avant-première) ---------- */
+{ const NI = D.NOW_I[L]; $$("[data-n2]").forEach(e => e.textContent = NI[e.dataset.n2]);
+  $("[data-now]").innerHTML = NI.pts.map(([t, d], i) => `<article class="who reveal"><span class="who__k">0${i + 1}</span><h3>${esc(t)}</h3><p class="who__sig">${esc(d)}</p></article>`).join("");
+  const a = $("[data-now-wa]"); if (a) { a.href = wa("Now"); a.target = "_blank"; a.rel = "noopener"; } }
+
 /* ---------- gratuit, tout de suite ---------- */
 { const FI = D.FREE_I[L]; $$("[data-f2]").forEach(e => e.textContent = FI[e.dataset.f2]);
   $("[data-free]").innerHTML = FI.c.map(([t, d, h, c], i) => { const ext = h.startsWith("http"); return `<a class="who free__card reveal" href="${h}"${ext ? ' target="_blank" rel="noopener"' : ""}><span class="who__k">0${i + 1}${ext ? " · EN" : ""}</span><h3>${esc(t)}</h3><p class="who__sig">${esc(d)}</p><span class="btn btn--gold free__btn"><span>${esc(c)}</span><span class="btn__ico">${ext ? "↗" : "↘"}</span></span></a>`; }).join(""); }

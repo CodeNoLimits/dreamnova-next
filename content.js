@@ -119,6 +119,17 @@ SVC_I: {
 },
 
 /* reels : vidéos verticales produites depuis le site (assets/reels) */
+NOW_I: {
+ he:{eyebrow:"בקרוב · גישה מוקדמת",title:"Now. הדבר האחד לעשות עכשיו.",lead:"אפליקציה שמחברת את וואטסאפ, המיילים, היומן והמשימות שלכם — ומציגה, עם אנימציה אחת, את הפעולה היחידה שחשובה ברגע הזה. פחות התראות, יותר ביצוע.",
+  pts:[["מוח שני, מכוון לפעולה","נבנה לעומס ולהסחות דעת: מסך אחד, החלטה אחת."],["פרטי מהיסוד","הנתונים שלכם מוצפנים ונשארים שלכם."],["מתחבר למה שכבר יש לכם","וואטסאפ, מייל, יומן, GitHub — בלי להחליף כלים."]],
+  cta:"אני רוצה לנסות את Now",note:"אב־טיפוס חי בשימוש יומי אצלנו. ההרשמה לגישה מוקדמת נפתחת בוואטסאפ."},
+ en:{eyebrow:"Coming soon · early access",title:"Now. The one thing to do right now.",lead:"An app that connects your WhatsApp, email, calendar and tasks — and shows, with a single animation, the one action that matters at this moment. Fewer notifications, more done.",
+  pts:[["A second brain, built for action","Designed for overload and distraction: one screen, one decision."],["Private by design","Your data is encrypted and stays yours."],["Plugs into what you already use","WhatsApp, email, calendar, GitHub — no tool to replace."]],
+  cta:"I want to try Now",note:"A live prototype we use every day. Early access opens on WhatsApp."},
+ fr:{eyebrow:"Bientôt · avant-première",title:"Now. La seule chose à faire maintenant.",lead:"Une application qui relie votre WhatsApp, vos mails, votre agenda et vos tâches — et montre, en une animation, l'action qui compte à cet instant. Moins de notifications, plus de choses faites.",
+  pts:[["Un deuxième cerveau, tourné vers l'action","Pensé pour la surcharge et la dispersion : un écran, une décision."],["Privé par construction","Vos données sont chiffrées et restent à vous."],["Branché sur ce que vous utilisez déjà","WhatsApp, mail, agenda, GitHub — aucun outil à remplacer."]],
+  cta:"Je veux essayer Now",note:"Un prototype vivant, utilisé chaque jour chez nous. L'avant-première s'ouvre sur WhatsApp."}
+},
 STUDIO_I: {
  he:{top:"פופולרי",new:"חדש",open:"פתיחה",from:"החל מ־",quote:"לפי הצעה",badges:{film:"top",web:"top",agents:"new",private:"new",crm:"",marketing:"top","3d":"new",consult:""}},
  en:{top:"Top",new:"New",open:"Open",from:"From",quote:"Custom quote",badges:{film:"top",web:"top",agents:"new",private:"new",crm:"",marketing:"top","3d":"new",consult:""}},
