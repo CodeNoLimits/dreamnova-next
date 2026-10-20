@@ -27,7 +27,20 @@
 <link rel="stylesheet" href="../style.css">
 </head>
 <body class="is-loading gated">
-<div class="gate is-in" role="dialog" aria-labelledby="gate-tag"><div class="gate__in"><img src="../assets/brand/crest.svg" alt="" width="86" height="108" fetchpriority="high"><p class="gate__tag" id="gate-tag" data-i="gate.tag">חוויה סוחפת · מומלץ עם אוזניות</p><button type="button" class="btn btn--gold btn--xl gate__go"><span data-i="gate.go">התנעת המנוע</span><span class="btn__ico">◉</span></button><button type="button" class="gate__mute" data-i="gate.mute">כניסה בלי סאונד</button></div></div>
+<div class="gate is-in" role="dialog" aria-labelledby="gate-tag"><div class="gate__in"><svg class="gate__crest" width="86" height="108" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 150">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7e9b8"/><stop offset=".45" stop-color="#d4af37"/><stop offset=".75" stop-color="#9c7a22"/><stop offset="1" stop-color="#f0d98c"/></linearGradient>
+    <radialGradient id="f" cx=".5" cy=".3" r=".8"><stop offset="0" stop-color="#1c150a"/><stop offset="1" stop-color="#050403"/></radialGradient>
+  </defs>
+  <path d="M60 4 112 17v54c0 37-23 62-52 75C31 133 8 108 8 71V17z" fill="url(#f)" stroke="url(#g)" stroke-width="4"/>
+  <path d="M60 12 104 23v48c0 32-20 54-44 66-24-12-44-34-44-66V23z" fill="none" stroke="url(#g)" stroke-width=".8" opacity=".55"/>
+  <g fill="url(#g)"><rect x="16" y="27" width="88" height="3"/><rect x="16" y="33" width="88" height="1.2" opacity=".7"/></g>
+  <path d="M60 42 64.5 55.5 78 51 68 60 78 69 64.5 64.5 60 78 55.5 64.5 42 69 52 60 42 51 55.5 55.5z" fill="url(#g)"/>
+  <g transform="translate(-3.5 0)" fill="url(#g)" fill-rule="evenodd">
+    <path d="M33 86h14c12 0 19 7 19 17s-7 17-19 17H33zM41 93v20h6c7 0 11-4 11-10s-4-10-11-10z"/>
+    <path d="M71 120V86h7l9 19V86h7v34h-7l-9-19v19z"/>
+  </g>
+</svg><p class="gate__tag" id="gate-tag" data-i="gate.tag">חוויה סוחפת · מומלץ עם אוזניות</p><button type="button" class="btn btn--gold btn--xl gate__go"><span data-i="gate.go">התנעת המנוע</span><span class="btn__ico">◉</span></button><button type="button" class="gate__mute" data-i="gate.mute">כניסה בלי סאונד</button></div></div>
 <a class="skip" href="#work">↓ DreamNova</a>
 <div class="grain" aria-hidden="true"></div>
 <div class="cursor" aria-hidden="true"><span class="cursor__ring"></span><span class="cursor__dot"></span><span class="cursor__label"></span></div>
