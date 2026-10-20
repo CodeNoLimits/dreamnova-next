@@ -1056,3 +1056,6 @@ body:has(.cp-panel.is-open) .gear,body.no-fab .gear,body.svc-open .gear{opacity:
 @media (max-width:767px){.offers .off,.index .pj{padding-inline-end:58px}}
 @media (max-width:767px){.nav--svc .nav__brand{min-width:44px;justify-content:center;padding-inline-end:0}.nav--svc .nav__langs a{min-width:44px;padding-inline:4px}.nav--svc .nav__langs{gap:0}}
 .cp-start-hint{min-height:44px}
+.foot a[href="#top"]{min-width:44px;justify-content:center}
+/* dans le cockpit sur téléphone, le ⚙️ monte sous la barre : il ne cache plus les boutons de service du bas */
+@media (max-width:767px){body.in-cockpit .gear{bottom:auto;top:84px}}
