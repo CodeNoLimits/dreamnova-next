@@ -4,6 +4,8 @@
   const D = window.DN, L = document.documentElement.lang, BASE = new URL("./", document.currentScript.src).href, A = BASE + "assets/audio/";
   if (!(D.ON || {}).audio) return;
   if (new URLSearchParams(location.search).get("embed") === "1") return; // surcouche : la musique vient de la page principale
+  // manifestes chargés dès l'arrivée : au 1er geste, plus aucune attente réseau (iPhone refuse play() hors du geste)
+  const getJ = f => fetch(A + f).then(r => r.json()).catch(() => null), MAN = getJ("manifest.json"), VOI = getJ("voices.json");
   const TX = {
     he: { on: "הפעלת סאונד", off: "השתקה", go: "התנעת המנוע", mute: "כניסה בלי סאונד", tag: "חוויה סוחפת · מומלץ עם אוזניות" },
     en: { on: "Sound on", off: "Mute", go: "Start the engine", mute: "Enter without sound", tag: "Immersive experience · headphones recommended" },
@@ -35,8 +37,7 @@
     bus.music.gain.value = .5; bus.voice.gain.value = 1; bus.sfx.gain.value = .8; bus.engine.gain.value = .9;
     bus.mpan = ctx.createStereoPanner(); bus.mpan.connect(bus.music);
     ctx.listener.positionZ && (ctx.listener.positionZ.value = 0);
-    try { man = await (await fetch(A + "manifest.json")).json(); } catch (_) {}
-    try { voices = await (await fetch(A + "voices.json")).json(); } catch (_) {}
+    man = (await MAN) || man; voices = (await VOI) || voices;
     addEventListener("pointermove", e => { if (bus) bus.mpan.pan.setTargetAtTime(((e.clientX / innerWidth) - .5) * .5, ctx.currentTime, .3); }, { passive: true });
     watch();
   }
@@ -46,6 +47,9 @@
   function playMusic(name) {
     const f = pick(`loop_${name}.mp3`, "theme.mp3", "loop_hero.mp3"); if (!f || (music && music.f === f)) return;
     const a = media(f, true), s = ctx.createMediaElementSource(a), g = ctx.createGain(); s.connect(g); g.connect(bus.mpan);
+    // changement de page : le morceau reprend là où il était (temps écoulé compris), pas depuis le début
+    let p = null; try { p = JSON.parse(ss("dn-mpos") || "null"); } catch (_) {} ss("dn-mpos", "");
+    if (p && p.f === f) a.addEventListener("loadedmetadata", () => { if (a.duration) a.currentTime = (p.t + (Date.now() - p.at) / 1000) % a.duration; }, { once: true });
     g.gain.value = 0; a.play().catch(() => {}); const t = ctx.currentTime, dur = 2.4;
     g.gain.setValueCurveAtTime(curve(true), t, dur);
     if (music) { const o = music; o.g.gain.cancelScheduledValues(t); o.g.gain.setValueCurveAtTime(curve(false), t, dur); setTimeout(() => o.a.pause(), dur * 1000 + 100); }
@@ -124,6 +128,7 @@
     else { if (music) { music.a.pause(); music = null; } if (curVoice) curVoice.pause(); sub.classList.remove("is-on"); engine(false); }
   }
   btn.addEventListener("click", () => setOn(!on));
+  addEventListener("pagehide", () => { if (on && music && !music.a.paused) ss("dn-mpos", JSON.stringify({ f: music.f, t: music.a.currentTime, at: Date.now() })); });
 
   // choix déjà fait dans cette session (ou page de service) : pas de porte ; si le son était actif, il reprend au premier geste
   const prev = ss("dn-sound");
@@ -132,7 +137,7 @@
       const EV = ["pointerdown", "keydown", "touchend", "scroll"], detach = () => EV.forEach(e => removeEventListener(e, arm));
       const arm = async () => { if (!ctx || ctx.state !== "running" || (music && music.a.paused)) { await setOn(true); if (music && music.a.paused) music.a.play().catch(() => {}); } if (ctx && ctx.state === "running" && !(music && music.a.paused)) detach(); };
       EV.forEach(e => addEventListener(e, arm, { passive: true }));
-      if (SVC && prev === "1") setTimeout(arm, 300); // le navigateur autorise souvent la reprise après une navigation sur le même site
+      if (prev === "1") setTimeout(arm, 300); // le navigateur autorise souvent la reprise après une navigation sur le même site (langue, service)
       if (SVC && prev === null) btn.classList.add("is-hint"); // première page de service sans choix : le bouton son clignote
     }
     window.DNAudio = { sfx, voiceKey, engine, engineRpm, get on() { return on; } };
