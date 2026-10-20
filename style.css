@@ -1035,3 +1035,12 @@ body:not(.gated):not(.is-loading):not(.menu-open):not(.printing) .gear{opacity:1
 .rooms__title{text-shadow:0 6px 40px rgba(0,0,0,.95),0 0 2px rgba(0,0,0,.8)}
 .reels__strip{justify-content:center}
 @media (max-width:767px){.reels__strip{justify-content:flex-start}}
+/* R6 mobile (7,8) : ⚙️ qui s'efface quand il gênerait, en-tête de service tenu, cibles 44 px, chiffres décoratifs discrets */
+body:has(.cp-panel.is-open) .gear,body.no-fab .gear,body.svc-open .gear{opacity:0!important;pointer-events:none!important}
+@media (max-width:767px){.svc__back{display:none!important}.nav--svc{max-width:calc(100vw - 16px);gap:4px;padding-inline:6px}.nav--svc .nav__brand{padding-inline-end:6px;margin-inline-end:0;border:0}.nav--svc .nav__langs a{padding:7px 7px;min-width:36px}}
+.menu__links a{min-height:44px;display:flex;align-items:center}
+.subs__x{width:44px;height:44px}
+.nav__brand{min-height:44px;align-items:center}
+.svc-hero__num{opacity:.38}
+@media (max-width:767px){.svc-hero__num{font-size:120px;top:12vh;inset-inline-end:-6px;opacity:.25}}
+.chap__layer{transition:opacity .6s var(--ease)}

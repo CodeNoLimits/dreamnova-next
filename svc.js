@@ -37,7 +37,7 @@
     const u = w.u && w.u.replace("{l}", L);
     return `<${u ? "a" : "div"} class="pj r" ${u ? `href="${u}" target="_blank" rel="noopener"` : ""}><img class="pj__img" src="${BASE}assets/work/gal_${w.id}${w.id === "site3d" ? "_" + L : ""}.webp"${w.demo && w.demo !== L ? ` data-demo="${w.demo}"` : ""} alt="${esc(w.t[L])}" loading="lazy"><div class="pj__b"><div><div class="pj__s">${esc(w.s[L])}</div><div class="pj__t">${esc(w.t[L])}</div></div><span class="pj__a">${esc(u ? T["work.visit"].replace("↗", ARROW) : T["work.private"])}</span></div></${u ? "a" : "div"}>`;
   }).join("")}</div></section>` : ""}
-  ${!s.films ? `<section class="svc-visual"><video src="${vid2}" muted loop playsinline autoplay preload="metadata"></video><div class="svc-visual__cap"><span class="eyebrow eyebrow--gold">${esc(s.part[L])}</span><b>${esc(sv[0])}</b></div></section>` : ""}
+  ${!s.films ? `<section class="svc-visual"><video data-src="${vid2}" muted loop playsinline preload="none"></video><div class="svc-visual__cap"><span class="eyebrow eyebrow--gold">${esc(s.part[L])}</span><b>${esc(sv[0])}</b></div></section>` : ""}
   ${(() => { const B = D.BUILD && D.BUILD[id] && D.BUILD[id][L]; if (!B) return "";
     const H = { he: ["איך אנחנו בונים", "הטכנולוגיה", "מה תקבלו", "שאלות נפוצות"], en: ["How we build it", "The stack", "What you get", "FAQ"], fr: ["Comment on le construit", "Les technologies", "Ce que vous recevez", "Questions fréquentes"] }[L];
     return `<section class="svc-build"><p class="eyebrow eyebrow--gold">${esc(H[0])}</p><h2 class="h2 svc-build__t">${esc(B.intro)}</h2>
@@ -53,6 +53,7 @@
   <footer class="foot"><div class="foot__row"><span>© 2026 DreamNova · David Amor · <a href="https://wa.me/${D.WA}" dir="ltr">+972 58-492-1492</a></span><span>${esc(T["foot.where"])}</span></div></footer>`;
   if (EMBED) { document.querySelectorAll(".svc__back, .nav__brand").forEach(a => a.addEventListener("click", e => { e.preventDefault(); parent.postMessage({ dn: "close" }, "*"); }));
     document.querySelectorAll('a[href*="#devis"]').forEach(a => a.addEventListener("click", e => { e.preventDefault(); parent.postMessage({ dn: "devis", s: i }, "*"); })); }
+  { const v = document.querySelector(".svc-visual video"); if (v) new IntersectionObserver((es, io) => { if (!es.some(e => e.isIntersecting)) return; v.src = v.dataset.src; v.play().catch(() => {}); io.disconnect(); }, { rootMargin: "500px 0px" }).observe(v); }
   if (window.gsap && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
     gsap.registerPlugin(ScrollTrigger);
     if (window.Lenis && innerWidth > 767) { const l = new Lenis({ lerp: .09 }); l.on("scroll", ScrollTrigger.update); gsap.ticker.add(t => l.raf(t * 1000)); gsap.ticker.lagSmoothing(0); }

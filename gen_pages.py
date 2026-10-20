@@ -56,7 +56,7 @@ print("pages service ok", 24)
 # --- grille de prix servie aux fonctions /api (devis, audit) : toujours dérivée de content.js
 import subprocess as _sp
 _js = r'''const fs=require("fs"); global.window={}; eval(fs.readFileSync("content.js","utf8")); const D=window.DN; const out={};
-for (const L of ["he","en","fr"]) out[L]={services:D.SERVICES.map(s=>s[L][0]), offers:D.OFFERS[L].map(([t,d,[lab,p]])=>({t,d,price:(lab?lab+" ":"")+p}))};
+for (const L of ["he","en","fr"]) out[L]={services:D.SERVICES.map(s=>s[L][0]), offers:D.OFFERS[L].map(([t,d,[lab,p]])=>({t,d,price:(lab?lab+" ":"")+p})), audit:{t:D.I[L]["off.a_title"], price:D.I[L]["off.a_price"]}};
 fs.writeFileSync("api/grid.mjs","// généré depuis content.js — grille publique, ne pas éditer à la main\nexport default "+JSON.stringify(out)+";\n");
 console.log("grille ok", out.he.offers.length, "offres ·", out.he.services.length, "services");'''
 print(_sp.run(["node", "-e", _js], capture_output=True, text=True).stdout.strip() or "grille KO")

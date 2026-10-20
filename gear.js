@@ -10,7 +10,7 @@
   el.innerHTML = `<button type="button" class="gear__knob" aria-label="${T.next}"><span class="gear__ring" aria-hidden="true"></span><b>1</b><i aria-hidden="true">▲</i></button><small class="gear__lab">${T.next}</small>`;
   document.body.appendChild(el);
   const knob = el.querySelector(".gear__knob"), num = el.querySelector("b"), lab = el.querySelector(".gear__lab");
-  const secs = () => SEL.map(s => document.querySelector(s)).filter(e => e && !e.hidden && e.offsetHeight > 0);
+  const secs = () => SEL.map(s => document.querySelector(s)).filter(e => e && !e.hidden && e.offsetHeight > 0).sort((a, b) => top(a) - top(b));
   const top = e => e.getBoundingClientRect().top + scrollY;
   const span = e => { const h = e.offsetHeight; return h > innerHeight * 1.6 ? h - innerHeight : 0; }; // section plus haute que l'écran = épinglée : on la parcourt
   let raf = 0, pendingEnd = null;

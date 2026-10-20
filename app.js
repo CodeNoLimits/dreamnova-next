@@ -40,7 +40,7 @@ const reelCards = D.REEL.map(r => {
   if (r.v) {
     n++;
     return `<article class="card ${r.w ? "card--wide" : ""}" data-cursor="${esc(T["work.view"])}">
-      <video class="card__media" muted loop playsinline preload="none" poster="${BASE}assets/reel/poster_0${r.v.slice(-1)}.webp" data-src="${BASE}assets/reel/${r.v}.mp4"></video><img class="card__pre" src="${BASE}assets/reel/poster_0${r.v.slice(-1)}.webp" alt="" fetchpriority="${n < 3 ? "high" : "auto"}" aria-hidden="true">
+      <video class="card__media" muted loop playsinline preload="none" poster="${BASE}assets/reel/poster_0${r.v.slice(-1)}.webp" data-src="${BASE}assets/reel/${r.v}.mp4"></video><img class="card__pre" src="${BASE}assets/reel/poster_0${r.v.slice(-1)}.webp" alt="" ${n < 2 ? 'fetchpriority="high"' : 'loading="lazy"'} aria-hidden="true">
       <span class="card__num">${String(n).padStart(2, "0")}</span>
       <div class="card__meta"><div><span class="card__tag">${esc(r.tag[L])}</span><h3 class="card__title">${esc(r.t[L])}</h3></div></div></article>`;
   }
@@ -110,7 +110,7 @@ fb.addEventListener("click", e => {
 { const RI = D.REELS_I[L]; $$("[data-r2]").forEach(e => e.textContent = RI[e.dataset.r2]);
   const list = (D.REELS || []).filter(r => r.lang === L); // seulement les reels de la langue de la page
   const box = $("[data-reels]"); if (box) { if (!list.length) { $("#reels").hidden = true; $$('a[href="#reels"]').forEach(a => a.remove()); }
-    box.innerHTML = list.map(r => `<figure class="reel"><div class="reel__frame"><video data-src="${BASE}assets/reels/${r.id}.mp4" poster="${BASE}assets/reels/${r.id}.webp" muted loop playsinline preload="none"></video><button type="button" class="reel__snd" aria-label="${esc(RI.tap)}">🔊</button></div><figcaption>${esc(r.t[L])}</figcaption></figure>`).join("");
+    box.innerHTML = list.map(r => `<figure class="reel"><div class="reel__frame"><video data-src="${BASE}assets/reels/${r.id}.mp4" data-poster="${BASE}assets/reels/${r.id}.webp" muted loop playsinline preload="none"></video><button type="button" class="reel__snd" aria-label="${esc(RI.tap)}">🔊</button></div><figcaption>${esc(r.t[L])}</figcaption></figure>`).join("");
     box.addEventListener("click", e => { const b = e.target.closest(".reel__snd"); if (!b) return; const v = b.previousElementSibling; v.muted = !v.muted; b.classList.toggle("is-on", !v.muted); if (!v.muted) { v.currentTime = 0; v.play().catch(() => {}); $$(".reel video", box).forEach(o => { if (o !== v) o.muted = true; }); $$(".reel__snd", box).forEach(o => o !== b && o.classList.remove("is-on")); } }); } }
 
 /* ---------- offres ---------- */
@@ -132,11 +132,10 @@ $("[data-process]").innerHTML = D.PROCESS[L].map(([t, p], i) => `<article class=
 $("[data-lab]").innerHTML = D.LAB.map(x => `<article class="lc reveal"><svg class="lc__sig" viewBox="0 0 46 46"><circle cx="23" cy="23" r="21"/><circle cx="23" cy="23" r="14"/></svg><span class="lc__k">${x.k}</span><h3>${x.n}</h3><p>${esc(x[L])}</p></article>`).join("");
 
 /* ---------- vidéos : lecture seulement à l'écran ---------- */
-const vio = new IntersectionObserver(es => es.forEach(e => {
-  const v = e.target;
-  if (e.isIntersecting) { if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); } else v.pause();
-}), { rootMargin: "600px" });
-$$("video[data-src]").filter(v => !v.closest(".room-card")).forEach(v => vio.observe(v)); // les cartes des salles ont leur propre lecteur (une seule à la fois)
+// deux observateurs : on prépare à 600 px (source + affiche), on joue seulement à l'écran, pause dès la sortie
+const vload = new IntersectionObserver(es => es.forEach(e => { const v = e.target; if (!e.isIntersecting) return; if (v.dataset.poster) { v.poster = v.dataset.poster; v.removeAttribute("data-poster"); } if (!v.src) v.src = v.dataset.src; }), { rootMargin: "600px" });
+const vio = new IntersectionObserver(es => es.forEach(e => { const v = e.target; if (e.isIntersecting) { if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); } else v.pause(); }), { threshold: 0 });
+$$("video[data-src]").filter(v => !v.closest(".room-card")).forEach(v => { vload.observe(v); vio.observe(v); }); // les cartes des salles ont leur propre lecteur (une seule à la fois)
 /* ---------- fond du final (cockpit) : image adaptée à l'écran, chargée à l'approche ---------- */
 { const dash = $(".contact__dash"); if (dash) { const io = new IntersectionObserver(es => { if (!es.some(e => e.isIntersecting)) return;
     dash.style.backgroundImage = `url(${BASE}assets/${mobile() ? "car2/cockpit_m.webp" : "car/cockpit.webp"})`; io.disconnect(); }, { rootMargin: "1500px 0px" }); io.observe(dash); } }

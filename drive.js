@@ -39,9 +39,8 @@
     let cur = 0;
     const load = i => { if (frames[i]) return; const im = new Image(); im.decoding = "async"; im.onload = () => { if (i === 0 || i === cur) draw(i); }; im.src = `${BASE}assets/${SEQ.dir}f_${String(i).padStart(3, "0")}.webp`; frames[i] = im; };
     load(0);
-    const warm = () => { removeEventListener("scroll", warm); for (let i = 0; i < N; i += 8) load(i); setTimeout(() => { for (let i = 0; i < N; i++) load(i); }, 600); };
+    const warm = () => { removeEventListener("scroll", warm); cockpit.style.backgroundImage = `url(${BASE}assets/${FINAL.img})`; for (let i = 0; i < N; i += 8) load(i); setTimeout(() => { for (let i = 0; i < N; i++) load(i); }, 600); };
     addEventListener("scroll", warm, { passive: true }); // rien de lourd avant le premier geste
-    cockpit.style.backgroundImage = `url(${BASE}assets/${FINAL.img})`;
     if (!MOB) loop.dataset.src = BASE + "assets/car/cockpit.mp4";
     // pièces mobiles : copies masquées de la même image (volant, palettes, levier, START) + écran central vivant
     const PARTS = { wheel: MOB ? .19 : .125, paddle_left: MOB ? .05 : .03, paddle_right: MOB ? .05 : .03, selector: MOB ? .065 : .042, start: MOB ? .048 : .03 };
