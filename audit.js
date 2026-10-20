@@ -27,7 +27,7 @@
     form.closest(".audit-ia__shell").hidden = true; load.hidden = false; load.scrollIntoView({ block: "center", behavior: "smooth" });
     window.DNAudio?.sfx("power", 0, .7);
     try {
-      const r = await fetch(`${BASE}api/audit`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(fd) });
+      const r = await fetch(`${BASE}api/audit`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(fd), signal: AbortSignal.timeout(90000) });
       const d = await r.json(); if (!d.ok || !d.audit) throw r.status;
       render(d.audit, d.url, d.facts || {});
     } catch (code) { load.hidden = true; form.closest(".audit-ia__shell").hidden = false; err.textContent = code === 429 ? Q.limit : Q.err; err.hidden = false; }

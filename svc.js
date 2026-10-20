@@ -21,7 +21,7 @@
     <div class="nav__langs">${["he", "en", "fr"].map(l => `<a href="${BASE}${l}/s/${id}/" class="${l === L ? "is-on" : ""}">${l.toUpperCase()}</a>`).join("")}</div>
     <a class="btn btn--gold btn--sm nav__cta" href="${wa(sv[0])}" target="_blank" rel="noopener"><span>${esc(T["nav.cta"])}</span><span class="btn__ico">${ARROW}</span></a></header>
   <section class="svc-hero">
-    ${vid ? `<video class="svc-hero__v" src="${vid}" muted loop playsinline autoplay></video>` : `<div class="svc-hero__v svc-hero__v--gl"></div>`}
+    ${vid ? `<video class="svc-hero__v" data-src="${vid}" poster="${vid.replace(/room_(\d\d)_[^/]*\.mp4$/, "poster_room_$1.webp")}" muted loop playsinline preload="none"></video>` : `<div class="svc-hero__v svc-hero__v--gl"></div>`}
     <div class="svc-hero__shade"></div>
     <span class="svc-hero__num" aria-hidden="true">${String(i + 1).padStart(2, "0")}</span>
     <div class="svc-hero__in">
@@ -46,14 +46,20 @@
       <div class="r"><p class="eyebrow">${esc(H[2])}</p><ul class="build-deliver">${B.deliver.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div></div>
       <div class="faq"><p class="eyebrow">${esc(H[3])}</p>${B.faq.map(([q, a]) => `<details class="r"><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("")}</div>
       <a class="btn btn--gold svc-build__cta" href="${BASE}${L}/?s=${id}#devis"><span>${esc({ he: "קבלו הצעה חכמה תוך 30 שניות", en: "Get a smart quote in 30 seconds", fr: "Votre devis intelligent en 30 secondes" }[L])}</span><span class="btn__ico">${ARROW}</span></a></section>`; })()}
-  ${s.films ? `<section class="svc-films"><div class="svc-films__grid">${s.films.map(f => `<video class="r" src="${BASE}assets/reel/${f}.mp4" poster="${BASE}assets/reel/poster_0${f.slice(-1)}.webp" muted loop playsinline autoplay preload="none"></video>`).join("")}</div></section>` : ""}
+  ${s.films ? `<section class="svc-films"><div class="svc-films__grid">${s.films.map(f => `<video class="r" data-src="${BASE}assets/reel/${f}.mp4" poster="${BASE}assets/reel/poster_0${f.slice(-1)}.webp" muted loop playsinline preload="none"></video>`).join("")}</div></section>` : ""}
   ${offers.length ? `<section class="svc-offers"><p class="eyebrow">${esc(U.offers)}</p><div class="offers__list">${offers.map(([t, d, [lab, p]], k) =>
     `<a class="off r" href="${wa(t)}" target="_blank" rel="noopener"><span class="off__n">${String(k + 1).padStart(2, "0")}</span><span class="off__t">${esc(t)}</span><span class="off__d">${esc(d)}</span><span class="off__p">${lab ? `<small>${esc(lab)}</small>` : ""}${esc(p)}</span><span class="off__c">${ARROW}</span></a>`).join("")}</div></section>` : ""}
   <a class="svc-next" href="${BASE}${L}/s/${nxt.id}/"><span class="eyebrow">${esc(U.next)} · ${esc(nxt.part[L])}</span><span class="svc-next__t">${esc(nsv[0])} <i>${ARROW}</i></span></a>
   <footer class="foot"><div class="foot__row"><span>© 2026 DreamNova · David Amor · <a href="https://wa.me/${D.WA}" dir="ltr">+972 58-492-1492</a></span><span>${esc(T["foot.where"])}</span></div></footer>`;
   if (EMBED) { document.querySelectorAll(".svc__back, .nav__brand").forEach(a => a.addEventListener("click", e => { e.preventDefault(); parent.postMessage({ dn: "close" }, "*"); }));
     document.querySelectorAll('a[href*="#devis"]').forEach(a => a.addEventListener("click", e => { e.preventDefault(); parent.postMessage({ dn: "devis", s: i }, "*"); })); }
-  { const v = document.querySelector(".svc-visual video"); if (v) new IntersectionObserver((es, io) => { if (!es.some(e => e.isIntersecting)) return; v.src = v.dataset.src; v.play().catch(() => {}); io.disconnect(); }, { rootMargin: "500px 0px" }).observe(v); }
+  // une seule vidéo lue à la fois (la plus visible) ; sur téléphone rien n'est téléchargé avant le premier geste
+  { const vids = [...document.querySelectorAll("video[data-src]")], vr = new Map(); let armed = innerWidth > 767;
+    const pick = () => { let best = null; vr.forEach((r, v) => { if (!best || r > vr.get(best)) best = v; });
+      vids.forEach(v => { if (v !== best) v.pause(); }); if (!best || !armed) return; if (!best.src) best.src = best.dataset.src; best.play().catch(() => {}); };
+    const io = new IntersectionObserver(es => { es.forEach(e => e.isIntersecting ? vr.set(e.target, e.intersectionRatio) : vr.delete(e.target)); pick(); }, { threshold: [0, .25, .5, .75, 1] });
+    vids.forEach(v => io.observe(v));
+    if (!armed) { const go = () => { armed = true; pick(); ["touchstart", "scroll", "pointerdown"].forEach(t => removeEventListener(t, go)); }; ["touchstart", "scroll", "pointerdown"].forEach(t => addEventListener(t, go, { passive: true })); } }
   if (window.gsap && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
     gsap.registerPlugin(ScrollTrigger);
     if (window.Lenis && innerWidth > 767) { const l = new Lenis({ lerp: .09 }); l.on("scroll", ScrollTrigger.update); gsap.ticker.add(t => l.raf(t * 1000)); gsap.ticker.lagSmoothing(0); }

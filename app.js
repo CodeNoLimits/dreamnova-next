@@ -134,7 +134,10 @@ $("[data-lab]").innerHTML = D.LAB.map(x => `<article class="lc reveal"><svg clas
 /* ---------- vidéos : lecture seulement à l'écran ---------- */
 // deux observateurs : on prépare à 600 px (source + affiche), on joue seulement à l'écran, pause dès la sortie
 const vload = new IntersectionObserver(es => es.forEach(e => { const v = e.target; if (!e.isIntersecting) return; if (v.dataset.poster) { v.poster = v.dataset.poster; v.removeAttribute("data-poster"); } if (!v.src) v.src = v.dataset.src; }), { rootMargin: "600px" });
-const vio = new IntersectionObserver(es => es.forEach(e => { const v = e.target; if (e.isIntersecting) { if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); } else v.pause(); }), { threshold: 0 });
+// une seule lue à la fois : la plus visible gagne, les autres sont en pause
+const vr = new Map(), vio = new IntersectionObserver(es => { es.forEach(e => e.isIntersecting ? vr.set(e.target, e.intersectionRatio) : (vr.delete(e.target), e.target.pause()));
+  let best = null; const sc = v => vr.get(v) + (v.muted ? 0 : 2); vr.forEach((r, v) => { if (!best || sc(v) > sc(best)) best = v; }); // un reel dont on a mis le son reste prioritaire
+  vr.forEach((r, v) => { if (v !== best) v.pause(); }); if (best) { if (!best.src) best.src = best.dataset.src; best.play().catch(() => {}); } }, { threshold: [0, .25, .5, .75, 1] });
 $$("video[data-src]").filter(v => !v.closest(".room-card")).forEach(v => { vload.observe(v); vio.observe(v); }); // les cartes des salles ont leur propre lecteur (une seule à la fois)
 /* ---------- fond du final (cockpit) : image adaptée à l'écran, chargée à l'approche ---------- */
 { const dash = $(".contact__dash"); if (dash) { const io = new IntersectionObserver(es => { if (!es.some(e => e.isIntersecting)) return;

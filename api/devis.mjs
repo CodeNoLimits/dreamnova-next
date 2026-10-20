@@ -46,14 +46,14 @@ Return JSON with exactly these keys:
   for (const m of MODELS.flatMap(x => [x, x])) { // 2 essais par modèle
     try {
       const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`, {
-        method: "POST", headers: { "Content-Type": "application/json", "x-goog-api-key": key },
+        method: "POST", headers: { "Content-Type": "application/json", "x-goog-api-key": key }, signal: AbortSignal.timeout(25000),
         body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json", maxOutputTokens: 1800, temperature: 0.6 } })
       });
       if (r.status === 503 || r.status === 429 || r.status === 404) continue;
       const d = await r.json();
       const txt = d?.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("") || "";
       if (BAD.test(txt)) continue;
-      const out = JSON.parse(txt);
+      const out = JSON.parse(txt.replace(/סודיו/g, "סטודיו")); // coquille récurrente du modèle sur le mot « studio »
       return res.status(200).json({ ok: true, model: m, proposal: out, client: f });
     } catch (e) { /* modèle suivant */ }
   }

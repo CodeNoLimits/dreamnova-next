@@ -2,7 +2,8 @@
 // des conseils concrets dans la langue de la page + les offres DreamNova qui répondent (prix de la grille publique seulement).
 import GRID from "./grid.mjs";
 
-const MODELS = ["gemini-3.8-flash", "gemini-3.5-flash", "gemini-3.5-flash-lite"];
+// ordre = vitesse mesurée le 20/10 (3.5-flash ≈ 9 s, lite ≈ 5–13 s, 3.8-flash 47–125 s) ; délai par appel pour qu'un visiteur mobile n'attende jamais une minute
+const MODELS = [["gemini-3.5-flash", 20000, "minimal"], ["gemini-3.5-flash-lite", 25000, "minimal"], ["gemini-3.8-flash", 60000, ""]];
 const hits = new Map(); // ponytail: limite par IP en mémoire d'instance
 const LANG_NAME = { he: "Hebrew", en: "English", fr: "French" };
 const BAD = /[؀-ۿऀ-ॿЀ-ӿ぀-ヿ一-鿿]/;
@@ -70,14 +71,14 @@ Return ONLY a JSON object (no markdown) with exactly this shape:
  "next_step":"one sentence inviting to talk on WhatsApp with David"}
 Scores must reflect the measured facts (no viewport = low mobile; no WhatsApp/tel/form = low conversion; no hreflang/one lang = low multilingual; no AI assistant/chat/voice = low ai_readiness). Never invent features the site does not have.`;
   let out = null, used = "";
-  for (const m of MODELS) {
-    for (let t = 0; t < 2 && !out; t++) {
+  for (const [m, ms, think] of MODELS) {
+    for (let t = 0; t < (m.includes("lite") ? 2 : 1) && !out; t++) {
       try {
-        const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${key}`, { method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: prompt }] }], tools: process.env.GEMINI_SEARCH === "1" ? [{ google_search: {} }] : [], generationConfig: { temperature: 0.5, maxOutputTokens: 6000 } }) });
+        const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${key}`, { method: "POST", headers: { "Content-Type": "application/json" }, signal: AbortSignal.timeout(ms),
+          body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: prompt }] }], tools: process.env.GEMINI_SEARCH === "1" ? [{ google_search: {} }] : [], generationConfig: { temperature: 0.5, maxOutputTokens: 6000, ...(think ? { responseMimeType: "application/json", thinkingConfig: { thinkingLevel: think } } : {}) } }) });
         const d = await r.json(); const txt = (d.candidates?.[0]?.content?.parts || []).map(p => p.text || "").join("").trim();
         if (!txt) continue;
-        const j = JSON.parse(txt.replace(/^```(?:json)?\s*|\s*```$/g, "").replace(/^[^{]*/, "").replace(/[^}]*$/, ""));
+        const j = JSON.parse(txt.replace(/סודיו/g, "סטודיו").replace(/^```(?:json)?\s*|\s*```$/g, "").replace(/^[^{]*/, "").replace(/[^}]*$/, ""));
         if (!j.summary || !Array.isArray(j.quick_wins)) continue;
         if (lang === "he" && (JSON.stringify(j).match(BAD) || []).length > 3) continue; // quelques lettres étrangères isolées = on garde, sinon on régénère
         out = j; used = m;

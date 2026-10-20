@@ -164,7 +164,7 @@
       if (TOUCH) { pin.style.position = "sticky"; pin.style.top = "0"; pin.style.height = "100svh"; sec.style.height = "440svh"; }
       const leave = () => { sec.classList.remove("is-in"); document.body.classList.remove("in-cockpit"); panel.classList.remove("is-open"); panel.hidden = true; hintEl.textContent = T.hint; if (car.on) engine(false); };
       ST.create({ trigger: sec, start: "top top", end: TOUCH ? "bottom bottom" : () => "+=" + innerHeight * 3.4, pin: TOUCH ? false : pin, scrub: true, anticipatePin: 1, invalidateOnRefresh: true, refreshPriority: 10,
-        onLeave: leave, onLeaveBack: leave,
+        onLeave: () => { leave(); if (TOUCH) sec.classList.add("is-past"); }, onLeaveBack: leave, onEnterBack: () => sec.classList.remove("is-past"), // tactile : le tableau de bord reste affiché pendant que la section remonte (pas d'écran noir)
         onUpdate: st => {
           const p = st.progress, seqEnd = 0.7;
           const f = Math.min(N - 1, Math.floor((p / seqEnd) * (N - 1)));

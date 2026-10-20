@@ -5,15 +5,17 @@ root = pathlib.Path(__file__).parent
 I = json.loads(subprocess.check_output(["node", "-e", "global.window={};require('./content.js');process.stdout.write(JSON.stringify(window.DN.I))"], cwd=root))
 src = (root / "index.html").read_text()
 FONTS = {
-  "he": "family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Rubik:wght@400..800&family=Open+Sans:wght@400;600;700",
+  "he": "family=Rubik:wght@400..800&family=Open+Sans:wght@400;600;700",
   "en": "family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Instrument+Serif:ital@0;1&family=Manrope:wght@300..700",
 }
 FONTS["fr"] = FONTS["en"]
+# hébreu : 2 polices (règle Leeya) ; Bricolage seulement pour les mots-marques latins, en sous-ensemble de ces lettres (~3 Ko au lieu de 75)
+XF = {"he": '<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&text=DreamNovSTAR0123456789&display=swap" rel="stylesheet">', "en": "", "fr": ""}
 TITLE = {"he": "DreamNova — אנחנו בונים את הבלתי אפשרי", "en": "DreamNova — We build the impossible", "fr": "DreamNova — Nous construisons l'impossible"}
 for l in ("he", "en", "fr"):
     T = I[l]; h = src
     h = h.replace('<html lang="he" dir="rtl">', f'<html lang="{l}" dir="{"rtl" if l == "he" else "ltr"}">')
-    h = re.sub(r'family=Bricolage[^"]*&display=swap', FONTS[l] + "&display=swap", h)
+    h = re.sub(r'family=Bricolage[^"]*&display=swap" rel="stylesheet">', FONTS[l] + '&display=swap" rel="stylesheet">' + XF[l], h)
     h = re.sub(r"<title>.*?</title>", f"<title>{html.escape(TITLE[l])}</title>", h)
     h = re.sub(r'<meta property="og:title" content="[^"]*">', f'<meta property="og:title" content="{html.escape(TITLE[l])}">', h)
     h = h.replace('<meta property="og:image"', f'<link rel="canonical" href="https://dreamnova-next.vercel.app/{l}/">\n<meta property="og:url" content="https://dreamnova-next.vercel.app/{l}/">\n<meta property="og:image"', 1)
@@ -42,7 +44,7 @@ for l in ("he", "en", "fr"):
 <meta property="og:title" content="{html.escape(name)} — DreamNova"><meta property="og:description" content="{html.escape(desc)}"><meta property="og:url" content="{U}/{l}/s/{sid}/"><meta property="og:image" content="{U}/assets/og.jpg"><meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="../../../assets/brand/crest.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?{FONTS[l]}&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?{FONTS[l]}&display=swap" rel="stylesheet">{XF[l]}
 <link rel="stylesheet" href="../../../style.css"></head>
 <body class="svc-page" data-svc="{sid}"><div class="grain" aria-hidden="true"></div><div id="app"><h1 class="sr-only">{html.escape(name)}</h1></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>

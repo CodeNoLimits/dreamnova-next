@@ -464,13 +464,13 @@ a.tile:hover .tile__go{opacity:1;transform:none}
 .nav__brand{padding-inline-end:20px;margin-inline-end:6px;border-inline-end:1px solid var(--line2)}
 /* cockpit mobile : liste de boutons */
 .drive__chips{position:absolute;z-index:5;left:50%;bottom:64px;transform:translateX(-50%);display:flex;gap:8px;flex-wrap:wrap;justify-content:center;max-width:min(1100px,92vw);opacity:0;pointer-events:none;transition:opacity .6s var(--ease)}
-.drive.is-in .drive__chips{opacity:1;pointer-events:auto}
+.drive.is-in .drive__chips,.drive.is-past .drive__chips{opacity:1;pointer-events:auto}
 .drive__chips a{padding:10px 14px;border-radius:999px;background:rgba(10,8,5,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:inset 0 0 0 1px rgba(240,217,140,.28);font:600 13px/1.1 var(--f-display);transition:background .4s,color .4s}
 .drive__chips a:hover{background:var(--gold-lt);color:#120d03}
 .drive__chips small{display:none}
 @media (max-width:767px){
   .drive__hots{display:none}
-  .drive.is-in .drive__chips{display:grid}
+  .drive.is-in .drive__chips,.drive.is-past .drive__chips{display:grid}
   .drive__chips{position:absolute;inset-inline:12px;bottom:92px;z-index:5;grid-template-columns:1fr 1fr;gap:8px}
   .drive__chips a{padding:11px 12px;border-radius:14px;background:rgba(10,8,5,.78);backdrop-filter:blur(12px);box-shadow:inset 0 0 0 1px rgba(240,217,140,.3);font:600 13px/1.2 var(--f-display)}
   .drive__chips small{display:block;font:600 9.5px/1 var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
@@ -557,8 +557,8 @@ html[lang=he] .doc h4{letter-spacing:.04em;font-size:13px}
 .chap{padding:0}
 .chap__pin{position:relative;height:100dvh;overflow:hidden;background:#000}
 .chap__v{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;will-change:transform}
-.chap__layer{opacity:0;transition:opacity 1s var(--ease)}
-.chap__layer.is-on{opacity:1}
+.chap__layer{opacity:0;transition:opacity .28s ease-out}
+.chap__layer.is-on{opacity:1;transition:opacity .5s .14s var(--ease)} /* sortie rapide puis entrée : jamais deux visages superposés */
 .chap__shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),transparent 30%,transparent 55%,rgba(0,0,0,.85)),radial-gradient(90% 70% at 50% 45%,transparent 45%,rgba(0,0,0,.55));pointer-events:none}
 .chap__head{position:absolute;top:110px;inset-inline:var(--pad);z-index:2}
 .chap__head .h2{font-size:clamp(34px,4.2vw,68px)}
@@ -616,7 +616,7 @@ html[dir=rtl] .rooms__cap::before{background:radial-gradient(70% 80% at 70% 70%,
 .cp-amb[data-c=off]{opacity:.5;background:#000;mix-blend-mode:multiply}
 .drive.is-running .drive__seq,.drive.is-running .drive__cockpit{filter:saturate(1.15) brightness(1.06)}
 .hud{position:absolute;z-index:4;left:50%;bottom:120px;transform:translateX(-50%) scale(.9);width:220px;opacity:0;pointer-events:none;transition:opacity .6s,transform .8s var(--ease);text-align:center}
-.drive.is-in .hud{opacity:1;transform:translateX(-50%) scale(1)}
+.drive.is-in .hud,.drive.is-past .hud{opacity:1;transform:translateX(-50%) scale(1)}
 .hud svg{width:100%;overflow:visible}
 .hud__track{fill:none;stroke:rgba(240,217,140,.15);stroke-width:6;stroke-linecap:round}
 .hud__rpm{fill:none;stroke:url(#none);stroke:var(--gold-lt);stroke-width:6;stroke-linecap:round;filter:drop-shadow(0 0 8px rgba(255,200,90,.9));transition:stroke .3s}
@@ -728,7 +728,7 @@ body.no-fab .fab{opacity:0!important;pointer-events:none!important}
 .cp-start-hint{background:linear-gradient(180deg,#f3dc93,#d4af37);color:#140f04;box-shadow:0 10px 30px -8px rgba(212,175,55,.8)}
 .hud{left:24%;bottom:80px}
 html[dir=rtl] .hud{left:auto;right:24%;transform:translateX(50%) scale(.9)}
-html[dir=rtl] .drive.is-in .hud{transform:translateX(50%) scale(1)}
+html[dir=rtl] .drive.is-in .hud,html[dir=rtl] .drive.is-past .hud{transform:translateX(50%) scale(1)}
 .drive__pin{min-height:100svh}
 .manifesto{background:#050403;color:var(--ink)}
 .manifesto__text .w{opacity:.14}
@@ -737,7 +737,7 @@ html[dir=rtl] .drive.is-in .hud{transform:translateX(50%) scale(1)}
 .nav.on-light .nav__links a,.nav.on-light .nav__langs a,.nav.on-light .snd{color:var(--mute)}
 @media (max-width:767px){
   .hud{left:50%;right:auto;transform:translateX(-50%) scale(.85)!important;top:auto;bottom:auto;top:calc(var(--hud-top,52%))}
-  .drive.is-in .drive__chips{display:grid!important;opacity:1;pointer-events:auto}
+  .drive.is-in .drive__chips,.drive.is-past .drive__chips{display:grid!important;opacity:1;pointer-events:auto}
   .drive__chips{display:none!important;position:absolute;left:12px;right:12px;bottom:14px;transform:none;grid-template-columns:1fr 1fr;gap:7px;max-width:none}
   .drive__chips button{border-radius:14px;padding:9px 10px;text-align:start}
   .drive__chips small{display:block;font:600 9.5px/1 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
@@ -1052,3 +1052,7 @@ body:has(.cp-panel.is-open) .gear,body.no-fab .gear,body.svc-open .gear{opacity:
 #index{padding-bottom:72px}
 .reveal.is-in{opacity:1;transform:none;filter:none}
 @media (min-width:1100px){.reels{display:grid;grid-template-columns:1fr minmax(0,560px);column-gap:56px;align-items:center}.reels .sec-head{grid-column:1;margin-bottom:0}.reels .sec-cta{grid-column:1;margin-top:22px;justify-self:start}.reels__strip{grid-column:2;grid-row:1/3;justify-content:center}}
+/* R7b mobile : le ⚙️ (fin de ligne, bas d'écran) ne recouvre plus prix ni flèches des rangées */
+@media (max-width:767px){.offers .off,.index .pj{padding-inline-end:58px}}
+@media (max-width:767px){.nav--svc .nav__brand{min-width:44px;justify-content:center;padding-inline-end:0}.nav--svc .nav__langs a{min-width:44px;padding-inline:4px}.nav--svc .nav__langs{gap:0}}
+.cp-start-hint{min-height:44px}
