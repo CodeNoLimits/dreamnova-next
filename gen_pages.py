@@ -17,7 +17,7 @@ for l in ("he", "en", "fr"):
     h = h.replace('<html lang="he" dir="rtl">', f'<html lang="{l}" dir="{"rtl" if l == "he" else "ltr"}">')
     if l == "he":  # hébreu : Rubik + Open Sans hébergées sur le site (sous-ensembles hébreu + latin, même rendu, zéro aller-retour vers Google)
         he_css = (root / "assets/fonts/he.css").read_text().strip()
-        pre = "".join(f'<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/{f}" crossorigin>' for f in ("rubik-300-800-hebrew.woff2", "rubik-300-800-latin.woff2", "opensans-hebrew.woff2"))
+        pre = ""  # pas de préchargement : 58 Ko de polices en priorité haute retardaient style.css et le premier affichage sous 4G lente (Lighthouse HE 21/10)
         h = re.sub(r'<link href="https://fonts\.googleapis\.com/css2\?family=Bricolage[^"]*&display=swap" rel="stylesheet" media="print" onload="this.media=\'all\'">', pre + "<style>" + he_css + "</style>" + XF[l], h)
     else:
         h = re.sub(r'family=Bricolage[^"]*&display=swap" rel="stylesheet" media="print" onload="this.media=\'all\'">', FONTS[l] + '&display=swap" rel="stylesheet" media="print" onload="this.media=\'all\'">' + XF[l], h)
