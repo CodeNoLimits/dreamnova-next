@@ -30,11 +30,12 @@ const stack = D.STACK.map(s => `<span>${s}</span>`).join("");
 $("[data-marquee]").innerHTML = stack + stack;
 
 /* ---------- reel ---------- */
-const HE_FIRST = ["consult", "pinkas", "mehadrin", "editions", "diagnostic", "voiceava", "site3d"];
+const HE_FIRST = ["site3d", "voiceava", "editions", "mehadrin", "diagnostic", "pinkas", "reseau"];
 const works = D.WORKS.filter(w => !w.only || w.only === L).sort((a, b) => L !== "he" ? 0 : (HE_FIRST.indexOf(b.id) > -1) - (HE_FIRST.indexOf(a.id) > -1));
 const byId = Object.fromEntries(works.map(w => [w.id, w]));
 const url = w => w.u && w.u.replace("{l}", L);
-const gal = w => `${BASE}assets/work/gal_${w.id}${w.id === "site3d" ? "_" + L : ""}.webp`; // vignette dans la langue de la page
+const gal = (w, sm) => `${BASE}assets/work/gal_${w.id}${w.id === "site3d" ? "_" + L : ""}${sm ? "_s" : ""}.webp`; // vignette dans la langue de la page (sm = 600 px)
+const svcOf = w => D.SVC.filter(s => s.w.includes(w.id)).map(s => s.id).join(" ");
 let n = 0;
 const reelCards = D.REEL.map(r => {
   if (r.v) {
@@ -88,9 +89,9 @@ const flo = document.createElement("div"); flo.className = "pj__float"; flo.inne
 addEventListener("pointermove", e => { flo.style.left = e.clientX + "px"; flo.style.top = e.clientY + "px"; }, { passive: true });
 $("[data-index]").innerHTML = works.map(w => {
   const u = url(w);
-  return `<${u ? "a" : "div"} class="pj ${u ? "" : "pj--private"}" data-c="${w.c}" ${u ? `href="${u}" target="_blank" rel="noopener"` : ""}>
-    <img class="pj__img" src="${gal(w)}" alt="${esc(w.t[L])}" loading="lazy" decoding="async">
-    <div class="pj__b"><div><div class="pj__s">${esc(w.s[L])}${w.demo && w.demo !== L ? ` <span class="pj__lang">${w.demo.toUpperCase()}</span>` : ""}</div><div class="pj__t">${esc(w.t[L])}</div></div><span class="pj__a">${esc(u ? T["work.visit"].replace("↗", ARROW) : T["work.private"])}</span></div></${u ? "a" : "div"}>`;
+  return `<${u ? "a" : "div"} class="pj ${u ? "" : "pj--private"}" data-sv="${svcOf(w)}" ${u ? `href="${u}" target="_blank" rel="noopener"` : ""}>
+    <img class="pj__img" src="${gal(w)}" srcset="${gal(w, 1)} 600w, ${gal(w)} 1200w" sizes="(max-width: 767px) 120px, 340px" width="1200" height="750" alt="${esc(w.t[L])}" loading="lazy" decoding="async">
+    <div class="pj__b"><div><div class="pj__s">${esc(w.s[L])}${w.demo && w.demo !== L ? ` <span class="pj__lang">${w.demo.toUpperCase()}</span>` : ""}</div><div class="pj__t">${esc(w.t[L])}</div>${w.r ? `<div class="pj__r">${esc(w.r[L])}</div>` : ""}</div><span class="pj__a">${esc(u ? T["work.visit"].replace("↗", ARROW) : T["work.private"])}</span></div></${u ? "a" : "div"}>`;
 }).join("");
 $("[data-index]").addEventListener("pointerover", e => { const p = e.target.closest(".pj"); if (!p) return flo.classList.remove("is-on"); flo.querySelector("img").src = p.querySelector(".pj__img").src; flo.classList.toggle("is-fr", !!p.querySelector(".pj__lang")); flo.classList.add("is-on"); });
 $("[data-index]").addEventListener("pointerleave", () => flo.classList.remove("is-on"));
@@ -98,11 +99,17 @@ $("[data-index]").addEventListener("pointerleave", () => flo.classList.remove("i
     const b = document.createElement("button"); b.type = "button"; b.className = "btn btn--glass index__more"; b.innerHTML = `<span>${esc({ he: "לכל העבודות", en: "See all work", fr: "Tout voir" }[L])} (${rows.length})</span><span class="btn__ico">+</span>`;
     b.onclick = () => { $("[data-index]").classList.add("is-open"); b.remove(); window.ScrollTrigger && ScrollTrigger.refresh(); }; $("[data-index]").after(b); } }
 const fb = $("[data-filters]");
-fb.innerHTML = D.FILTERS[L].map(([k, v], i) => `<button type="button" data-f="${k}" class="${i ? "" : "is-on"}" aria-pressed="${!i}">${esc(v)}</button>`).join("");
+// filtre par service (mêmes intitulés que les services ; un service sans réalisation dans la langue n'apparaît pas)
+fb.innerHTML = [["all", D.FILTERS[L][0][1]], ...D.SVC.map((s, i) => [s.id, D.SERVICES[i][L][0]])]
+  .filter(([k]) => k === "all" || works.some(w => svcOf(w).split(" ").includes(k)))
+  .map(([k, v], i) => `<button type="button" data-f="${k}" class="${i ? "" : "is-on"}" aria-pressed="${!i}">${esc(v)}</button>`).join("");
 fb.addEventListener("click", e => {
   const b = e.target.closest("button"); if (!b) return;
   $$("button", fb).forEach(x => { x.classList.toggle("is-on", x === b); x.setAttribute("aria-pressed", x === b); });
-  $$(".pj").forEach(p => p.classList.toggle("is-out", b.dataset.f !== "all" && p.dataset.c !== b.dataset.f));
+  const f = b.dataset.f, grid = $("[data-index]");
+  if (f !== "all") { grid.classList.add("is-open"); $(".index__more")?.remove(); } // un filtre montre toutes ses réalisations
+  const shown = $$(".pj", grid).filter(p => { const on = f === "all" || p.dataset.sv.split(" ").includes(f); p.classList.toggle("is-out", !on); return on; });
+  window.gsap && gsap.fromTo(shown, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: .45, stagger: .035, ease: "power2.out", clearProps: "transform,opacity" });
   window.ScrollTrigger && ScrollTrigger.refresh();
 });
 

@@ -100,14 +100,14 @@ DRIVE_I: {
  fr:{eyebrow:"DreamNova · Édition course",l1:"Prenez",l2:"le volant.",sub:"Entrez dans le cockpit. Chaque bouton, chaque écran, chaque rapport mène à l'un de nos services.",hint:"Faites défiler pour entrer",tap:"Entrer"}
 },
 SVC: [
- {id:"film",hot:"paddle_left",w:["media"],films:["cinema_pipeline_01","animation_pipeline_02","subtitled_pipeline_03","bijoux_pipeline_04","adcreative_pipeline_05"],o:[6,10],v:"rooms_v2/room_02_cinema.mp4",part:{he:"מנוף העברה שמאלי",en:"Left paddle",fr:"Palette gauche"}},
- {id:"web",hot:"screen",w:["lumen","artisans","site3d","joaillerie"],o:[0,1,3],v:"rooms_v2/room_03_web.mp4",part:{he:"מסך מרכזי",en:"Center screen",fr:"Écran central"}},
- {id:"crm",hot:"selector",w:["devis","leadmachine","facturation"],o:[13,9],v:"car/cockpit.mp4",part:{he:"ידית ההילוכים",en:"Gear selector",fr:"Levier de vitesse"}},
+ {id:"film",hot:"paddle_left",w:["memorial","joaillerie"],films:["cinema_pipeline_01","animation_pipeline_02","subtitled_pipeline_03","bijoux_pipeline_04","adcreative_pipeline_05"],o:[6,10],v:"rooms_v2/room_02_cinema.mp4",part:{he:"מנוף העברה שמאלי",en:"Left paddle",fr:"Palette gauche"}},
+ {id:"web",hot:"screen",w:["site3d","lumen","artisans","cahiers","joaillerie","editions"],o:[0,1,3],v:"rooms_v2/room_03_web.mp4",part:{he:"מסך מרכזי",en:"Center screen",fr:"Écran central"}},
+ {id:"crm",hot:"selector",w:["leadmachine","facturation","stockvox"],o:[13,9],v:"car/cockpit.mp4",part:{he:"ידית ההילוכים",en:"Gear selector",fr:"Levier de vitesse"}},
  {id:"agents",hot:"wheel",w:["voiceava","stockvox","leadmachine","pinkas"],o:[5,7],v:"rooms_v2/room_04_agents.mp4",part:{he:"הגה",en:"Steering wheel",fr:"Volant"}},
- {id:"marketing",hot:"cluster",w:["media","academy"],o:[14,11,12],v:"rooms_v2/room_06_marketing.mp4",part:{he:"לוח המחוונים",en:"Dashboard gauges",fr:"Compteurs"}},
- {id:"private",hot:"ambient",w:["onprem","pilote","pinkas","mehadrin"],o:[4,8],v:"rooms_v2/room_05_vault.mp4",part:{he:"לוח המכשירים",en:"Dashboard",fr:"Planche de bord"}},
- {id:"3d",hot:"paddle_right",w:["site3d","dreamai","rd"],o:[2],v:"rooms_v2/room_07_gallery.mp4",part:{he:"מנוף העברה ימני",en:"Right paddle",fr:"Palette droite"}},
- {id:"consult",hot:"start",w:["nekuda","auditprivee","auditflash","diagnostic","academy","consult"],o:[16,17,15],v:"rooms_v2/room_01_hero.mp4",part:{he:"כפתור ההתנעה",en:"Start button",fr:"Bouton start"}}
+ {id:"marketing",hot:"cluster",w:["reseau","leadmachine","voiceava"],o:[14,11,12],v:"rooms_v2/room_06_marketing.mp4",part:{he:"לוח המחוונים",en:"Dashboard gauges",fr:"Compteurs"}},
+ {id:"private",hot:"ambient",w:["onprem","pilote","pinkas","mehadrin","rd"],o:[4,8],v:"rooms_v2/room_05_vault.mp4",part:{he:"לוח המכשירים",en:"Dashboard",fr:"Planche de bord"}},
+ {id:"3d",hot:"paddle_right",w:["site3d","cahiers","rd"],o:[2],v:"rooms_v2/room_07_gallery.mp4",part:{he:"מנוף העברה ימני",en:"Right paddle",fr:"Palette droite"}},
+ {id:"consult",hot:"start",w:["diagnostic","auditprivee","facturation"],o:[16,17,15],v:"rooms_v2/room_01_hero.mp4",part:{he:"כפתור ההתנעה",en:"Start button",fr:"Bouton start"}}
 ],
 SVC_I: {
  he:{back:"חזרה לתא הנהג",works:"עבודות קשורות",offers:"הצעות",next:"ההילוך הבא",cta:"לדבר על הפרויקט",spec:"מפרט"},
@@ -167,33 +167,27 @@ REEL: [
  {p:"site3d"}
 ],
 
-/* u:null = pas de lien public (nom du client dans l'adresse) ; only:"he" = carte hébreu seulement */
+/* u:null = pas de lien public (nom du client dans l'adresse) ; only:"he" = carte hébreu seulement ; r = résultat prouvé ; ordre = impact (phase B 20/10) */
 WORKS: [
+ {id:"site3d",c:"web",u:"https://dreamnova-3d-{l}.vercel.app",s:{he:"WebGL",en:"WebGL",fr:"WebGL"},t:{he:"אתר תלת־ממד סוחף",en:"Immersive 3D Site",fr:"Site Immersif 3D"},r:{he:"3 שפות · 3 אתרים חיים",en:"3 languages, 3 live sites — WebGL in the browser",fr:"3 langues, 3 sites en ligne — WebGL dans le navigateur"}},
+ {id:"voiceava",c:"ai",u:"https://dreamnova-voice-demo.vercel.app",s:{he:"סוכן קולי 24/7",en:"Voice agent 24/7",fr:"Agent vocal 24/7"},t:{he:"Ava — פקידת קבלה AI",en:"Ava — AI Receptionist",fr:"Ava — Réceptionniste IA"},r:{he:"דמו חי — מדברים איתה מהדפדפן",en:"Live demo — talk to it from your browser",fr:"Démo en direct — parlez-lui depuis le navigateur"}},
+ {id:"memorial",c:"video",demo:"en",u:"https://dreamnova-memorial-films.vercel.app",s:{he:"סרט AI",en:"AI film",fr:"Film IA"},t:{he:"סרטי זיכרון AI — פנים אמיתיות",en:"AI Memorial Films — Real Faces, Verified",fr:"Films mémoriels IA — visages vérifiés"},r:{he:"סרט ביוגרפי של 60 דקות · 240 שוטים נבדקו אחד־אחד",en:"60-minute biographical film — 240/240 shots checked one by one",fr:"Film biographique de 60 min — 240/240 plans vérifiés un par un"}},
  {id:"joaillerie",c:"web",u:null,s:{he:"מסחר אלקטרוני",en:"E‑commerce",fr:"E‑commerce"},t:{he:"מותג — תכשיטי יוקרה",en:"Maison — Fine Jewelry",fr:"Maison — Haute Joaillerie"}},
- {id:"voiceava",c:"ai",u:"https://dreamnova-voice-demo.vercel.app",s:{he:"סוכן קולי 24/7",en:"Voice agent 24/7",fr:"Agent vocal 24/7"},t:{he:"Ava — פקידת קבלה AI",en:"Ava — AI Receptionist",fr:"Ava — Réceptionniste IA"}},
- {id:"editions",c:"web",u:null,only:"he",s:{he:"הוצאה לאור",en:"",fr:""},t:{he:"חנות ספרים — מהדורה חדשה",en:"",fr:""}},
  {id:"onprem",c:"deep",u:"https://dreamnova-onprem.vercel.app",s:{he:"דיפ־טק פרטי",en:"Private deep-tech",fr:"Deep-tech privé"},t:{he:"AI פרטי On-Premise",en:"Private On-Premise AI",fr:"IA Privée On-Premise"}},
  {id:"pilote",c:"ai",demo:"fr",u:"https://dreamnova-pilote.vercel.app",s:{he:"RAG פרטי",en:"Private RAG",fr:"RAG privé"},t:{he:"פיילוט AI — משרדים",en:"AI Pilot — Firms",fr:"Pilote IA — Cabinets"}},
- {id:"auditariel",c:"audit",u:null,s:{he:"תיק לקוח אמיתי",en:"Real client dossier",fr:"Dossier client réel"},t:{he:"אודיט AI ותאימות AI Act",en:"AI Act Compliance Audit",fr:"Audit IA & Conformité AI Act"}},
- {id:"auditprivee",c:"audit",demo:"fr",u:"https://audit-ia-privee.vercel.app",s:{he:"אודיט",en:"Audit",fr:"Audit"},t:{he:"אודיט AI פרטי וריבוני",en:"Private & Sovereign AI Audit",fr:"Audit IA Privée & Souveraine"}},
- {id:"auditflash",c:"audit",demo:"fr",u:"https://audit-flash-ia-beige.vercel.app",s:{he:"אודיט",en:"Audit",fr:"Audit"},t:{he:"אודיט בזק — AI Act",en:"Flash Audit — AI Act",fr:"Audit Flash — AI Act"}},
- {id:"facturation",c:"audit",demo:"fr",u:"https://dreamnova-facturation.vercel.app",s:{he:"אודיט תאימות",en:"Compliance audit",fr:"Audit conformité"},t:{he:"מוכנות לחשבונית דיגיטלית 2026",en:"E-Invoicing Readiness 2026",fr:"Facturation Électronique 2026"}},
- {id:"diagnostic",c:"audit",u:"https://diagnostic-ia-israel.vercel.app",s:{he:"אודיט",en:"Audit",fr:"Audit"},t:{he:"אבחון AI — ישראל",en:"AI Diagnostic — Israel",fr:"Diagnostic IA — Israël"}},
+ {id:"rd",c:"deep",u:"https://dreamnova-brevets.vercel.app",s:{he:"דיפ־טק",en:"Deep-tech",fr:"Deep-tech"},t:{he:"מו״פ — תיק IP",en:"R&D — IP Dossier",fr:"R&D — Dossier IP"},r:{he:"24 משפחות המצאות · תקציר לא חסוי",en:"24 invention families — non-confidential summary",fr:"24 familles d'inventions — résumé non confidentiel"}},
+ {id:"artisans",c:"web",demo:"fr",u:"https://demos-artisans.vercel.app",s:{he:"גנרטור",en:"Generator",fr:"Générateur"},t:{he:"מפעל אתרים — בעלי מקצוע",en:"Site Factory — Trades",fr:"Usine à Sites — Métiers"},r:{he:"20 אתרים לבעלי מקצוע",en:"20 trade websites generated",fr:"20 sites de métiers générés"}},
  {id:"stockvox",c:"ai",u:"https://stockvox.vercel.app",s:{he:"סוכן קולי",en:"Voice agent",fr:"Agent vocal"},t:{he:"Stockvox — המלאי שמדבר",en:"Stockvox — Inventory That Talks",fr:"Stockvox — L'inventaire qui se parle"}},
- {id:"devis",c:"web",u:"https://dreamnova-devis.vercel.app",s:{he:"מוצר ווב",en:"Web product",fr:"Produit web"},t:{he:"SaaS — הצעת מחיר מדויקת",en:"SaaS — Exact Quotes",fr:"SaaS — Devis Exact"}},
  {id:"leadmachine",c:"ai",u:"https://leadmachine-site.vercel.app",s:{he:"צמיחה B2B",en:"B2B growth",fr:"Growth B2B"},t:{he:"מכונת פרוספקטינג פרטית",en:"Private Prospecting Machine",fr:"Machine de Prospection Privée"}},
  {id:"pinkas",c:"ai",u:"https://pinkas-ai.vercel.app",s:{he:"מוצר local-first",en:"Local-first product",fr:"Produit local-first"},t:{he:"פנקס — זיכרון וואטסאפ",en:"Pinkas — WhatsApp Memory",fr:"Pinkas — Mémoire WhatsApp"}},
- {id:"dreamai",c:"deep",u:"https://dreamai-mvp.vercel.app",s:{he:"דיפ־טק · פטנט",en:"Deep-tech · patent",fr:"Deep-tech · brevet"},t:{he:"DreamAI — מו״פ מוצר",en:"DreamAI — Product R&D",fr:"DreamAI — R&D Produit"}},
- {id:"mehadrin",c:"ai",u:"https://mehadrin-ai.vercel.app",only:"he",s:{he:"מוצר",en:"",fr:""},t:{he:"MEHADRIN AI — הבינה הכשרה",en:"",fr:""}},
+ {id:"cahiers",c:"web",u:null,s:{he:"הדמיה · תלת־ממד",en:"Concept · 3D showroom",fr:"Maquette · salon 3D"},t:{he:"מגזין מקצועי — אולם תצוגה תלת־ממדי",en:"Trade Magazine — Virtual 3D Showroom",fr:"Revue professionnelle — Salon virtuel 3D"}},
+ {id:"reseau",c:"ai",demo:"he",u:"https://reseau-contenu-demo.vercel.app",s:{he:"אב־טיפוס חי",en:"Live prototype",fr:"Prototype en ligne"},t:{he:"הפיד החכם שלך",en:"Smart Content Network",fr:"Réseau de contenu intelligent"}},
  {id:"lumen",c:"web",demo:"fr",u:"https://maison-lumen-demo.vercel.app",s:{he:"איקומרס",en:"E‑commerce demo",fr:"E‑commerce démo"},t:{he:"Maison Lumen — חנות דמו",en:"Maison Lumen — Store",fr:"Maison Lumen — Boutique"}},
- {id:"academy",c:"audit",u:"https://dreamnova-academy.vercel.app",s:{he:"הדרכה",en:"Education",fr:"Formation"},t:{he:"אקדמיית AI",en:"AI Academy",fr:"Academy IA"}},
- {id:"media",c:"video",u:null,s:{he:"תיק וידאו",en:"Video portfolio",fr:"Portfolio vidéo"},t:{he:"מותג — ספריית מדיה",en:"Maison — Media Library",fr:"Maison — Médiathèque"}},
- {id:"artisans",c:"web",demo:"fr",u:"https://demos-artisans.vercel.app",s:{he:"גנרטור",en:"Generator",fr:"Générateur"},t:{he:"מפעל אתרים — בעלי מקצוע",en:"Site Factory — Trades",fr:"Usine à Sites — Métiers"}},
- {id:"consult",c:"audit",u:"https://dreamnova-consult-prod.vercel.app",s:{he:"ייעוץ",en:"Consulting",fr:"Conseil"},t:{he:"סוכנות AI — השיטה",en:"AI Agency — The Method",fr:"Agence IA — La Méthode"}},
- {id:"edtech",c:"web",u:null,s:{he:"משחק חינוכי",en:"Educational game",fr:"Jeu éducatif"},t:{he:"EdTech — משחק לוגיקה",en:"EdTech — Logic Game",fr:"EdTech — Jeu Logique"}},
- {id:"site3d",c:"web",u:"https://dreamnova-3d-{l}.vercel.app",s:{he:"WebGL",en:"WebGL",fr:"WebGL"},t:{he:"אתר תלת־ממד סוחף",en:"Immersive 3D Site",fr:"Site Immersif 3D"}},
- {id:"nekuda",c:"web",u:null,s:{he:"קורס דיגיטלי",en:"Online course",fr:"Cours en ligne"},t:{he:"אקדמיה אונליין — קורס בעברית עם סרט",en:"Online Academy — Hebrew course with film",fr:"Académie en ligne — cours en hébreu avec film"}},
- {id:"rd",c:"deep",u:"https://dreamnova-inventions-investisseurs.vercel.app",s:{he:"דיפ־טק",en:"Deep-tech",fr:"Deep-tech"},t:{he:"מו״פ — תיק IP",en:"R&D — IP Dossier",fr:"R&D — Dossier IP"}}
+ {id:"diagnostic",c:"audit",u:"https://diagnostic-ia-israel.vercel.app",s:{he:"אודיט",en:"Audit",fr:"Audit"},t:{he:"אבחון AI — ישראל",en:"AI Diagnostic — Israel",fr:"Diagnostic IA — Israël"}},
+ {id:"facturation",c:"audit",demo:"fr",u:"https://dreamnova-facturation.vercel.app",s:{he:"אודיט תאימות",en:"Compliance audit",fr:"Audit conformité"},t:{he:"מוכנות לחשבונית דיגיטלית 2026",en:"E-Invoicing Readiness 2026",fr:"Facturation Électronique 2026"}},
+ {id:"auditprivee",c:"audit",demo:"fr",u:"https://audit-ia-privee.vercel.app",s:{he:"אודיט",en:"Audit",fr:"Audit"},t:{he:"אודיט AI פרטי וריבוני",en:"Private & Sovereign AI Audit",fr:"Audit IA Privée & Souveraine"}},
+ {id:"editions",c:"web",u:null,only:"he",s:{he:"הוצאה לאור",en:"",fr:""},t:{he:"חנות ספרים — מהדורה חדשה",en:"",fr:""}},
+ {id:"mehadrin",c:"ai",u:"https://mehadrin-ai.vercel.app",only:"he",s:{he:"מוצר",en:"",fr:""},t:{he:"MEHADRIN AI — הבינה הכשרה",en:"",fr:""}}
 ],
 
 FILTERS: {

@@ -1059,3 +1059,18 @@ body:has(.cp-panel.is-open) .gear,body.no-fab .gear,body.svc-open .gear{opacity:
 .foot a[href="#top"]{min-width:44px;justify-content:center}
 /* dans le cockpit sur téléphone, le ⚙️ monte sous la barre : il ne cache plus les boutons de service du bas */
 @media (max-width:767px){body.in-cockpit .gear{bottom:auto;top:84px}}
+/* phase B : fiches riches (résultat prouvé), vignette sur téléphone, filtre par service défilant */
+.pj__r{margin-top:6px;font-size:14.5px;line-height:1.4;color:var(--mute)}
+.index .filters{max-width:100%}
+@media (max-width:767px){
+  .index .filters{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-20px;padding-inline:20px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 16px,#000 calc(100% - 24px),transparent)}
+  .index .filters::-webkit-scrollbar{display:none}
+  .index .filters button{flex:0 0 auto;white-space:nowrap}
+  .index__grid .pj{grid-template-columns:104px 1fr;gap:14px;padding:12px 0}
+  .index__grid .pj .pj__img{display:block;width:104px;aspect-ratio:16/10;height:auto;border-radius:10px;object-fit:cover;object-position:top}
+  .index__grid .pj__b{padding:0;flex-direction:column;gap:6px}
+  .index__grid .pj__t{font-size:19px}
+  .pj__r{font-size:15px}
+}
+.index__grid .pj.is-out{display:none!important}
+.index__cta{margin-top:28px;display:flex;justify-content:center}
