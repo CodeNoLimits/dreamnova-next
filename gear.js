@@ -13,21 +13,22 @@
   const secs = () => SEL.map(s => document.querySelector(s)).filter(e => e && !e.hidden && e.offsetHeight > 0);
   const top = e => e.getBoundingClientRect().top + scrollY;
   const span = e => { const h = e.offsetHeight; return h > innerHeight * 1.6 ? h - innerHeight : 0; }; // section plus haute que l'écran = épinglée : on la parcourt
-  let raf = 0;
+  let raf = 0, pendingEnd = null;
   const stop = () => { if (raf) { cancelAnimationFrame(raf); raf = 0; } document.body.classList.remove("cruising"); };
   ["wheel", "touchstart", "keydown", "pointerdown"].forEach(ev => addEventListener(ev, e => { if (!el.contains(e.target)) stop(); }, { passive: true }));
   function go(y1, pace) {
-    stop(); const y0 = scrollY, dist = y1 - y0; if (Math.abs(dist) < 6) return;
+    stop(); const y0 = scrollY, dist = y1 - y0; if (Math.abs(dist) < 6) return; pendingEnd = y1;
     const dur = Math.min(11000, Math.max(900, Math.abs(dist) / pace * 1000)); document.body.classList.add("cruising");
     const ease = k => k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
-    if (window.__lenis) { window.__lenis.scrollTo(y1, { duration: dur / 1000, easing: ease, lock: false, onComplete: () => document.body.classList.remove("cruising") }); return; }
+    if (window.__lenis) { window.__lenis.scrollTo(y1, { duration: dur / 1000, easing: ease, lock: false, onComplete: () => { pendingEnd = null; document.body.classList.remove("cruising"); } }); return; }
     const t0 = performance.now();
-    const step = now => { const k = Math.min(1, (now - t0) / dur); window.scrollTo(0, y0 + dist * ease(k)); if (k < 1) raf = requestAnimationFrame(step); else stop(); };
+    const step = now => { const k = Math.min(1, (now - t0) / dur); window.scrollTo(0, y0 + dist * ease(k)); if (k < 1) raf = requestAnimationFrame(step); else { pendingEnd = null; stop(); } };
     raf = requestAnimationFrame(step);
   }
-  function current() { const list = secs(), y = scrollY + 4; let i = 0; list.forEach((e, k) => { if (top(e) <= y) i = k; }); return { list, i }; }
+  function current(yy) { const list = secs(), y = (yy == null ? scrollY : yy) + 4; let i = 0; list.forEach((e, k) => { if (top(e) <= y) i = k; }); return { list, i }; }
   function next() {
-    const { list, i } = current(); const e = list[i], t = top(e), s = span(e), y = scrollY;
+    const cruising = document.body.classList.contains("cruising") && pendingEnd != null, y = cruising ? pendingEnd : scrollY; // clic pendant un trajet : on raisonne depuis la fin du trajet
+    const { list, i } = current(y); const e = list[i], t = top(e), s = span(e);
     const PACE = mob() ? 620 : 1000, JUMP = mob() ? 1900 : 2600;
     window.DNAudio?.sfx("gear", 0, .6);
     if (s && y < t + s - 12) return go(t + s, PACE);                      // dans une section animée : on la joue jusqu'au bout

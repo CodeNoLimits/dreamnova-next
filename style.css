@@ -1027,3 +1027,11 @@ body:not(.gated):not(.is-loading):not(.menu-open):not(.printing) .gear{opacity:1
 .svc-works .pj .pj__img{display:block;width:168px;aspect-ratio:16/10;object-fit:cover;object-position:top;border-radius:12px}
 .svc-works .pj__b{padding:0}.svc-works .pj__t{color:#fff;font-size:clamp(17px,1.4vw,21px)}.svc-works .pj__s{color:var(--gold)}
 @media (max-width:767px){.svc-works .index__grid{grid-template-columns:1fr}.svc-works .pj{grid-template-columns:120px 1fr}.svc-works .pj .pj__img{width:120px}}
+/* R6 (8,54 / DA 8,7) : visuel de service pleine largeur, titre de la visite lisible, reels centrés */
+.svc-visual{margin:clamp(56px,7vw,96px) 0 0;max-width:none;border-radius:0;aspect-ratio:auto;height:min(62vh,640px)}
+.svc-visual__cap{inset-inline-start:var(--pad)}
+@media (max-width:767px){.svc-visual{margin-inline:0;border-radius:0;height:60vh;aspect-ratio:auto}}
+.rooms__head{position:relative;padding:18px 22px 22px;margin:-18px -22px 0;border-radius:24px;background:radial-gradient(80% 90% at 30% 50%,rgba(3,2,2,.82),rgba(3,2,2,.35) 70%,transparent)}
+.rooms__title{text-shadow:0 6px 40px rgba(0,0,0,.95),0 0 2px rgba(0,0,0,.8)}
+.reels__strip{justify-content:center}
+@media (max-width:767px){.reels__strip{justify-content:flex-start}}

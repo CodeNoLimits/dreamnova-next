@@ -108,8 +108,8 @@ fb.addEventListener("click", e => {
 
 /* ---------- reels ---------- */
 { const RI = D.REELS_I[L]; $$("[data-r2]").forEach(e => e.textContent = RI[e.dataset.r2]);
-  const mine = (D.REELS || []).filter(r => r.lang === L), list = (mine.length ? mine : (D.REELS || [])).slice();
-  const box = $("[data-reels]"); if (box) { if (!list.length) $("#reels").hidden = true;
+  const list = (D.REELS || []).filter(r => r.lang === L); // seulement les reels de la langue de la page
+  const box = $("[data-reels]"); if (box) { if (!list.length) { $("#reels").hidden = true; $$('a[href="#reels"]').forEach(a => a.remove()); }
     box.innerHTML = list.map(r => `<figure class="reel"><div class="reel__frame"><video data-src="${BASE}assets/reels/${r.id}.mp4" poster="${BASE}assets/reels/${r.id}.webp" muted loop playsinline preload="none"></video><button type="button" class="reel__snd" aria-label="${esc(RI.tap)}">🔊</button></div><figcaption>${esc(r.t[L])}</figcaption></figure>`).join("");
     box.addEventListener("click", e => { const b = e.target.closest(".reel__snd"); if (!b) return; const v = b.previousElementSibling; v.muted = !v.muted; b.classList.toggle("is-on", !v.muted); if (!v.muted) { v.currentTime = 0; v.play().catch(() => {}); $$(".reel video", box).forEach(o => { if (o !== v) o.muted = true; }); $$(".reel__snd", box).forEach(o => o !== b && o.classList.remove("is-on")); } }); } }
 
@@ -135,7 +135,7 @@ $("[data-lab]").innerHTML = D.LAB.map(x => `<article class="lc reveal"><svg clas
 const vio = new IntersectionObserver(es => es.forEach(e => {
   const v = e.target;
   if (e.isIntersecting) { if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); } else v.pause();
-}), { rootMargin: "200px" });
+}), { rootMargin: "600px" });
 $$("video[data-src]").filter(v => !v.closest(".room-card")).forEach(v => vio.observe(v)); // les cartes des salles ont leur propre lecteur (une seule à la fois)
 /* ---------- fond du final (cockpit) : image adaptée à l'écran, chargée à l'approche ---------- */
 { const dash = $(".contact__dash"); if (dash) { const io = new IntersectionObserver(es => { if (!es.some(e => e.isIntersecting)) return;
@@ -266,7 +266,7 @@ function intro() {
 
   // apparitions
   ScrollTrigger.batch(".reveal:not(.who):not(.step):not(.lc):not(.off)", { start: mobile() ? "top 100%" : "top 88%", once: true,
-    onEnter: b => gsap.to(b, { opacity: 1, y: 0, filter: "blur(0px)", duration: mobile() ? .45 : 1.2, ease: "expo.out", stagger: mobile() ? .03 : .07, overwrite: true, clearProps: "transform" }) });
+    onEnter: b => gsap.to(b, { opacity: 1, y: 0, filter: "blur(0px)", duration: mobile() ? .45 : .6, ease: "expo.out", stagger: mobile() ? .03 : .05, overwrite: true, clearProps: "transform" }) });
   // titres : mot par mot derrière un masque
   $$(".sec-head .h2,.rooms__title").forEach(h => { h.innerHTML = h.textContent.split(" ").map(w => `<span class="wm"><span>${esc(w)}</span></span>`).join(" "); });
   gsap.utils.toArray(".sec-head").forEach(h => {
@@ -279,9 +279,9 @@ function intro() {
   // cartes : entrée en vrille 3D, puis vrille complète au survol
   const SPIN = ".who,.step,.lc,.off", TOUCH = matchMedia("(hover: none)").matches || mobile();
   gsap.set(SPIN, { transformPerspective: 1100 });
-  ScrollTrigger.batch(SPIN, { start: TOUCH ? "top 100%" : "top 92%", once: true, onEnter: b => gsap.fromTo(b,
-    TOUCH ? { rotationY: (RTL ? -1 : 1) * 55, rotationX: 10, y: 34, opacity: 0, transformOrigin: "50% 50% -80px" } : { rotationY: (RTL ? -1 : 1) * 38, rotationX: 8, y: 28, opacity: 0, transformOrigin: "50% 50% -90px" },
-    TOUCH ? { rotationY: 0, rotationX: 0, y: 0, opacity: 1, duration: .9, ease: "expo.out", stagger: .05, overwrite: true, clearProps: "transform" } : { rotationY: 0, rotationX: 0, y: 0, opacity: 1, duration: 1.2, ease: "expo.out", stagger: .06, overwrite: true, clearProps: "transform" }) });
+  ScrollTrigger.batch(SPIN, { start: TOUCH ? "top 100%" : "top 90%", once: true, onEnter: b => gsap.fromTo(b,
+    TOUCH ? { rotationY: (RTL ? -1 : 1) * 55, rotationX: 10, y: 34, opacity: 0, transformOrigin: "50% 50% -80px" } : { y: 28, opacity: 0 },
+    TOUCH ? { rotationY: 0, rotationX: 0, y: 0, opacity: 1, duration: .9, ease: "expo.out", stagger: .05, overwrite: true, clearProps: "transform" } : { y: 0, opacity: 1, duration: .5, ease: "power2.out", stagger: .05, overwrite: true, clearProps: "transform" }) });
   $$(".who").forEach(el => el.addEventListener("pointerenter", () => {
     if (el._spin || matchMedia("(hover: none)").matches) return; el._spin = 1;
     gsap.fromTo(el, { rotationY: 0 }, { rotationY: (RTL ? -360 : 360), duration: 1.25, ease: "power3.inOut", onComplete: () => { gsap.set(el, { rotationY: 0 }); el._spin = 0; } });
