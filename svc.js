@@ -13,8 +13,7 @@
   const offers = s.o.map(k => D.OFFERS[L][k]).filter(Boolean);
   const nxt = D.SVC[(i + 1) % D.SVC.length], nsv = D.SERVICES[(i + 1) % D.SVC.length][L];
   const vid = s.v ? `${BASE}assets/${s.v}` : "";
-  const ALT = { film: "reel/subtitled_pipeline_03.mp4", web: "car2/accel.mp4", crm: "car/cockpit.mp4", agents: null, marketing: "scenes/parachute.mp4", private: "space/orbit.mp4", "3d": "space/rocket.mp4", consult: "scenes/mountain.mp4" }; // plans absents de l'accueil autant que possible
-  const vid2 = ALT[id] === null ? "" : `${BASE}assets/${ALT[id] || "space/rocket.mp4"}`; // null = pas de second visuel (aucun plan propre au service)
+  const vid2 = `${BASE}assets/svcclip/svc_${id}.mp4`, poster2 = `${BASE}assets/svcclip/poster_${id}.webp`; // plan Nano Banana + Veo propre à chaque service
   $("#app").innerHTML = `
   <header class="nav nav--svc"><a href="${BASE}${L}/#drive" class="nav__brand"><img class="nav__crest" src="${BASE}assets/brand/crest.svg" alt="" width="26" height="32"><span class="nav__name">DreamNova</span></a>
     <a class="svc__back" href="${BASE}${L}/#drive">${RTL ? "→" : "←"} ${esc(U.back)}</a>
@@ -37,7 +36,7 @@
     const u = w.u && w.u.replace("{l}", L);
     return `<${u ? "a" : "div"} class="pj r" ${u ? `href="${u}" target="_blank" rel="noopener"` : ""}><img class="pj__img" src="${BASE}assets/work/gal_${w.id}${w.id === "site3d" ? "_" + L : ""}_s.webp"${w.demo && w.demo !== L ? ` data-demo="${w.demo}"` : ""} width="600" height="375" alt="${esc(w.t[L])}" loading="lazy"><div class="pj__b"><div><div class="pj__s">${esc(w.s[L])}${w.demo && w.demo !== L ? ` <span class="pj__lang">${w.demo.toUpperCase()}</span>` : ""}</div><div class="pj__t">${esc(w.t[L])}</div>${w.r ? `<div class="pj__r">${esc(w.r[L])}</div>` : ""}</div><span class="pj__a">${esc(u ? T["work.visit"].replace("↗", ARROW) : T["work.private"])}</span></div></${u ? "a" : "div"}>`;
   }).join("")}</div></section>` : ""}
-  ${!s.films && vid2 ? `<section class="svc-visual"><video data-src="${vid2}" muted loop playsinline preload="none"></video></section>` : ""}
+  <section class="svc-visual"><video data-src="${vid2}" poster="${poster2}" muted loop playsinline preload="none"></video></section>
   ${(() => { const B = D.BUILD && D.BUILD[id] && D.BUILD[id][L]; if (!B) return "";
     const H = { he: ["איך אנחנו בונים", "הטכנולוגיה", "מה תקבלו", "שאלות נפוצות"], en: ["How we build it", "The stack", "What you get", "FAQ"], fr: ["Comment on le construit", "Les technologies", "Ce que vous recevez", "Questions fréquentes"] }[L];
     return `<section class="svc-build"><p class="eyebrow eyebrow--gold">${esc(H[0])}</p><h2 class="h2 svc-build__t">${esc(B.intro)}</h2>
