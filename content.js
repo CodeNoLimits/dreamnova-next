@@ -123,7 +123,14 @@ REELS_I: {
 },
 REELS: [
  {id:"reel01_volant_he",lang:"he",t:{"he": "קחו את ההגה", "en": "Take the wheel", "fr": "Prenez le volant"}},
- {id:"reel03_accel_en",lang:"en",t:{"he": "לוחצים על הגז", "en": "We hit the throttle", "fr": "On appuie sur l'accélérateur"}}
+ {id:"reel03_accel_en",lang:"en",t:{"he": "לוחצים על הגז", "en": "We hit the throttle", "fr": "On appuie sur l'accélérateur"}},
+ {id:"reel04_salles_he",lang:"he",t:{"he": "סיור בסטודיו", "en": "Studio tour", "fr": "Visite du studio"}},
+ {id:"reel05_sites_he",lang:"he",t:{"he": "אתרים ומסחר אלקטרוני", "en": "Websites & e‑commerce", "fr": "Sites & e‑commerce"}},
+ {id:"reel06_agents_fr",lang:"fr",t:{"he": "סוכני AI 24/7", "en": "AI agents 24/7", "fr": "Agents IA 24/7"}},
+ {id:"reel07_films_en",lang:"en",t:{"he": "וידאו וסרטי AI", "en": "Video & AI film", "fr": "Vidéo & film IA"}},
+ {id:"reel08_ia_privee_he",lang:"he",t:{"he": "בינה מלאכותית פרטית", "en": "Private AI", "fr": "IA privée"}},
+ {id:"reel09_espace_en",lang:"en",t:{"he": "המעבדה — לא עוצרים בשמיים", "en": "The lab — we don't stop at the sky", "fr": "Le labo — on ne s'arrête pas au ciel"}},
+ {id:"reel10_valeurs_fr",lang:"fr",t:{"he": "הערכים שלנו", "en": "Our values", "fr": "Nos valeurs"}}
 ],
 
 /* chapitres cinématiques (vidéos assets/car2, assets/space, assets/scenes) */
