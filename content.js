@@ -122,7 +122,8 @@ REELS_I: {
  fr:{eyebrow:"Reels",title:"Nos reels — tirés du site.",lead:"Chaque clip ici a été produit à partir de ce site : les plans, la musique, le mouvement. Voilà ce que donne un marketing de ce niveau pour votre entreprise.",tap:"Touchez pour le son",fixed:"Packs à prix fixe",premium:"Premium — sur mesure avec David"}
 },
 REELS: [
- {id:"reel01_volant_he",lang:"he",t:{he:"קחו את ההגה",en:"Take the wheel",fr:"Prenez le volant"}}
+ {id:"reel01_volant_he",lang:"he",t:{"he": "קחו את ההגה", "en": "Take the wheel", "fr": "Prenez le volant"}},
+ {id:"reel03_accel_en",lang:"en",t:{"he": "לוחצים על הגז", "en": "We hit the throttle", "fr": "On appuie sur l'accélérateur"}}
 ],
 
 /* chapitres cinématiques (vidéos assets/car2, assets/space, assets/scenes) */
