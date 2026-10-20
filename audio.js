@@ -154,7 +154,7 @@
   gate.querySelector(".gate__go").addEventListener("click", () => close(true));
   gate.querySelector(".gate__mute").addEventListener("click", () => close(false));
   const show = () => { document.body.classList.add("gated"); window.__lenis?.stop?.(); gate.classList.add("is-in"); gate.querySelector(".gate__go").focus({ preventScroll: true }); };
-  if (window.__DN) show(); else addEventListener("dn:ready", show, { once: true });
+  show(); addEventListener("dn:ready", () => { if (gated) window.__lenis?.stop?.(); }, { once: true }); // porte affichée tout de suite (élément LCP), sans attendre le JavaScript lourd
 
   window.DNAudio = { sfx, voiceKey, engine, engineRpm, get on() { return on; } };
 })();
