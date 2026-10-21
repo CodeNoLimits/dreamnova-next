@@ -1140,3 +1140,9 @@ body:has(.cp-panel.is-open) .gear,body.no-fab .gear,body.svc-open .gear{opacity:
 @media(max-width:640px){.live__row{grid-template-columns:repeat(2,1fr);row-gap:28px}}
 .conseil__ref{max-width:1500px;margin:18px 0 0;font:500 15px/1.5 var(--f-body);color:var(--gold-lt)}
 .conseil__who{max-width:760px;margin:0 0 22px;font:500 clamp(15px,1.5vw,18px)/1.55 var(--f-body);color:var(--gold-lt)}
+/* ===== bandeau d'avantages (21/10) ===== */
+.promo{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;margin:0 var(--pad);padding:14px 18px;border:1px solid var(--line);border-radius:999px;background:linear-gradient(90deg,rgba(212,175,55,.10),rgba(212,175,55,.03))}
+.promo__l{list-style:none;display:flex;flex-wrap:wrap;gap:8px 26px;font:500 15px/1.4 var(--f-body);color:var(--ink)}
+.promo__l li{display:flex;align-items:center;gap:10px}
+.promo__dot{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold)}
+@media(max-width:640px){.promo{border-radius:22px;padding:16px}.promo__l{flex-direction:column;gap:10px}.promo__go{width:100%;justify-content:center}}

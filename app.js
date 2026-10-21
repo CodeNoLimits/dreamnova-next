@@ -94,9 +94,12 @@ const ICONS = {
   const a = $("[data-now-wa]"); if (a) { a.href = wa("Now"); a.target = "_blank"; a.rel = "noopener"; } }
 
 /* ---------- chiffres réels (calculés depuis content.js, jamais saisis à la main) ---------- */
-{ const LB = { he: ["שירותים", "פרויקטים", "רילס", "טכנולוגיות"], en: ["services", "projects shipped", "reels", "technologies"], fr: ["services", "réalisations", "reels", "technologies"] }[L];
+{ const LB = { he: ["שירותים", "פרויקטים", "רילס", "טכנולוגיות"], en: ["services", "projects shown here", "reels", "technologies"], fr: ["services", "projets présentés ici", "reels", "technologies"] }[L];
   const N = [D.SVC.length, D.WORKS.filter(w => !w.only || w.only === L).length, D.REELS.length, D.STACK.length];
-  $("[data-live]").innerHTML = N.map((n, i) => `<li class="live__it reveal"><b class="gold-text" dir="ltr">${n}</b><span>${esc(LB[i])}</span></li>`).join(""); }
+  $("[data-live]").innerHTML = N.map((n, i) => L === "he" && i === 1 ? "" : `<li class="live__it reveal"><b class="gold-text" dir="ltr">${n}</b><span>${esc(LB[i])}</span></li>`).join(""); }
+/* ---------- bandeau d'avantages sous l'ouverture (fr/en ; hébreu à relire) ---------- */
+{ const P = { fr: [["Appel découverte offert", "Audit IA gratuit en 1 minute", "Devis clair en 1 minute"], "Commencer"], en: [["Free discovery call", "Free AI audit in one minute", "Clear quote in one minute"], "Start"] }[L], el = $("[data-promo]");
+  if (P && el) { el.hidden = false; el.innerHTML = `<ul class="promo__l">${P[0].map(t => `<li><span class="promo__dot" aria-hidden="true"></span>${esc(t)}</li>`).join("")}</ul><a class="btn btn--gold btn--sm promo__go" href="#conseil"><span>${esc(P[1])}</span><span class="btn__ico">↘</span></a>`; } }
 /* ---------- conseil (fr/en ; l'hébreu attend un texte relu) ---------- */
 { const CI = D.CONSEIL_I[L], sec = $("#conseil"); if (CI && sec) { sec.hidden = false; $$("[data-c3]").forEach(e => { if (e.dataset.c3 !== "ref") e.textContent = CI[e.dataset.c3]; });
   $("[data-conseil]").innerHTML = CI.c.map(([t, d, h, c], i) => { const w = h === "#contact"; return `<a class="who free__card reveal" href="${w ? wa(t) : h}"${w ? ' target="_blank" rel="noopener"' : ""}><span class="who__k">0${i + 1}</span><h3>${esc(t)}</h3><p class="who__sig">${esc(d)}</p><span class="btn btn--gold free__btn"><span>${esc(c)}</span><span class="btn__ico">${w ? "↗" : "↘"}</span></span></a>`; }).join("");
