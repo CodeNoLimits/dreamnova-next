@@ -93,6 +93,7 @@ const ICONS = {
   $("[data-now]").innerHTML = NI.pts.map(([t, d], i) => `<article class="who reveal"><span class="who__k">0${i + 1}</span><h3>${esc(t)}</h3><p class="who__sig">${esc(d)}</p></article>`).join("");
   const a = $("[data-now-wa]"); if (a) { a.href = wa("Now"); a.target = "_blank"; a.rel = "noopener"; } }
 
+{ const fc = $(".foot__credit"); if (fc && L === "fr") fc.textContent = "Musique : Magenta RealTime (Google, CC BY 4.0) · Voix : ElevenLabs"; }
 /* ---------- chiffres réels (calculés depuis content.js, jamais saisis à la main) ---------- */
 { const LB = { he: ["שירותים", "פרויקטים", "רילס", "טכנולוגיות"], en: ["services", "projects shown here", "reels", "technologies"], fr: ["services", "projets présentés ici", "reels", "technologies"] }[L];
   const N = [D.SVC.length, D.WORKS.filter(w => !w.only || w.only === L).length, D.REELS.length, D.STACK.length];

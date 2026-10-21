@@ -1173,3 +1173,9 @@ body:has(.cp-panel.is-open) .gear,body.no-fab .gear,body.svc-open .gear{opacity:
 .cx-on .gear{opacity:0!important;pointer-events:none!important}
 .stat span{color:#c9c1b1}
 .cx__n{align-self:start;margin-top:2px}
+/* ===== jury 21/10 23h : pastille sans chevauchement, libellés lisibles ===== */
+.gear__lab{display:none}
+.gear__knob{width:52px;height:52px}
+@media (max-width:767px){.gear{display:none}} /* sur téléphone la pastille recouvrait titres et textes */
+.off__p small{font-size:max(11.5px,.72rem);color:rgb(235 228 214 / .78)}
+.who__sig{color:#ddd1b4}
