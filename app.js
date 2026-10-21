@@ -354,6 +354,13 @@ function intro() {
   gsap.from(".foot__big", { yPercent: 40, opacity: 0, duration: 1.6, ease: "expo.out", scrollTrigger: { trigger: ".foot", start: "top 95%" } });
 
   addEventListener("load", () => ScrollTrigger.refresh());
+  /* lien d'arrivée avec ancre (#conseil, #offers… — liens de recommandation) : le navigateur saute à l'ancre AVANT que les sections
+     épinglées n'allongent la page (écart mesuré : 4 100 px). On revient sur l'ancre à chaque recalcul, pendant 8 s, tant que le visiteur n'a pas défilé lui-même. */
+  { const tgt = location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (tgt) { let user = false; const t0 = Date.now(), quit = () => { user = true; };
+      ["wheel", "touchmove", "keydown"].forEach(e => addEventListener(e, quit, { once: true, passive: true }));
+      const go = () => { if (user || Date.now() - t0 > 8000) return; const y = tgt.getBoundingClientRect().top + scrollY; lenis ? lenis.scrollTo(y, { immediate: true, force: true }) : scrollTo(0, y); };
+      ScrollTrigger.addEventListener("refresh", () => requestAnimationFrame(go)); addEventListener("dn:gate", () => setTimeout(go, 60)); setTimeout(go, 1200); } }
   window.__DN = { lang: L, lenis: !!lenis };
   window.dispatchEvent(new Event("dn:ready"));
 }
