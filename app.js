@@ -90,6 +90,10 @@ const ICONS = {
   $("[data-now]").innerHTML = NI.pts.map(([t, d], i) => `<article class="who reveal"><span class="who__k">0${i + 1}</span><h3>${esc(t)}</h3><p class="who__sig">${esc(d)}</p></article>`).join("");
   const a = $("[data-now-wa]"); if (a) { a.href = wa("Now"); a.target = "_blank"; a.rel = "noopener"; } }
 
+/* ---------- chiffres réels (calculés depuis content.js, jamais saisis à la main) ---------- */
+{ const LB = { he: ["שירותים", "פרויקטים", "רילס", "טכנולוגיות"], en: ["services", "projects shipped", "reels", "technologies"], fr: ["services", "réalisations", "reels", "technologies"] }[L];
+  const N = [D.SVC.length, D.WORKS.filter(w => !w.only || w.only === L).length, D.REELS.length, D.STACK.length];
+  $("[data-live]").innerHTML = N.map((n, i) => `<li class="live__it reveal"><b class="gold-text" dir="ltr">${n}</b><span>${esc(LB[i])}</span></li>`).join(""); }
 /* ---------- gratuit, tout de suite ---------- */
 { const FI = D.FREE_I[L]; $$("[data-f2]").forEach(e => e.textContent = FI[e.dataset.f2]);
   $("[data-free]").innerHTML = FI.c.map(([t, d, h, c], i) => { const ext = h.startsWith("http"); return `<a class="who free__card reveal" href="${h}"${ext ? ' target="_blank" rel="noopener"' : ""}><span class="who__k">0${i + 1}${ext ? " · EN" : ""}</span><h3>${esc(t)}</h3><p class="who__sig">${esc(d)}</p><span class="btn btn--gold free__btn"><span>${esc(c)}</span><span class="btn__ico">${ext ? "↗" : "↘"}</span></span></a>`; }).join(""); }
