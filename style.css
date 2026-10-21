@@ -1171,3 +1171,5 @@ body:has(.cp-panel.is-open) .gear,body.no-fab .gear,body.svc-open .gear{opacity:
 @media(prefers-reduced-motion:reduce){.cx__vid{display:none}}
 .cx__btn{grid-column:2;justify-self:start;margin-top:12px}
 .cx-on .gear{opacity:0!important;pointer-events:none!important}
+.stat span{color:#c9c1b1}
+.cx__n{align-self:start;margin-top:2px}
