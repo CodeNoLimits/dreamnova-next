@@ -14,7 +14,10 @@ const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const finePointer = matchMedia("(pointer: fine)").matches;
 const mobile = () => innerWidth < 768;
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const wa = (extra, partner) => `https://wa.me/${D.WA}?text=${encodeURIComponent((partner ? T["wa.partner"] : T["wa.msg"]) + (extra ? " — " + extra : ""))}`;
+/* recommandation : ?ref=laura ajoute la mention dans le message WhatsApp (attribution des 20 %) */
+const REFS = { laura: "Laura" }, REFK = (new URLSearchParams(location.search).get("ref") || "").toLowerCase(), REFWHO = REFS[REFK] || "";
+const REFTX = { fr: "de la part de", en: "recommended by", he: "בהמלצת" }[L];
+const wa = (extra, partner) => `https://wa.me/${D.WA}?text=${encodeURIComponent((partner ? T["wa.partner"] : T["wa.msg"]) + (extra ? " — " + extra : "") + (REFWHO ? ` (${REFTX} ${REFWHO})` : ""))}`;
 const ARROW = RTL ? "↖" : "↗";
 
 /* ---------- texte ---------- */
@@ -94,6 +97,10 @@ const ICONS = {
 { const LB = { he: ["שירותים", "פרויקטים", "רילס", "טכנולוגיות"], en: ["services", "projects shipped", "reels", "technologies"], fr: ["services", "réalisations", "reels", "technologies"] }[L];
   const N = [D.SVC.length, D.WORKS.filter(w => !w.only || w.only === L).length, D.REELS.length, D.STACK.length];
   $("[data-live]").innerHTML = N.map((n, i) => `<li class="live__it reveal"><b class="gold-text" dir="ltr">${n}</b><span>${esc(LB[i])}</span></li>`).join(""); }
+/* ---------- conseil (fr/en ; l'hébreu attend un texte relu) ---------- */
+{ const CI = D.CONSEIL_I[L], sec = $("#conseil"); if (CI && sec) { sec.hidden = false; $$("[data-c3]").forEach(e => { if (e.dataset.c3 !== "ref") e.textContent = CI[e.dataset.c3]; });
+  $("[data-conseil]").innerHTML = CI.c.map(([t, d, h, c], i) => { const w = h === "#contact"; return `<a class="who free__card reveal" href="${w ? wa(t) : h}"${w ? ' target="_blank" rel="noopener"' : ""}><span class="who__k">0${i + 1}</span><h3>${esc(t)}</h3><p class="who__sig">${esc(d)}</p><span class="btn btn--gold free__btn"><span>${esc(c)}</span><span class="btn__ico">${w ? "↗" : "↘"}</span></span></a>`; }).join("");
+  const r = $("[data-c3=ref]"); if (r && REFWHO) { r.textContent = CI.ref.replace("{who}", REFWHO); r.hidden = false; } } }
 /* ---------- gratuit, tout de suite ---------- */
 { const FI = D.FREE_I[L]; $$("[data-f2]").forEach(e => e.textContent = FI[e.dataset.f2]);
   $("[data-free]").innerHTML = FI.c.map(([t, d, h, c], i) => { const ext = h.startsWith("http"); return `<a class="who free__card reveal" href="${h}"${ext ? ' target="_blank" rel="noopener"' : ""}><span class="who__k">0${i + 1}${ext ? " · EN" : ""}</span><h3>${esc(t)}</h3><p class="who__sig">${esc(d)}</p><span class="btn btn--gold free__btn"><span>${esc(c)}</span><span class="btn__ico">${ext ? "↗" : "↘"}</span></span></a>`; }).join(""); }

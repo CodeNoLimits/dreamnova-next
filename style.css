@@ -1138,3 +1138,4 @@ body:has(.cp-panel.is-open) .gear,body.no-fab .gear,body.svc-open .gear{opacity:
 .live__it b{display:block;font:700 clamp(40px,7vw,84px)/1 var(--f-display);letter-spacing:-.02em}
 .live__it span{display:block;margin-top:8px;font:500 clamp(12px,1.4vw,15px)/1.3 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
 @media(max-width:640px){.live__row{grid-template-columns:repeat(2,1fr);row-gap:28px}}
+.conseil__ref{max-width:1500px;margin:18px auto 0;padding-inline:var(--pad);font:500 15px/1.5 var(--f-body);color:var(--gold-lt)}
