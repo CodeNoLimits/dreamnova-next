@@ -36,7 +36,7 @@
   function render(a, url, facts) {
     load.hidden = true; out.hidden = false;
     const date = new Date().toLocaleDateString({ he: "he-IL", en: "en-GB", fr: "fr-FR" }[L], { day: "numeric", month: "long", year: "numeric" });
-    const waTxt = `${D.I[L]["wa.msg"]}\n\n${a.company || url}\n${a.one_liner || ""}\n\n${(a.offers || []).map(o => `• ${o.name} — ${o.price}`).join("\n")}`;
+    const waTxt = `${D.I[L]["wa.msg"]}\n\n${a.company || url}\n${a.one_liner || ""}\n\n${(a.offers || []).map(o => `• ${o.name} — ${o.price}`).join("\n")}${window.DN_REF || ""}`;
     const sc = a.scores || {}; const avg = (Object.values(sc).reduce((s, v) => s + (+v || 0), 0) / Math.max(1, Object.keys(sc).length)).toFixed(1);
     out.innerHTML = `<article class="doc doc--audit" dir="${RTL ? "rtl" : "ltr"}">
       <header class="doc__h"><img src="${BASE}assets/brand/crest.svg" alt="" width="48" height="60"><div><b>DreamNova</b><span>${esc(D.I[L]["hero.eyebrow"])}</span></div><dl><dt>${esc(Q.forw)}</dt><dd dir="ltr">${esc((url || "").replace(/^https?:\/\//, "").replace(/\/$/, ""))}</dd><dt>${esc(Q.date)}</dt><dd>${esc(date)}</dd></dl></header>

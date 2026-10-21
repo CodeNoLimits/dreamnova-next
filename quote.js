@@ -42,7 +42,7 @@
     load.hidden = true; out.hidden = false;
     const date = new Date().toLocaleDateString({ he: "he-IL", en: "en-GB", fr: "fr-FR" }[L], { day: "numeric", month: "long", year: "numeric" });
     const list = a => (Array.isArray(a) ? a : []).map(x => `<li>${esc(x)}</li>`).join("");
-    const waTxt = `${D.I[L]["wa.msg"]}\n\n${p.title || ""}\n${p.summary || ""}\n\n${(p.options || []).map(o => `• ${o.name} — ${o.price}`).join("\n")}`;
+    const waTxt = `${D.I[L]["wa.msg"]}\n\n${p.title || ""}\n${p.summary || ""}\n\n${(p.options || []).map(o => `• ${o.name} — ${o.price}`).join("\n")}${window.DN_REF || ""}`;
     out.innerHTML = `<article class="doc" dir="${L === "he" ? "rtl" : "ltr"}">
       <header class="doc__h"><img src="${BASE}assets/brand/crest.svg" alt="" width="48" height="60"><div><b>DreamNova</b><span>${esc(D.I[L]["hero.eyebrow"])}</span></div><dl><dt>${esc(Q.forw)}</dt><dd>${esc([c.name, c.company].filter(Boolean).join(" · ") || "—")}</dd><dt>${esc(Q.date)}</dt><dd>${esc(date)}</dd></dl></header>
       <h3 class="doc__t">${esc(p.title)}</h3>

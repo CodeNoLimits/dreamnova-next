@@ -15,8 +15,11 @@ const finePointer = matchMedia("(pointer: fine)").matches;
 const mobile = () => innerWidth < 768;
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 /* recommandation : ?ref=laura ajoute la mention dans le message WhatsApp (attribution des 20 %) */
-const REFS = { laura: "Laura" }, REFK = (new URLSearchParams(location.search).get("ref") || "").toLowerCase(), REFWHO = REFS[REFK] || "";
+const REFS = { laura: "Laura" };
+/* la recommandation suit le visiteur (langue, pages de service) : mémorisée pour la session */
+const REFK = (() => { const k = (new URLSearchParams(location.search).get("ref") || "").toLowerCase(); try { if (REFS[k]) sessionStorage.setItem("dn-ref", k); return REFS[k] ? k : (sessionStorage.getItem("dn-ref") || ""); } catch (e) { return k; } })(), REFWHO = REFS[REFK] || "";
 const REFTX = { fr: "de la part de", en: "recommended by", he: "בהמלצת" }[L];
+window.DN_REF = REFWHO ? ` (${REFTX} ${REFWHO})` : ""; /* repris par quote.js et audit.js */
 const wa = (extra, partner) => `https://wa.me/${D.WA}?text=${encodeURIComponent((partner ? T["wa.partner"] : T["wa.msg"]) + (extra ? " — " + extra : "") + (REFWHO ? ` (${REFTX} ${REFWHO})` : ""))}`;
 const ARROW = RTL ? "↖" : "↗";
 
