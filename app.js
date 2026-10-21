@@ -98,14 +98,15 @@ const ICONS = {
   const N = [D.SVC.length, D.WORKS.filter(w => !w.only || w.only === L).length, D.REELS.length, D.STACK.length];
   $("[data-live]").innerHTML = N.map((n, i) => L === "he" && i === 1 ? "" : `<li class="live__it reveal"><b class="gold-text" dir="ltr">${n}</b><span>${esc(LB[i])}</span></li>`).join(""); }
 /* ---------- bandeau d'avantages sous l'ouverture (fr/en ; hébreu à relire) ---------- */
-{ const P = { fr: [["Appel découverte offert", "Audit IA gratuit en 1 minute", "Devis clair en 1 minute"], "Commencer"], en: [["Free discovery call", "Free AI audit in one minute", "Clear quote in one minute"], "Start"] }[L], el = $("[data-promo]");
+{ const P = { fr: [["Appel découverte offert", "Audit IA gratuit en 1 minute", "Devis clair en 1 minute"], "Voir par où commencer"], en: [["Free discovery call", "Free AI audit in one minute", "Clear quote in one minute"], "See where to start"] }[L], el = $("[data-promo]");
   if (P && el) { el.hidden = false; el.innerHTML = `<ul class="promo__l">${P[0].map(t => `<li><span class="promo__dot" aria-hidden="true"></span>${esc(t)}</li>`).join("")}</ul><a class="btn btn--gold btn--sm promo__go" href="#conseil"><span>${esc(P[1])}</span><span class="btn__ico">↘</span></a>`; } }
 /* ---------- conseil (fr/en ; l'hébreu attend un texte relu) : arrivée des liens de recommandation ---------- */
 { const CI = D.CONSEIL_I[L], sec = $("#conseil"); if (CI && sec) { sec.hidden = false;
   $$("[data-c3]").forEach(e => { if (e.dataset.c3 !== "ref") e.textContent = CI[e.dataset.c3]; });
-  $("[data-conseil]").innerHTML = CI.c.map(([t, d, h, c], i) => { const w = h === "#contact"; return `<li class="cx__s reveal"><a class="cx__card${i ? "" : " cx__card--main"}" href="${w ? wa(t) : h}"${w ? ' target="_blank" rel="noopener"' : ""}><span class="cx__n" aria-hidden="true">0${i + 1}</span><span class="cx__body"><b>${esc(t)}</b><span>${esc(d)}</span></span><span class="cx__go">${esc(c)} <span aria-hidden="true">${w ? "↗" : "↘"}</span></span></a></li>`; }).join("");
+  $("[data-conseil]").innerHTML = CI.c.map(([t, d, h, c], i) => { const w = h === "#contact"; return `<li class="cx__s reveal"><a class="cx__card${i ? "" : " cx__card--main"}" href="${w ? wa(t) : h}"${w ? ' target="_blank" rel="noopener"' : ""}><span class="cx__n" aria-hidden="true">0${i + 1}</span><span class="cx__body"><b>${esc(t)}</b><span>${esc(d)}</span></span>${i ? `<span class="cx__go">${esc(c)} <span aria-hidden="true">${w ? "↗" : "↘"}</span></span>` : `<span class="btn btn--gold cx__btn"><span>${esc(c)}</span><span class="btn__ico">${w ? "↗" : "↘"}</span></span>`}</a></li>`; }).join("");
   const r = $("[data-c3=ref]"); if (r && REFWHO) { r.textContent = CI.ref.replace("{who}", REFWHO); r.hidden = false; }
   const v = sec.querySelector(".cx__vid"); /* vidéo chargée seulement près de l'écran ; jamais avec « mouvement réduit » */
+  new IntersectionObserver(([en]) => document.body.classList.toggle("cx-on", en.isIntersecting), { threshold: .25 }).observe(sec); /* le compteur flottant « rapport suivant » ne recouvre pas les cartes */
   if (v && !matchMedia("(prefers-reduced-motion: reduce)").matches) new IntersectionObserver(([en]) => { if (en.isIntersecting) { if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); } else v.pause(); }, { rootMargin: "300px 0px" }).observe(sec); } }
 /* ---------- gratuit, tout de suite ---------- */
 { const FI = D.FREE_I[L]; $$("[data-f2]").forEach(e => e.textContent = FI[e.dataset.f2]);
