@@ -1179,3 +1179,9 @@ body:has(.cp-panel.is-open) .gear,body.no-fab .gear,body.svc-open .gear{opacity:
 @media (max-width:767px){.gear{display:none}} /* sur téléphone la pastille recouvrait titres et textes */
 .off__p small{font-size:max(11.5px,.72rem);color:rgb(235 228 214 / .78)}
 .who__sig{color:#ddd1b4}
+/* ===== téléphone : services et salles en rangées horizontales (jury 21/10 : ~6 écrans de cartes avant les offres) ===== */
+@media (max-width:767px){
+  .bento,.rooms.no-gl .rooms__fallback{display:grid;grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:84%;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding-inline:var(--pad);padding-bottom:12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .bento::-webkit-scrollbar,.rooms__fallback::-webkit-scrollbar{display:none}
+  .bento>*,.rooms.no-gl .rooms__fallback>*{grid-column:auto;scroll-snap-align:center}
+}
