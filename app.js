@@ -104,7 +104,7 @@ const ICONS = {
 { const CI = D.CONSEIL_I[L], sec = $("#conseil"); if (CI && sec) { sec.hidden = false;
   $$("[data-c3]").forEach(e => { if (e.dataset.c3 !== "ref") e.textContent = CI[e.dataset.c3]; });
   $("[data-conseil]").innerHTML = CI.c.map(([t, d, h, c], i) => { const w = h === "#contact"; return `<li class="cx__s reveal"><a class="cx__card${i ? "" : " cx__card--main"}" href="${w ? wa(t) : h}"${w ? ' target="_blank" rel="noopener"' : ""}><span class="cx__n" aria-hidden="true">0${i + 1}</span><span class="cx__body"><b>${esc(t)}</b><span>${esc(d)}</span></span>${i ? `<span class="cx__go">${esc(c)} <span aria-hidden="true">${w ? "↗" : "↘"}</span></span>` : `<span class="btn btn--gold cx__btn"><span>${esc(c)}</span><span class="btn__ico">${w ? "↗" : "↘"}</span></span>`}</a></li>`; }).join("");
-  const r = $("[data-c3=ref]"); if (r && REFWHO) { r.textContent = CI.ref.replace("{who}", REFWHO); r.hidden = false; sec.querySelector("[data-c3=eyebrow]").hidden = true; } /* un seul badge en tête quand le visiteur vient d'une recommandation */
+  const r = $("[data-c3=ref]"); if (r && REFWHO) { r.textContent = CI.ref.replace("{who}", REFWHO); r.hidden = false; sec.querySelector("[data-c3=eyebrow]").style.display = "none"; } /* un seul badge en tête quand le visiteur vient d'une recommandation */
   const v = sec.querySelector(".cx__vid"); /* vidéo chargée seulement près de l'écran ; jamais avec « mouvement réduit » */
   new IntersectionObserver(([en]) => document.body.classList.toggle("cx-on", en.isIntersecting), { threshold: .25 }).observe(sec); /* le compteur flottant « rapport suivant » ne recouvre pas les cartes */
   if (v && !matchMedia("(prefers-reduced-motion: reduce)").matches) new IntersectionObserver(([en]) => { if (en.isIntersecting) { if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); } else v.pause(); }, { rootMargin: "300px 0px" }).observe(sec); } }
@@ -362,7 +362,7 @@ function intro() {
      épinglées n'allongent la page (écart mesuré : 4 100 px). On revient sur l'ancre à chaque recalcul, pendant 8 s, tant que le visiteur n'a pas défilé lui-même. */
   { const tgt = location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1)));
     if (tgt) { let user = false; const t0 = Date.now(), quit = () => { user = true; };
-      ["wheel", "touchmove", "keydown"].forEach(e => addEventListener(e, quit, { once: true, passive: true }));
+      ["wheel", "touchmove", "keydown", "pointerdown", "hashchange"].forEach(e => addEventListener(e, quit, { once: true, passive: true }));
       const go = () => { if (user || Date.now() - t0 > 8000) return; const y = tgt.getBoundingClientRect().top + scrollY; lenis ? lenis.scrollTo(y, { immediate: true, force: true }) : scrollTo(0, y); };
       ScrollTrigger.addEventListener("refresh", () => requestAnimationFrame(go)); addEventListener("dn:gate", () => setTimeout(go, 60)); setTimeout(go, 1200); } }
   window.__DN = { lang: L, lenis: !!lenis };
