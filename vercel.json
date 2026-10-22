@@ -49,5 +49,11 @@
       "destination": "/assets/brand/crest.svg",
       "permanent": true
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/he/partner/:code",
+      "destination": "/he/partner"
+    }
   ]
 }
