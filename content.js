@@ -179,7 +179,8 @@ REELS: [
  {id:"reel07_films_en",lang:"en",t:{"he": "וידאו וסרטי AI", "en": "Video & AI film", "fr": "Vidéo & film IA"}},
  {id:"reel08_ia_privee_he",lang:"he",t:{"he": "בינה מלאכותית פרטית", "en": "Private AI", "fr": "IA privée"}},
  {id:"reel09_espace_en",lang:"en",t:{"he": "המעבדה — לא עוצרים בשמיים", "en": "The lab — we don't stop at the sky", "fr": "Le labo — on ne s'arrête pas au ciel"}},
- {id:"reel10_valeurs_fr",lang:"fr",t:{"he": "הערכים שלנו", "en": "Our values", "fr": "Nos valeurs"}}
+ {id:"reel10_valeurs_fr",lang:"fr",t:{"he": "הערכים שלנו", "en": "Our values", "fr": "Nos valeurs"}},
+ {id:"reel11_ava_en",lang:"en",t:{"he": "כשהטלפון מצלצל, Ava עונה", "en": "When the phone rings, Ava answers", "fr": "Quand le téléphone sonne, Ava répond"}}
 ],
 
 /* chapitres cinématiques (vidéos assets/car2, assets/space, assets/scenes) */
