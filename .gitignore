@@ -3,3 +3,4 @@
 .env.local
 assets/car2/*_tmp/
 *.png
+CHECKPOINT.md
