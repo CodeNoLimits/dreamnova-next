@@ -136,13 +136,17 @@ STUDIO_I: {
  fr:{top:"Top",new:"Nouveau",open:"Ouvrir",from:"À partir de",quote:"Sur devis",badges:{film:"top",web:"top",agents:"new",private:"new",crm:"",marketing:"top","3d":"new",consult:""}}
 },
 CONSEIL_I: {
+ he:{eyebrow:"ייעוץ · בהמלצה",title:"עצה ברורה, לפני כל רכישה.",lead:"יש לכם עסק, אתר שצריך לבנות או רעיון AI לבדוק? מדברים 15 דקות, בלי התחייבות, ויוצאים עם כיוון ברור.",
+  who:"דוד אמור, מייסד DreamNova, ירושלים. בונה אתרים וכלי AI, ומוסר רק מה שנבדק.",
+  c:[["15 דקות ייעוץ חינם, בלי התחייבות","מבינים את העסק שלכם ומה הוא באמת צריך. במילים פשוטות, בלי ז׳רגון.","#contact","לקבוע בוואטסאפ"],["הצעת מחיר ברורה תוך דקה","מתארים את הפרויקט במשפט ומקבלים היקף, לוח זמנים ומחיר, עם PDF.","#devis","להצעת מחיר"],["אבחון AI של האתר שלכם","מדביקים כתובת ומקבלים ציון, חמישה שיפורים מהירים ותוכנית ל־30 יום.","#audit","לאבחון"]],
+  ref:"בהמלצת {who}"},
  en:{eyebrow:"Advice · by recommendation",title:"Clear advice before any purchase.",lead:"You run a business, need a website, or want to try AI? We talk for 15 minutes, no commitment, and you leave with a concrete direction.",
   who:"David Amor, founder of DreamNova, Jerusalem. He builds websites and AI tools, and only delivers what he has tested.",
-  c:[["Free discovery call","15 minutes to understand your activity and what it really needs. Plain words, no jargon.","#contact","Book on WhatsApp"],["A readable quote in one minute","Describe your project in a sentence and get scope, timeline and price, with a PDF.","#devis","Get a quote"],["AI audit of your website","Paste an address and get a score, five quick wins and a 30-day plan.","#audit","Run the audit"]],
+  c:[["15 minutes of free advice, no commitment","We look at your activity and what it really needs. Plain words, no jargon.","#contact","Book on WhatsApp"],["A readable quote in one minute","Describe your project in a sentence and get scope, timeline and price, with a PDF.","#devis","Get a quote"],["AI audit of your website","Paste an address and get a score, five quick wins and a 30-day plan.","#audit","Run the audit"]],
   ref:"Recommended by {who}"},
  fr:{eyebrow:"Conseil · sur recommandation",title:"Un conseil clair, avant tout achat.",lead:"Vous avez une activité, un site à créer ou une idée d'IA à tester ? On en parle 15 minutes, sans engagement, et vous repartez avec une direction concrète.",
   who:"David Amor, fondateur de DreamNova, à Jérusalem. Il construit des sites et des outils d'IA, et ne livre que ce qu'il a testé.",
-  c:[["Appel découverte offert","15 minutes pour comprendre votre activité et ce dont elle a vraiment besoin. Des mots simples, pas de jargon.","#contact","Réserver sur WhatsApp"],["Un devis lisible en une minute","Décrivez votre projet en une phrase et recevez périmètre, calendrier et prix, avec PDF.","#devis","Obtenir un devis"],["Audit IA de votre site","Collez une adresse et recevez une note, cinq gains rapides et un plan sur 30 jours.","#audit","Lancer l'audit"]],
+  c:[["15 minutes de conseil gratuit, sans engagement","On regarde votre activité et ce dont elle a vraiment besoin. Des mots simples, pas de jargon.","#contact","Réserver sur WhatsApp"],["Un devis lisible en une minute","Décrivez votre projet en une phrase et recevez périmètre, calendrier et prix, avec PDF.","#devis","Obtenir un devis"],["Audit IA de votre site","Collez une adresse et recevez une note, cinq gains rapides et un plan sur 30 jours.","#audit","Lancer l'audit"]],
   ref:"Recommandé par {who}"}
 },
 FREE_I: {
