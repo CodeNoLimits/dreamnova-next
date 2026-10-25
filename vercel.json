@@ -16,6 +16,35 @@
   "installCommand": null,
   "redirects": [
     {
+      "source": "/portfolio",
+      "has": [
+        {
+          "type": "header",
+          "key": "accept-language",
+          "value": "(?i)fr.*"
+        }
+      ],
+      "destination": "/fr/portfolio/",
+      "permanent": false
+    },
+    {
+      "source": "/portfolio",
+      "has": [
+        {
+          "type": "header",
+          "key": "accept-language",
+          "value": "(?i)he.*"
+        }
+      ],
+      "destination": "/he/portfolio/",
+      "permanent": false
+    },
+    {
+      "source": "/portfolio",
+      "destination": "/en/portfolio/",
+      "permanent": false
+    },
+    {
       "source": "/",
       "has": [
         {
