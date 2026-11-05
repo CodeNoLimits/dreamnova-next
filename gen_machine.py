@@ -7,9 +7,9 @@ FONTS = {"he": "family=Rubik:wght@400..800&family=Open+Sans:wght@400;600;700",
          "en": "family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Instrument+Serif:ital@0;1&family=Manrope:wght@300..700"}
 FONTS["fr"] = FONTS["en"]
 META = {
-  "he": ("מכונת לקוחות — DreamNova", "אתר שמביא פניות, באוויר תוך 48 שעות, פרסום ממומן שמוביל אליו לקוחות, וכל פנייה במעקב. החל מ־₪4,900."),
-  "en": ("Client Machine — DreamNova", "A website that converts in 48 hours, ads tuned behind it, every enquiry tracked. From $1,490."),
-  "fr": ("Machine à clients — DreamNova", "Un site qui convertit en 48 h, les pubs réglées derrière lui, chaque demande suivie. À partir de 1 290 €."),
+  "he": ("מכונת לקוחות — DreamNova", "אתר שמביא פניות, באוויר תוך 48 שעות, פרסום ממומן שמוביל אליו לקוחות, וכל פנייה במעקב. מחיר השקה ₪4,900."),
+  "en": ("Client Machine — DreamNova", "Your site live in 48 hours, ads tuned behind it, every enquiry tracked. Launch price $1,490."),
+  "fr": ("Machine à clients — DreamNova", "Votre site en ligne en 48 h, les pubs réglées derrière lui, chaque demande suivie. Prix de lancement 1 290 €."),
 }
 CSS = (".mc-price{display:flex;align-items:baseline;gap:12px;margin-top:28px}.mc-price small{font:500 12px/1 var(--f-body);letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}"
        ".mc-price b{font:600 clamp(40px,5vw,64px)/1 var(--f-display);letter-spacing:-.03em;color:var(--gold-pale)}"
@@ -17,6 +17,12 @@ CSS = (".mc-price{display:flex;align-items:baseline;gap:12px;margin-top:28px}.mc
        ".mc-ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}"
        ".mc-paid{position:relative;z-index:3;margin:96px var(--pad) 0;padding:18px 22px;border-radius:18px;background:rgba(212,175,55,.12);box-shadow:inset 0 0 0 1px var(--line);color:var(--gold-pale)}"
        ".mc-end{padding-bottom:clamp(80px,10vw,140px)}"
+       "html[lang=he] .mc-page .eyebrow,html[lang=he] .mc-price small,html[lang=he] .off__p small{letter-spacing:0;text-transform:none}"
+       ".mc-page .svc-hero .eyebrow{white-space:nowrap}"
+       ".mc-page .build-deliver{list-style:none;padding-inline-start:0;gap:0}.mc-page .build-deliver li{font-size:17px;line-height:1.5;padding:14px 0 14px 30px;border-bottom:1px solid var(--line2);position:relative}"
+       "html[lang=he] .mc-page .build-deliver li{padding:14px 30px 14px 0}.mc-page .build-deliver li::before{content:\"\";position:absolute;inset-inline-start:2px;top:22px;width:12px;height:6px;border-inline-start:2px solid var(--gold);border-bottom:2px solid var(--gold);transform:rotate(-45deg)}"
+       "html[lang=he] .mc-page .build-deliver li::before{transform:rotate(-45deg) scaleX(-1)}"
+       ".mc-page .faq{max-width:1100px}.mc-page .faq summary{font-size:clamp(18px,1.6vw,22px)}.mc-page .build-steps p{font-size:16px}"
        "@media (max-width:767px){.mc-ctas .btn{flex:1 1 100%;justify-content:space-between}}")
 for l, (title, desc) in META.items():
     alt = "".join(f'<link rel="alternate" hreflang="{x}" href="{U}/{x}/client-machine/">' for x in ("he", "en", "fr")) + f'<link rel="alternate" hreflang="x-default" href="{U}/en/client-machine/">'
