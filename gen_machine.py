@@ -22,6 +22,7 @@ CSS = (".mc-price{display:flex;align-items:baseline;gap:12px;margin-top:28px}.mc
        ".mc-page .build-deliver{list-style:none;padding-inline-start:0;gap:0}.mc-page .build-deliver li{font-size:17px;line-height:1.5;padding:14px 0 14px 30px;border-bottom:1px solid var(--line2);position:relative}"
        "html[lang=he] .mc-page .build-deliver li{padding:14px 30px 14px 0}.mc-page .build-deliver li::before{content:\"\";position:absolute;inset-inline-start:2px;top:22px;width:12px;height:6px;border-inline-start:2px solid var(--gold);border-bottom:2px solid var(--gold);transform:rotate(-45deg)}"
        "html[lang=he] .mc-page .build-deliver li::before{transform:rotate(-45deg) scaleX(-1)}"
+       "html[lang=he] .mc-page .off__d{display:none}html[lang=he] .mc-page .off__t{unicode-bidi:plaintext}"
        ".mc-page .faq{max-width:1100px}.mc-page .faq summary{font-size:clamp(18px,1.6vw,22px)}.mc-page .build-steps p{font-size:16px}"
        "@media (max-width:767px){.mc-ctas .btn{flex:1 1 100%;justify-content:space-between}}")
 for l, (title, desc) in META.items():
