@@ -4,23 +4,23 @@
   const BASE = new URL("./", document.currentScript.src).href, ARROW = RTL ? "↖" : "↗";
   const esc = x => String(x).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   // Liens de paiement Stripe DreamAI (live), un par devise : jamais de lien d'une autre devise sur une page.
-  const PAY = { he: "https://buy.stripe.com/9B6fZg9nSh01f1v7SGds61k", en: "https://buy.stripe.com/28E6oGarWfVXg5z3Cqds61i", fr: "https://buy.stripe.com/14A28qfMg4df7z3c8Wds61j" };
+  const PAY = { he: "https://buy.stripe.com/7sY8wO43yeRTg5z2ymds61m", en: "https://buy.stripe.com/3cI7sK9nSfVXcTnfl8ds61l", fr: "https://buy.stripe.com/14A28qfMg4df7z3c8Wds61j" };
   const M = {
     he: { eye: "הצעת השקה · חבילת הכניסה", name: "מכונת לקוחות", lead: "אתר שמביא פניות, באוויר תוך 48 שעות, פרסום ממומן שמוביל אליו לקוחות, וכל פנייה במעקב: אף פנייה לא נשארת בלי מענה.",
       from: "החל מ־", price: "₪4,900", note: "מחיר השקה, בתשלום אחד. תקציב הפרסום נשאר אצלכם ובשליטתכם.",
       pay: "להזמין עכשיו", call: "שיחה של 20 דקות", wa: "שלום דוד, הגעתי מהעמוד ״מכונת לקוחות״ ואשמח לשיחה של 20 דקות.",
       get: "מה תקבלו", items: [["האתר שלכם תוך 48 שעות", "עמוד מכירה מותאם קודם כל לנייד, שמסביר את ההצעה שלכם ומניע את הגולשים לפנות אליכם. הפיקסלים של מטא ושל טיקטוק מותקנים, והפניות מהטופס ומהוואטסאפ נכנסות ישירות למערכת מעקב הפניות."],
         ["30 יום של ניהול קמפיינים", "קודם בודקים את המסרים בפרסום אורגני, ואז משקיעים את התקציב במסר שעובד. בלי לשלם שכר לימוד."],
-        ["כל פנייה במעקב", "כל פנייה נרשמת, אתם מקבלים תזכורת לחזור אליה בזמן, והכול מופיע בלוח בקרה ברור בנייד."],
+        ["כל פנייה במעקב", "כל פנייה נרשמת, אתם מקבלים תזכורת לחזור ללקוח בזמן, והכול מופיע בלוח בקרה ברור בנייד."],
         ["נציג AI שקובע פגישות", "בוואטסאפ ובטלפון, בעברית, בצרפתית או באנגלית: עונה מיד, שואל את השאלות הנכונות וקובע את הפגישה ביומן שלכם."],
         ["כתובת אחת לאורך כל הדרך", "דוד מלווה את הפרויקט מההתחלה ועד הסוף ושולח לכם עדכונים שוטפים, בשפה פשוטה."]],
       how: "איך זה עובד", how_h: "מהשיחה ועד הפגישה הראשונה עם לקוח.", steps: ["שיחה של 20 דקות: העסק שלכם, הלקוח האידיאלי ומה שגורם לו לקנות.", "האתר באוויר תוך 48 שעות, כשמערכת המעקב כבר מחוברת.", "המסרים נבדקים בפרסום אורגני, ואז התקציב עובר למסר המנצח, עם כוונון שבועי.", "כל פנייה מקבלת מענה מיד, נכנסת למעקב ומתקדמת לפגישה."],
       inc: "כלול במחיר", inc_l: ["אתר או עמוד מכירה, מותאם לנייד", "פיקסלים של מטא ושל טיקטוק", "30 יום של ניהול קמפיינים", "מערכת מעקב פניות עם לוח בקרה בנייד", "נציג AI לקביעת פגישות בוואטסאפ ובטלפון", "עדכונים שוטפים"],
-      know: "חשוב לדעת", know_l: ["את תקציב הפרסום במטא ובטיקטוק אתם משלמים ישירות לפלטפורמות, והוא אינו כלול במחיר.", "מחיר החבילה סגור מראש, בלי הפתעות באמצע. יתווספו אליו רק התוספות שתבחרו."],
+      know: "חשוב לדעת", know_l: ["את תקציב הפרסום במטא ובטיקטוק אתם משלמים ישירות לפלטפורמות, והוא אינו כלול במחיר.", "מחיר החבילה סגור מראש, בלי הפתעות באמצע. יתווסף אליו רק מה שתבחרו להוסיף."],
       more: "תוספות", more_h: "צריכים יותר? אפשר להוסיף שירותים לחבילה.",
-      faq: [["כמה עולה הפרסום בנוסף?", "אתם בוחרים את התקציב, משלמים אותו ישירות למטא או לטיקטוק ויכולים לעצור בכל שלב. בשיחה נמליץ לכם על סכום התחלתי."],
-        ["ומה אם כבר יש לנו אתר?", "אפשר להתבסס על האתר הקיים אם הבסיס שלו טוב, או לבנות עמוד מכירה ייעודי שמתחבר אליו. מחליטים יחד בשיחה."],
-        ["מה קורה אחרי 30 הימים?", "האתר ומערכת מעקב הפניות נשארים שלכם. לגבי הקמפיינים והנציג, בדוח הסיכום נציג לכם אפשרויות להמשך, בלי שום התחייבות."],
+      faq: [["וכמה עולה הפרסום עצמו?", "אתם בוחרים את התקציב, משלמים אותו ישירות למטא או לטיקטוק ויכולים לעצור בכל שלב. בשיחה נמליץ לכם על סכום התחלתי."],
+        ["ומה אם כבר יש לנו אתר?", "אם האתר הקיים טוב, אפשר לבנות עליו, או לבנות עמוד מכירה ייעודי שמתחבר אליו. מחליטים יחד בשיחה."],
+        ["מה קורה אחרי 30 הימים?", "האתר ומערכת מעקב הפניות נשארים שלכם. לגבי הקמפיינים והנציג, בדוח הסיכום נציע לכם אפשרויות להמשך, בלי שום התחייבות."],
         ["איך משלמים?", "בכרטיס אשראי, בתשלום מקוון ומאובטח דרך Stripe. תקבלו אישור, ודוד יכתוב לכם כדי לקבוע את שיחת הפתיחה."]],
       end: "מוכנים להפסיק לפספס לקוחות?", paid: "תודה, ההזמנה שלכם אושרה. דוד יכתוב לכם בקרוב כדי לקבוע את שיחת הפתיחה.", faq_t: "שאלות נפוצות" },
     en: { eye: "Launch offer · the starter pack", name: "Client Machine", lead: "A website that converts in 48 hours, ads tuned behind it, every enquiry tracked: no client is left waiting.",
@@ -64,7 +64,7 @@
   const opts = [[2, "3d"], [3, "web"], [4, "private"]].map(([k, id]) => [D.OFFERS[L][k], id]).filter(([o]) => o);
   const paid = new URLSearchParams(location.search).get("paid") === "1";
   document.getElementById("app").innerHTML = `
-  <header class="nav nav--svc"><a href="${BASE}${L}/" class="nav__brand"><img class="nav__crest" src="${BASE}assets/brand/crest.svg" alt="" width="26" height="32"><span class="nav__name">DreamNova</span></a>
+  <header class="nav nav--svc"><a href="${BASE}${L}/" class="nav__brand" aria-label="DreamNova"><img class="nav__crest" src="${BASE}assets/brand/crest.svg" alt="" width="26" height="32"><span class="nav__name">DreamNova</span></a>
     <a class="svc__back" href="${BASE}${L}/#drive">${RTL ? "→" : "←"} ${esc(U.back)}</a>
     <div class="nav__langs">${["he", "en", "fr"].map(l => `<a href="${BASE}${l}/client-machine/" hreflang="${l}" class="${l === L ? "is-on" : ""}">${l.toUpperCase()}</a>`).join("")}</div>
     <a class="btn btn--gold btn--sm nav__cta" href="${PAY[L]}" rel="noopener"><span>${esc(M.pay)}</span><span class="btn__ico">${ARROW}</span></a></header>
@@ -82,7 +82,7 @@
       ${ctas}
     </div>
   </section>
-  <section class="svc-build"><p class="eyebrow eyebrow--gold">${esc(M.get)}</p>
+  <section class="svc-build"><h2 class="eyebrow eyebrow--gold">${esc(M.get)}</h2>
     <ol class="build-steps">${M.items.map(([t, d], k) => `<li class="r"><span class="build-steps__n">${String(k + 1).padStart(2, "0")}</span><h3>${esc(t)}</h3><p>${esc(d)}</p></li>`).join("")}</ol></section>
   <section class="svc-spec"><p class="eyebrow">${esc(M.how)}</p><h2 class="h2 svc-build__t">${esc(M.how_h)}</h2>
     <ol class="spec">${M.steps.map((c, k) => `<li class="r"><span>${String(k + 1).padStart(2, "0")}</span><b>${esc(c)}</b></li>`).join("")}</ol></section>
@@ -101,7 +101,7 @@
   if (window.gsap && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
     gsap.registerPlugin(ScrollTrigger);
     if (window.Lenis && innerWidth > 767) { const l = new Lenis({ lerp: .09 }); l.on("scroll", ScrollTrigger.update); gsap.ticker.add(t => l.raf(t * 1000)); gsap.ticker.lagSmoothing(0); }
-    gsap.from(".svc-hero__in > *", { y: 60, opacity: 0, duration: 1.4, stagger: .1, ease: "expo.out", delay: .1 });
+    if (innerWidth > 767) gsap.from(".svc-hero__in > *", { y: 60, opacity: 0, duration: 1.4, stagger: .1, ease: "expo.out", delay: .1 });
     gsap.utils.toArray(".r").forEach(e => gsap.from(e, { y: 50, opacity: 0, duration: 1.1, ease: "expo.out", scrollTrigger: { trigger: e, start: "top 96%" } }));
   }
 })();
