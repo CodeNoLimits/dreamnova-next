@@ -13,3 +13,4 @@ assets/**/*.png
 assets/rooms/*.mp4
 tools_leeya*
 tools_ariel*
+gen_machine.py
