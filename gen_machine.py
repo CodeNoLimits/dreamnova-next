@@ -24,6 +24,22 @@ CSS = (".mc-price{display:flex;align-items:baseline;gap:12px;margin-top:28px}.mc
        "html[lang=he] .mc-page .build-deliver li::before{transform:rotate(-45deg) scaleX(-1)}"
        "html[lang=he] .mc-page .off__d{display:none}html[lang=he] .mc-page .off__t{unicode-bidi:plaintext}"
        ".mc-page .faq{max-width:1100px}.mc-page .faq summary{font-size:clamp(18px,1.6vw,22px)}.mc-page .build-steps p{font-size:16px}"
+       ".mc-page .faq{max-width:none}.mc-page .faq summary{min-height:44px}"
+       ".mc-page .build-steps{grid-template-columns:repeat(6,1fr)}.mc-page .build-steps li{grid-column:span 2}.mc-page .build-steps li:nth-child(n+4){grid-column:span 3}"
+       ".mc-page .build-steps__n{-webkit-text-stroke:1px rgba(240,217,140,.85)}"
+       ".mc-page .spec b{font-size:clamp(19px,1.9vw,26px);font-weight:500;max-width:46ch}.mc-page .spec span{color:var(--gold)}"
+       ".mc-know{max-width:880px;margin-bottom:56px;align-self:start;padding:28px 30px;border-radius:22px;background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px var(--line)}.mc-know .build-deliver li:last-child{border-bottom:0}"
+       ".mc-proof__g{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:20px;margin-top:44px}"
+       ".mc-fig{display:flex;flex-direction:column;border-radius:24px;overflow:hidden;background:linear-gradient(180deg,rgba(212,175,55,.06),rgba(255,255,255,.01));box-shadow:inset 0 0 0 1px var(--line);transition:transform .6s var(--ease),box-shadow .6s var(--ease)}"
+       ".mc-fig:hover{transform:translateY(-4px);box-shadow:inset 0 0 0 1px rgba(240,217,140,.4),0 30px 60px -30px rgba(0,0,0,.9)}"
+       ".mc-fig__i{display:block;aspect-ratio:16/10;overflow:hidden;background:#0b0907}.mc-fig__i img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform 1.2s var(--ease)}.mc-fig:hover .mc-fig__i img{transform:scale(1.04)}"
+       ".mc-fig__b{position:relative;display:block;padding:22px 64px 24px 24px}html[lang=he] .mc-fig__b{padding:22px 24px 24px 64px}.mc-fig__b b{display:block;font:600 20px/1.2 var(--f-display);margin-bottom:6px}.mc-fig__b>span:not(.mc-fig__c){display:block;color:#cfc6b6;font-size:15px;line-height:1.5}"
+       ".mc-fig__c{position:absolute;inset-inline-end:20px;top:22px;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;box-shadow:inset 0 0 0 1px var(--line);color:var(--gold-lt)}"
+       ".mc-end__g{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(32px,5vw,80px);align-items:center}.mc-end__r{padding:30px 32px;border-radius:24px;background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px var(--line)}.mc-end__r .build-deliver li:last-child{border-bottom:0}"
+       ".foot__row{align-items:baseline}"
+       "@media (max-width:1100px){.mc-page .build-steps{grid-template-columns:1fr 1fr}.mc-page .build-steps li,.mc-page .build-steps li:nth-child(n+4){grid-column:auto}.mc-page .build-steps li:last-child{grid-column:1 / -1}}"
+       "@media (max-width:900px){.mc-proof__g,.mc-end__g{grid-template-columns:1fr}}"
+       "@media (max-width:720px){.mc-page .off{grid-template-columns:1fr auto;grid-template-areas:\"n n\" \"t c\" \"d d\" \"p p\";gap:6px 16px}.mc-page .off__p{text-align:start}.mc-page .build-steps{grid-template-columns:1fr}.mc-page .build-steps li:last-child{grid-column:auto}}"
        "@media (max-width:767px){.mc-ctas .btn{flex:1 1 100%;justify-content:space-between}}")
 for l, (title, desc) in META.items():
     alt = "".join(f'<link rel="alternate" hreflang="{x}" href="{U}/{x}/client-machine/">' for x in ("he", "en", "fr")) + f'<link rel="alternate" hreflang="x-default" href="{U}/en/client-machine/">'
